@@ -8,7 +8,7 @@ jobs:
       - run: sudo DEBIAN_FRONTEND=noninteractive apt-get install -y wget systemd
       - run: wget https://install.fastnetmon.com/installer -Oinstaller
       - run: chmod +x installer
-      - run: sudo ./installer -do_not_check_license
+      - run: sudo CI=true ./installer -do_not_check_license
       - store_artifacts:
           path: /tmp/fastnetmon_install.log
       - run: ldd /opt/fastnetmon/app/bin/fastnetmon
@@ -18,7 +18,7 @@ jobs:
       - store_artifacts:
           path: /var/log/fastnetmon/fastnetmon.log
       - run: sudo fcli show fastnetmon_version
-      - run: sudo ./installer -install_graphic_stack
+      - run: sudo CI=1 ./installer -install_graphic_stack
   ubuntu2004_docker:
     machine:
       image: ubuntu-2004:current
@@ -27,7 +27,7 @@ jobs:
       - run: sudo DEBIAN_FRONTEND=noninteractive apt-get install -y wget
       - run: wget https://install.fastnetmon.com/installer -Oinstaller
       - run: chmod +x installer
-      - run: sudo ./installer -fastnetmon_docker
+      - run: sudo CI=true ./installer -fastnetmon_docker
       - store_artifacts:
           path: /tmp/fastnetmon_install.log
       - store_artifacts:
