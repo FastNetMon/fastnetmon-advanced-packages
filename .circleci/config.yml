@@ -39,6 +39,10 @@ workflows:
     triggers:
       - schedule:
           cron: "0 * * * *"
+          filters:
+            branches:
+              only:
+                - main
     jobs:
       - ubuntu2004
       - ubuntu2004_docker
