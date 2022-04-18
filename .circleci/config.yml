@@ -19,8 +19,23 @@ jobs:
           path: /var/log/fastnetmon/fastnetmon.log
       - run: sudo fcli show fastnetmon_version
       - run: sudo ./installer -install_graphic_stack
+  ubuntu2004_docker:
+    machine:
+      image: ubuntu-2004:current
+    steps:
+      - run: sudo apt-get update
+      - run: sudo DEBIAN_FRONTEND=noninteractive apt-get install -y wget
+      - run: wget https://install.fastnetmon.com/installer -Oinstaller
+      - run: chmod +x installer
+      - run: sudo ./installer -fastnetmon_docker
+      - store_artifacts:
+          path: /tmp/fastnetmon_install.log
+      - store_artifacts:
+          path: /var/lib/fastnetmon_docker/logs/fastnetmon.log
+      - run: sudo fcli show fastnetmon_version
 workflows:
   version: 2
   all_distros:
     jobs:
       - ubuntu2004
+      - ubuntu2004_docker
