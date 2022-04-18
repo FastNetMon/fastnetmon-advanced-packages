@@ -4,6 +4,7 @@ jobs:
     machine:
       image: ubuntu-2004:current
     steps:
+      - checkout
       - run:
           name: "Prepare image with systemd enabled"
           command: sudo docker build --tag debian9_systemd - < Dockerfile_debian9_systemd
