@@ -31,7 +31,7 @@ jobs:
       - store_artifacts:
           path: /tmp/fastnetmon_install.log
       - store_artifacts:
-          path: /var/lib/fastnetmon_docker/logs/fastnetmon.log
+          path: /var/lib/fastnetmon_docker/fastnetmon/logs/fastnetmon.log
       - run: sudo fcli show fastnetmon_version
 workflows:
   version: 2
