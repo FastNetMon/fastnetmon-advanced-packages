@@ -35,6 +35,13 @@ jobs:
       - run: sudo fcli show fastnetmon_version
 workflows:
   version: 2
+  all_distros_nightly:
+    triggers:
+      - schedule:
+          cron: "0 * * * *"
+    jobs:
+      - ubuntu2004
+      - ubuntu2004_docker
   all_distros:
     jobs:
       - ubuntu2004
