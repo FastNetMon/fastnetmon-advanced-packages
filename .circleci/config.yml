@@ -30,6 +30,7 @@ jobs:
       - run: sudo CI=true ./installer -fastnetmon_docker
       - store_artifacts:
           path: /tmp/fastnetmon_install.log
+      - run: sudo chmod -R 755 /var/lib/fastnetmon_docker # make permissions more relaxed to get log file as artifact
       - store_artifacts:
           path: /var/lib/fastnetmon_docker/fastnetmon/logs/fastnetmon.log
       - run: sudo fcli show fastnetmon_version
