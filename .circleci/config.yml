@@ -39,7 +39,7 @@ workflows:
   all_distros_nightly:
     triggers:
       - schedule:
-          cron: "0 * * * *"
+          cron: "0 3 * * *"
           filters:
             branches:
               only:
