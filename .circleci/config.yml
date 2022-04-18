@@ -16,7 +16,26 @@ jobs:
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fastnetmon
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/traffic_db
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fill_dictionaries
-      - run: sudo /opt/fastnetmon/app/bin/fastnetmon --configuration_check
+      - run: sudo docker exec --env -it linux_systemd_container /opt/fastnetmon/app/bin/fastnetmon --configuration_check
+      - run: sudo docker exec --env -it linux_systemd_container fcli show fastnetmon_version
+      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack
+  ubuntu2004_almalinux8:
+    machine:
+      image: ubuntu-2004:current
+    steps:
+      - run: sudo docker pull centos:centos7
+      - run: sudo docker run -d -v /sys/fs/cgroup/:/sys/fs/cgroup:ro --privileged --cap-add SYS_ADMIN  --name linux_systemd_container almalinux:8 /sbin/init
+      - run: sudo docker ps
+      - run: sudo docker exec -it linux_systemd_container systemctl status --no-pager
+      - run: sudo docker exec -it linux_systemd_container yum install -y wget
+      - run: sudo docker exec -it linux_systemd_container wget https://install.fastnetmon.com/installer?veryrandomarg -Oinstaller
+      - run: sudo docker exec -it linux_systemd_container chmod +x installer
+      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -do_not_check_license
+      - run: sudo docker exec --env -it linux_systemd_container cat /var/log/fastnetmon/fastnetmon.log
+      - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fastnetmon
+      - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/traffic_db
+      - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fill_dictionaries
+      - run: sudo docker exec --env -it linux_systemd_container /opt/fastnetmon/app/bin/fastnetmon --configuration_check
       - run: sudo docker exec --env -it linux_systemd_container fcli show fastnetmon_version
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack
   ubuntu2004:
@@ -67,8 +86,10 @@ workflows:
       - ubuntu2004
       - ubuntu2004_docker
       - ubuntu2004_centos7
+      - ubuntu2004_almalinux8
   all_distros:
     jobs:
       - ubuntu2004
       - ubuntu2004_docker
       - ubuntu2004_centos7
+      - ubuntu2004_almalinux8
