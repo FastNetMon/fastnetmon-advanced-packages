@@ -51,7 +51,7 @@ jobs:
       - run: sudo docker exec --env -it linux_systemd_container /opt/fastnetmon/app/bin/fastnetmon --configuration_check
       - run: sudo docker exec --env -it linux_systemd_container fcli show fastnetmon_version
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack
-  ubuntu2004:
+  ubuntu2004vm:
     machine:
       image: ubuntu-2004:current
     steps:
@@ -70,7 +70,7 @@ jobs:
           path: /var/log/fastnetmon/fastnetmon.log
       - run: sudo fcli show fastnetmon_version
       - run: sudo CI=true ./installer -install_graphic_stack
-  ubuntu2004_docker:
+  ubuntu2004vm_docker:
     machine:
       image: ubuntu-2004:current
     steps:
@@ -96,8 +96,8 @@ workflows:
               only:
                 - main
     jobs:
-      - ubuntu2004
-      - ubuntu2004_docker
+      - ubuntu2004vm
+      - ubuntu2004vm_docker
       - build_redhat:
           name: "CentOS 7"
           docker_image: "centos:centos7"
@@ -124,8 +124,8 @@ workflows:
           docker_image: "Dockerfile_ubuntu20_systemd"
   all_distros:
     jobs:
-      - ubuntu2004
-      - ubuntu2004_docker
+      - ubuntu2004vm
+      - ubuntu2004vm_docker
       - build_redhat:
           name: "CentOS 7"
           docker_image: "centos:centos7"
