@@ -23,7 +23,7 @@ jobs:
     machine:
       image: ubuntu-2004:current
     steps:
-      - run: sudo docker pull centos:centos7
+      - run: sudo docker pull almalinux:8
       - run: sudo docker run -d -v /sys/fs/cgroup/:/sys/fs/cgroup:ro --privileged --cap-add SYS_ADMIN  --name linux_systemd_container almalinux:8 /sbin/init
       - run: sudo docker ps
       - run: sudo docker exec -it linux_systemd_container systemctl status --no-pager
