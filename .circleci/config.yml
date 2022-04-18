@@ -1,0 +1,22 @@
+version: 2.1
+jobs:
+  ubuntu2004:
+    docker:
+      - image: ubuntu:focal
+    steps:
+      - run: apt-get update
+      - run: apt-get install -y wget
+      - run: wget https://install.fastnetmon.com/installer -Oinstaller
+      - run: chmod +x installer
+      - run: ./installer -do_not_check_license
+      - store_artifacts:
+          path: /tmp/fastnetmon_install.log
+      - run: ldd /opt/fastnetmon/app/bin/fastnetmon
+      - run: ldd /opt/fastnetmon/app/bin/traffic_db
+      - run: ldd /opt/fastnetmon/app/bin/fill_dictionaries
+      - run: /opt/fastnetmon/app/bin/fastnetmon --configuration_check
+workflows:
+  version: 2
+  all_distros:
+    jobs:
+      - ubuntu2004
