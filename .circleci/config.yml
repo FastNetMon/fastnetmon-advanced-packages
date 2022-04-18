@@ -11,7 +11,7 @@ jobs:
       - run: sudo docker exec -it linux_systemd_container yum install -y wget
       - run: sudo docker exec -it linux_systemd_container wget --no-check-certificate https://install.fastnetmon.com/installer?veryrandomarg -Oinstaller
       - run: sudo docker exec -it linux_systemd_container chmod +x installer
-      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -do_not_check_licens
+      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -do_not_check_license
       - run: sudo docker exec --env -it linux_systemd_container cat /var/log/fastnetmon/fastnetmon.log
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fastnetmon
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/traffic_db
