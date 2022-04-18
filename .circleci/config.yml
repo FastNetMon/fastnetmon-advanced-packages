@@ -1,11 +1,11 @@
 version: 2.1
 jobs:
   ubuntu2004:
-    docker:
-      - image: ubuntu:focal
+    machine:
+      image: ubuntu-2004:current
     steps:
       - run: apt-get update
-      - run: DEBIAN_FRONTEND=noninteractive apt-get install -y wget systemd init-system-helpers
+      - run: DEBIAN_FRONTEND=noninteractive apt-get install -y wget systemd
       - run: wget https://install.fastnetmon.com/installer -Oinstaller
       - run: chmod +x installer
       - run: ./installer -do_not_check_license
