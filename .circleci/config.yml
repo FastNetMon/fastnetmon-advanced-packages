@@ -12,6 +12,7 @@ jobs:
       - run: sudo docker exec -it linux_systemd_container wget --no-check-certificate https://install.fastnetmon.com/installer -Oinstaller
       - run: sudo docker exec -it linux_systemd_container chmod +x installer
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -do_not_check_license
+      - run: sudo docker exec -it linux_systemd_container cat /tmp/fastnetmon_install.log
   ubuntu2004:
     machine:
       image: ubuntu-2004:current
