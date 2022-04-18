@@ -4,11 +4,11 @@ jobs:
     machine:
       image: ubuntu-2004:current
     steps:
-      - run: apt-get update
-      - run: DEBIAN_FRONTEND=noninteractive apt-get install -y wget systemd
+      - run: sudo apt-get update
+      - run: sudo DEBIAN_FRONTEND=noninteractive apt-get install -y wget systemd
       - run: wget https://install.fastnetmon.com/installer -Oinstaller
       - run: chmod +x installer
-      - run: ./installer -do_not_check_license
+      - run: sudo ./installer -do_not_check_license
       - store_artifacts:
           path: /tmp/fastnetmon_install.log
       - run: ldd /opt/fastnetmon/app/bin/fastnetmon
