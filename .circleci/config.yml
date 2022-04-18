@@ -15,6 +15,10 @@ jobs:
       - run:
           name: "Prepare image with systemd enabled"
           command: sudo docker build --tag debian_systemd - < << parameters.docker_image >>
+      - run:
+          name: "Deploy new systemd enabled image"
+          command: sudo docker run -d -v /sys/fs/cgroup/:/sys/fs/cgroup:ro --privileged --cap-add SYS_ADMIN  --name linux_systemd_container debian_systemd /lib/systemd/systemd
+      - run: sudo docker ps
       - run: sudo docker exec -it linux_systemd_container systemctl status --no-pager
       - run: sudo docker exec -it linux_systemd_container apt install -y wget
       - run: sudo docker exec -it linux_systemd_container wget https://install.fastnetmon.com/installer?veryrandomarg -Oinstaller
@@ -130,6 +134,7 @@ workflows:
       - build_debian:
           debian_version: "9"
           docker_image: "Dockerfile_debian9_systemd"
+          name: "Can I have fancy name"
       - build_debian:
           debian_version: "10"
           docker_image: "Dockerfile_debian10_systemd"
