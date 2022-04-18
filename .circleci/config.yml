@@ -9,6 +9,7 @@ jobs:
       - run: wget https://install.fastnetmon.com/installer -Oinstaller
       - run: chmod +x installer
       - run: sudo ./installer -do_not_check_license
+      - run: sudo ./installer -install_graphic_stack
       - store_artifacts:
           path: /tmp/fastnetmon_install.log
       - run: ldd /opt/fastnetmon/app/bin/fastnetmon
