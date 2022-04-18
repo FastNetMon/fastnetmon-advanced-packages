@@ -113,6 +113,15 @@ workflows:
       - build_debian:
           name: "Debian 11"
           docker_image: "Dockerfile_debian11_systemd"
+      - build_debian:
+          name: "ubuntu 16.04"
+          docker_image: "Dockerfile_ubuntu16_systemd"
+      - build_debian:
+          name: "ubuntu 18.04"
+          docker_image: "Dockerfile_ubuntu18_systemd"
+      - build_debian:
+          name: "ubuntu 20.04"
+          docker_image: "Dockerfile_ubuntu20_systemd"
   all_distros:
     jobs:
       - ubuntu2004
@@ -132,3 +141,12 @@ workflows:
       - build_debian:
           docker_image: "Dockerfile_debian11_systemd"
           name: "Debian 11"
+      - build_debian:
+          name: "ubuntu 16.04"
+          docker_image: "Dockerfile_ubuntu16_systemd"
+      - build_debian:
+          name: "ubuntu 18.04"
+          docker_image: "Dockerfile_ubuntu18_systemd"
+      - build_debian:
+          name: "ubuntu 20.04"
+          docker_image: "Dockerfile_ubuntu20_systemd"
