@@ -100,10 +100,10 @@ workflows:
     jobs:
       - ubuntu2004
       - ubuntu2004_docker
-      - build_readhat:
+      - build_redhat:
           name: "CentOS 7"
           docker_image: "centos:centos7"
-      - build_readhat:
+      - build_redhat:
           name: "AlmaLinux 8"
           docker_image: "almalinux:8"
       - build_debian:
@@ -119,10 +119,10 @@ workflows:
     jobs:
       - ubuntu2004
       - ubuntu2004_docker
-      - build_readhat:
+      - build_redhat:
           name: "CentOS 7"
           docker_image: "centos:centos7"
-      - build_readhat:
+      - build_redhat:
           name: "AlmaLinux 8"
           docker_image: "almalinux:8"
       - build_debian:
