@@ -7,10 +7,10 @@ jobs:
     parameters:
       docker_image:
         type: string
-      name:
+      debian_version:
         type: string
     steps:
-      - run: echo << parameters.name >>
+      - run: echo Running build for Debian << parameters.debian_version >>
       - checkout
       - run:
           name: "Prepare image with systemd enabled"
@@ -113,13 +113,13 @@ workflows:
       - ubuntu2004_centos7
       - ubuntu2004_almalinux8
       - build_debian:
-          name: "Debian 9"
+          debian_version: "9"
           docker_image: "Dockerfile_debian9_systemd"
       - build_debian:
-          name: "Debian 10"
+          debian_version: "10"
           docker_image: "Dockerfile_debian10_systemd"
       - build_debian:
-          name: "Debian 11"
+          debian_version: "11"
           docker_image: "Dockerfile_debian11_systemd"
   all_distros:
     jobs:
@@ -128,11 +128,11 @@ workflows:
       - ubuntu2004_centos7
       - ubuntu2004_almalinux8
       - build_debian:
-          name: "Debian 9"
+          debian_version: "9"
           docker_image: "Dockerfile_debian9_systemd"
       - build_debian:
-          name: "Debian 10"
+          debian_version: "10"
           docker_image: "Dockerfile_debian10_systemd"
       - build_debian:
-          name: "Debian 11"
+          debian_version: "11"
           docker_image: "Dockerfile_debian11_systemd"
