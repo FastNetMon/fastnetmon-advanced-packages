@@ -9,16 +9,16 @@ jobs:
       - run: wget https://install.fastnetmon.com/installer -Oinstaller
       - run: chmod +x installer
       - run: sudo ./installer -do_not_check_license
-      - run: sudo ./installer -install_graphic_stack
       - store_artifacts:
           path: /tmp/fastnetmon_install.log
       - run: ldd /opt/fastnetmon/app/bin/fastnetmon
       - run: ldd /opt/fastnetmon/app/bin/traffic_db
       - run: ldd /opt/fastnetmon/app/bin/fill_dictionaries
-      - run: /opt/fastnetmon/app/bin/fastnetmon --configuration_check
+      - run: sudo /opt/fastnetmon/app/bin/fastnetmon --configuration_check
       - store_artifacts:
           path: /var/log/fastnetmon/fastnetmon.log
       - run: sudo fcli show fastnetmon_version
+      - run: sudo ./installer -install_graphic_stack
 workflows:
   version: 2
   all_distros:
