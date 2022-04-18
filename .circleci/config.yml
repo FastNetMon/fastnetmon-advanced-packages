@@ -4,6 +4,11 @@ jobs:
   build_debian:
     machine:
       image: ubuntu-2004:current
+    parameters:
+      docker_image:
+        type: string
+      name:
+        type: string
     steps:
       - run: echo << parameters.name >>
       - checkout
