@@ -5,7 +5,7 @@ jobs:
       - image: ubuntu:focal
     steps:
       - run: apt-get update
-      - run: DEBIAN_FRONTEND=noninteractive apt-get install -y wget systemd
+      - run: DEBIAN_FRONTEND=noninteractive apt-get install -y wget systemd init-system-helpers
       - run: wget https://install.fastnetmon.com/installer -Oinstaller
       - run: chmod +x installer
       - run: ./installer -do_not_check_license
