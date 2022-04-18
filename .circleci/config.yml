@@ -9,7 +9,7 @@ jobs:
       - run: sudo docker ps
       - run: sudo docker exec -it linux_systemd_container systemctl status --no-pager
       - run: sudo docker exec -it linux_systemd_container yum install -y wget
-      - run: sudo docker exec -it linux_systemd_container wget https://install.fastnetmon.com/installer -Oinstaller
+      - run: sudo docker exec -it linux_systemd_container wget --no-check-certificate https://install.fastnetmon.com/installer -Oinstaller
       - run: sudo docker exec -it linux_systemd_container CI=true ./installer -do_not_check_license
   ubuntu2004:
     machine:
