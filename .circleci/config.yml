@@ -4,6 +4,7 @@ jobs:
     machine:
       image: ubuntu-2004:current
     steps:
+      - run: sudo docker pull centos7
       - run: sudo docker run -d -v /sys/fs/cgroup/:/sys/fs/cgroup:ro --cap-add SYS_ADMIN  --name linux_systemd_container centos7 /sbin/init
       - run: sudo docker exec -it linux_systemd_container systemctl status
   ubuntu2004:
