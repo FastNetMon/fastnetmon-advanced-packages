@@ -18,7 +18,7 @@ jobs:
       - run: sudo docker ps
       - run: sudo docker exec -it linux_systemd_container systemctl status --no-pager
       - run: sudo docker exec -it linux_systemd_container apt install -y wget
-      - run: sudo docker exec -it linux_systemd_container wget https://install.fastnetmon.com/installer?randomarg -Oinstaller
+      - run: sudo docker exec -it linux_systemd_container wget https://install.fastnetmon.com/installer?random-argument-to-disable-caching-$CIRCLE_WORKFLOW_JOB_ID -Oinstaller
       - run: sudo docker exec -it linux_systemd_container chmod +x installer
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -do_not_check_license
       - run: sudo docker exec --env -it linux_systemd_container cat /var/log/fastnetmon/fastnetmon.log
@@ -43,7 +43,7 @@ jobs:
       - run: sudo docker exec -it linux_systemd_container yum install -y wget
       - run:
           name: "Download installer, for CentOS 7 we have issue with Let's encrypt and we need to skip certificate validation"
-          command: sudo docker exec -it linux_systemd_container wget --no-check-certificate https://install.fastnetmon.com/installer?randomarg -Oinstaller
+          command: sudo docker exec -it linux_systemd_container wget --no-check-certificate https://install.fastnetmon.com/installer?random-argument-to-disable-caching-$CIRCLE_WORKFLOW_JOB_ID -Oinstaller
       - run: sudo docker exec -it linux_systemd_container chmod +x installer
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -do_not_check_license
       - run: sudo docker exec --env -it linux_systemd_container cat /var/log/fastnetmon/fastnetmon.log
@@ -61,7 +61,7 @@ jobs:
     steps:
       - run: sudo apt-get update
       - run: sudo DEBIAN_FRONTEND=noninteractive apt-get install -y wget systemd
-      - run: wget https://install.fastnetmon.com/installer?randomarg -Oinstaller
+      - run: wget https://install.fastnetmon.com/installer?random-argument-to-disable-caching-$CIRCLE_WORKFLOW_JOB_ID -Oinstaller
       - run: chmod +x installer
       - run: sudo CI=true ./installer -do_not_check_license
       - store_artifacts:
@@ -82,7 +82,7 @@ jobs:
     steps:
       - run: sudo apt-get update
       - run: sudo DEBIAN_FRONTEND=noninteractive apt-get install -y wget
-      - run: wget https://install.fastnetmon.com/installer?randomarg -Oinstaller
+      - run: wget https://install.fastnetmon.com/installer?random-argument-to-disable-caching-$CIRCLE_WORKFLOW_JOB_ID -Oinstaller
       - run: chmod +x installer
       - run: sudo CI=true ./installer -fastnetmon_docker
       - store_artifacts:
