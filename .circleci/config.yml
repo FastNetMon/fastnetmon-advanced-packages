@@ -22,6 +22,7 @@ jobs:
       - run: sudo docker exec -it linux_systemd_container chmod +x installer
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -do_not_check_license
       - run: sudo docker exec --env -it linux_systemd_container cat /var/log/fastnetmon/fastnetmon.log
+      - run: sudo docker exec --env -it linux_systemd_container systemctl status fastnetmon
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fastnetmon
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/traffic_db
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fill_dictionaries
@@ -45,6 +46,7 @@ jobs:
       - run: sudo docker exec -it linux_systemd_container chmod +x installer
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -do_not_check_license
       - run: sudo docker exec --env -it linux_systemd_container cat /var/log/fastnetmon/fastnetmon.log
+      - run: sudo docker exec --env -it linux_systemd_container systemctl status fastnetmon
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fastnetmon
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/traffic_db
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fill_dictionaries
@@ -68,6 +70,7 @@ jobs:
       - run: sudo /opt/fastnetmon/app/bin/fastnetmon --configuration_check
       - store_artifacts:
           path: /var/log/fastnetmon/fastnetmon.log
+      - run: sudo systemctl status fastnetmon
       - run: sudo fcli show fastnetmon_version
       - run: sudo CI=true ./installer -install_graphic_stack
   ubuntu2004vm_docker:
