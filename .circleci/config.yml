@@ -18,7 +18,7 @@ jobs:
       - run: sudo docker ps
       - run: sudo docker exec -it linux_systemd_container systemctl status --no-pager
       - run: sudo docker exec -it linux_systemd_container apt install -y wget
-      - run: sudo docker exec -it linux_systemd_container wget https://install.fastnetmon.com/installer?veryrandomarg -Oinstaller
+      - run: sudo docker exec -it linux_systemd_container wget https://install.fastnetmon.com/installer?random-argument-to-disable-caching-$CIRCLE_WORKFLOW_JOB_ID -Oinstaller
       - run: sudo docker exec -it linux_systemd_container chmod +x installer
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -do_not_check_license
       - run: sudo docker exec --env -it linux_systemd_container cat /var/log/fastnetmon/fastnetmon.log
@@ -28,6 +28,8 @@ jobs:
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fill_dictionaries
       - run: sudo docker exec --env -it linux_systemd_container /opt/fastnetmon/app/bin/fastnetmon --configuration_check
       - run: sudo docker exec --env -it linux_systemd_container fcli show fastnetmon_version
+      - run: sudo docker exec --env -it linux_systemd_container fcli show main
+      - run: sudo docker exec --env -it linux_systemd_container fcli show hostgroup
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack
   build_redhat:
     parameters:
@@ -42,7 +44,7 @@ jobs:
       - run: sudo docker exec -it linux_systemd_container yum install -y wget
       - run:
           name: "Download installer, for CentOS 7 we have issue with Let's encrypt and we need to skip certificate validation"
-          command: sudo docker exec -it linux_systemd_container wget --no-check-certificate https://install.fastnetmon.com/installer?veryrandomarg -Oinstaller
+          command: sudo docker exec -it linux_systemd_container wget --no-check-certificate https://install.fastnetmon.com/installer?random-argument-to-disable-caching-$CIRCLE_WORKFLOW_JOB_ID -Oinstaller
       - run: sudo docker exec -it linux_systemd_container chmod +x installer
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -do_not_check_license
       - run: sudo docker exec --env -it linux_systemd_container cat /var/log/fastnetmon/fastnetmon.log
@@ -52,6 +54,8 @@ jobs:
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fill_dictionaries
       - run: sudo docker exec --env -it linux_systemd_container /opt/fastnetmon/app/bin/fastnetmon --configuration_check
       - run: sudo docker exec --env -it linux_systemd_container fcli show fastnetmon_version
+      - run: sudo docker exec --env -it linux_systemd_container fcli show main
+      - run: sudo docker exec --env -it linux_systemd_container fcli show hostgroup
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack
   ubuntu2004vm:
     machine:
@@ -59,7 +63,7 @@ jobs:
     steps:
       - run: sudo apt-get update
       - run: sudo DEBIAN_FRONTEND=noninteractive apt-get install -y wget systemd
-      - run: wget https://install.fastnetmon.com/installer -Oinstaller
+      - run: wget https://install.fastnetmon.com/installer?random-argument-to-disable-caching-$CIRCLE_WORKFLOW_JOB_ID -Oinstaller
       - run: chmod +x installer
       - run: sudo CI=true ./installer -do_not_check_license
       - store_artifacts:
@@ -72,6 +76,8 @@ jobs:
           path: /var/log/fastnetmon/fastnetmon.log
       - run: sudo systemctl status fastnetmon
       - run: sudo fcli show fastnetmon_version
+      - run: sudo fcli show main
+      - run: sudo fcli show hostgroup
       - run: sudo CI=true ./installer -install_graphic_stack
   ubuntu2004vm_docker:
     machine:
@@ -79,7 +85,7 @@ jobs:
     steps:
       - run: sudo apt-get update
       - run: sudo DEBIAN_FRONTEND=noninteractive apt-get install -y wget
-      - run: wget https://install.fastnetmon.com/installer -Oinstaller
+      - run: wget https://install.fastnetmon.com/installer?random-argument-to-disable-caching-$CIRCLE_WORKFLOW_JOB_ID -Oinstaller
       - run: chmod +x installer
       - run: sudo CI=true ./installer -fastnetmon_docker
       - store_artifacts:
@@ -88,6 +94,8 @@ jobs:
       - store_artifacts:
           path: /var/lib/fastnetmon_docker/fastnetmon/logs/fastnetmon.log
       - run: sudo fcli show fastnetmon_version
+      - run: sudo fcli show main
+      - run: sudo fcli show hostgroup
 workflows:
   version: 2
   all_distros_nightly:
