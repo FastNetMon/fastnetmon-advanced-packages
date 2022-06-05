@@ -11,7 +11,7 @@ jobs:
       - checkout
       - run:
           name: "Prepare image with systemd enabled"
-          command: sudo docker build --tag debian_systemd - < << parameters.docker_image >>
+          command: echo -e "FROM << parameters.docker_image >>\nENV DEBIAN_FRONTEND noninteractive\nRUN apt-get update; apt-get install -y systemd systemd-sysv; \nCMD [\"/lib/systemd/systemd\"]" | sudo docker build --tag debian_systemd - 
       - run:
           name: "Deploy new systemd enabled image"
           command: sudo docker run -d -v /sys/fs/cgroup/:/sys/fs/cgroup:ro --privileged --cap-add SYS_ADMIN  --name linux_systemd_container debian_systemd /lib/systemd/systemd
@@ -144,13 +144,13 @@ workflows:
           name: "AlmaLinux 8"
           docker_image: "almalinux:8"
       - build_debian:
-          docker_image: "Dockerfile_debian9_systemd"
+          docker_image: debian:9
           name: "Debian 9"
       - build_debian:
-          docker_image: "Dockerfile_debian10_systemd"
+          docker_image: debian:10
           name: "Debian 10"
       - build_debian:
-          docker_image: "Dockerfile_debian11_systemd"
+          docker_image: debian:11
           name: "Debian 11"
       - build_debian:
           name: "ubuntu 16.04"
