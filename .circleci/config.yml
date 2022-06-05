@@ -117,22 +117,22 @@ workflows:
           docker_image: "almalinux:8"
       - build_debian:
           name: "Debian 9"
-          docker_image: "Dockerfile_debian9_systemd"
+          docker_image: "debian:9"
       - build_debian:
           name: "Debian 10"
-          docker_image: "Dockerfile_debian10_systemd"
+          docker_image: "debian:10"
       - build_debian:
           name: "Debian 11"
-          docker_image: "Dockerfile_debian11_systemd"
+          docker_image: "debian:11"
       - build_debian:
           name: "ubuntu 16.04"
-          docker_image: "Dockerfile_ubuntu16_systemd"
+          docker_image: "ubuntu:16.04"
       - build_debian:
           name: "ubuntu 18.04"
-          docker_image: "Dockerfile_ubuntu18_systemd"
+          docker_image: "ubuntu:18.04"
       - build_debian:
           name: "ubuntu 20.04"
-          docker_image: "Dockerfile_ubuntu20_systemd"
+          docker_image: "ubuntu:20.04"
   all_distros:
     jobs:
       - ubuntu2004vm
@@ -144,20 +144,20 @@ workflows:
           name: "AlmaLinux 8"
           docker_image: "almalinux:8"
       - build_debian:
-          docker_image: debian:9
+          docker_image: "debian:9"
           name: "Debian 9"
       - build_debian:
-          docker_image: debian:10
+          docker_image: "debian:10"
           name: "Debian 10"
       - build_debian:
-          docker_image: debian:11
+          docker_image: "debian:11"
           name: "Debian 11"
       - build_debian:
           name: "ubuntu 16.04"
-          docker_image: "Dockerfile_ubuntu16_systemd"
+          docker_image: "ubuntu:16.04"
       - build_debian:
           name: "ubuntu 18.04"
-          docker_image: "Dockerfile_ubuntu18_systemd"
+          docker_image: "ubuntu:18.04"
       - build_debian:
           name: "ubuntu 20.04"
-          docker_image: "Dockerfile_ubuntu20_systemd"
+          docker_image: "ubuntu:20.04"
