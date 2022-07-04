@@ -1,6 +1,38 @@
 version: 2.1
 
 jobs:
+  build_debian_upgrade_from_community:
+    machine:
+      image: ubuntu-2004:current
+    parameters:
+      docker_image:
+        type: string
+    steps:
+      - checkout
+      - run:
+          name: "Prepare image with systemd enabled"
+          command: echo -e "FROM << parameters.docker_image >>\nENV DEBIAN_FRONTEND noninteractive\nRUN apt-get update; apt-get install -y systemd systemd-sysv; \nCMD [\"/lib/systemd/systemd\"]" | sudo docker build --tag debian_systemd -
+      - run:
+          name: "Deploy new systemd enabled image"
+          command: sudo docker run -d -v /sys/fs/cgroup/:/sys/fs/cgroup:ro --privileged --cap-add SYS_ADMIN  --name linux_systemd_container debian_systemd /lib/systemd/systemd
+      - run: sudo docker ps
+      - run: sudo docker exec -it linux_systemd_container systemctl status --no-pager
+      - run: sudo docker exec -it linux_systemd_container apt install -y wget
+      - run: sudo docker exec -it linux_systemd_container wget https://install.fastnetmon.com/installer?random-argument-to-disable-caching-$CIRCLE_WORKFLOW_JOB_ID -Oinstaller
+      - run: sudo docker exec -it linux_systemd_container chmod +x installer
+      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_community_edition
+      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -do_not_check_license
+      - run: sudo docker exec --env -it linux_systemd_container cat /var/log/fastnetmon/fastnetmon.log
+      - run: sudo docker exec --env -it linux_systemd_container systemctl status fastnetmon
+      - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fastnetmon
+      - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/traffic_db
+      - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fill_dictionaries
+      - run: sudo docker exec --env -it linux_systemd_container /opt/fastnetmon/app/bin/fastnetmon --configuration_check
+      - run: sudo docker exec --env -it linux_systemd_container fcli show fastnetmon_version
+      - run: sudo docker exec --env -it linux_systemd_container fcli show main
+      - run: sudo docker exec --env -it linux_systemd_container fcli show hostgroup
+      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack
+      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -import_community_edition_configuration
   build_debian:
     machine:
       image: ubuntu-2004:current
@@ -133,6 +165,9 @@ workflows:
       - build_debian:
           name: "ubuntu 20.04"
           docker_image: "ubuntu:20.04"
+      - build_debian_upgrade_from_community:
+          name: "ubuntu 20.04 upgrade from community" 
+          docker_image: "ubuntu:20.04"
   all_distros:
     jobs:
       - ubuntu2004vm
@@ -161,3 +196,7 @@ workflows:
       - build_debian:
           name: "ubuntu 20.04"
           docker_image: "ubuntu:20.04"
+      - build_debian_upgrade_from_community:
+          name: "ubuntu 20.04 upgrade from community"
+          docker_image: "ubuntu:20.04"
+
