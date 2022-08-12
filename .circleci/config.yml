@@ -171,6 +171,9 @@ workflows:
       - build_debian:
           name: "ubuntu 22.04"
           docker_image: "ubuntu:22.04"
+      - build_debian_upgrade_from_community:
+          name: "ubuntu 22.04 upgrade from community"
+          docker_image: "ubuntu:22.04"
   all_distros:
     jobs:
       - ubuntu2004vm
@@ -204,4 +207,7 @@ workflows:
           docker_image: "ubuntu:20.04"
       - build_debian:
           name: "ubuntu 22.04"
+          docker_image: "ubuntu:22.04"
+      - build_debian_upgrade_from_community:
+          name: "ubuntu 22.04 upgrade from community"
           docker_image: "ubuntu:22.04"
