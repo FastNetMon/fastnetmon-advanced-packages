@@ -193,14 +193,14 @@ workflows:
           name: "AlmaLinux 8"
           docker_image: "almalinux:8"
       - build_debian:
-          docker_image: "debian:9"
           name: "Debian 9"
+          docker_image: "debian:9"
       - build_debian:
-          docker_image: "debian:10"
           name: "Debian 10"
+          docker_image: "debian:10"
       - build_debian:
-          docker_image: "debian:11"
           name: "Debian 11"
+          docker_image: "debian:11"
       - build_debian:
           name: "ubuntu 16.04"
           docker_image: "ubuntu:16.04"
