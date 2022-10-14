@@ -115,8 +115,6 @@ jobs:
           name: "Download installer, for CentOS 7 we have issue with Let's encrypt and we need to skip certificate validation"
           command: sudo docker exec -it linux_systemd_container wget --no-check-certificate https://install.fastnetmon.com/installer?random-argument-to-disable-caching-$CIRCLE_WORKFLOW_JOB_ID -Oinstaller
       - run: sudo docker exec -it linux_systemd_container chmod +x installer
-      - run: sudo docker exec -it linux_systemd_container wget https://install.fastnetmon.com/installer?random-argument-to-disable-caching-$CIRCLE_WORKFLOW_JOB_ID -Oinstaller
-      - run: sudo docker exec -it linux_systemd_container chmod +x installer
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_community_edition
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -do_not_check_license << parameters.installer_arguments >>
       - run: sudo docker exec --env -it linux_systemd_container cat /var/log/fastnetmon/fastnetmon.log
