@@ -189,10 +189,10 @@ workflows:
           name: "AlmaLinux 8"
           docker_image: "almalinux:8"
       - build_redhat_upgrade_from_community:
-          name: "CentOS 7 upgrade from community"
+          name: "CentOS 7"
           docker_image: "centos:centos7"
       - build_redhat_upgrade_from_community:
-          name: "AlmaLinux 8 upgrade from community"
+          name: "AlmaLinux 8"
           docker_image: "almalinux:8"
       - build_debian:
           name: "Debian 9"
@@ -268,10 +268,10 @@ workflows:
       - ubuntu2004vm
       - ubuntu2004vm_docker
       - build_redhat:
-          name: "CentOS 7 upgrade from community"
+          name: "CentOS 7"
           docker_image: "centos:centos7"
       - build_redhat:
-          name: "AlmaLinux 8 upgrade from community"
+          name: "AlmaLinux 8"
           docker_image: "almalinux:8"
       - build_redhat_upgrade_from_community:
           name: "CentOS 7"
