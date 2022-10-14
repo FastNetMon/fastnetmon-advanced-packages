@@ -97,6 +97,39 @@ jobs:
       - run: sudo docker exec --env -it linux_systemd_container fcli show main
       - run: sudo docker exec --env -it linux_systemd_container fcli show hostgroup
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack
+  build_redhat_upgrade_from_community:
+    parameters:
+      docker_image:
+        type: string
+      installer_arguments:
+        type: string
+        default: ""
+    machine:
+      image: ubuntu-2004:current
+    steps:
+      - run: sudo docker run -d -v /sys/fs/cgroup/:/sys/fs/cgroup:ro --privileged --cap-add SYS_ADMIN  --name linux_systemd_container << parameters.docker_image >> /sbin/init
+      - run: sudo docker ps
+      - run: sudo docker exec -it linux_systemd_container systemctl status --no-pager
+      - run: sudo docker exec -it linux_systemd_container yum install -y wget
+      - run:
+          name: "Download installer, for CentOS 7 we have issue with Let's encrypt and we need to skip certificate validation"
+          command: sudo docker exec -it linux_systemd_container wget --no-check-certificate https://install.fastnetmon.com/installer?random-argument-to-disable-caching-$CIRCLE_WORKFLOW_JOB_ID -Oinstaller
+      - run: sudo docker exec -it linux_systemd_container chmod +x installer
+      - run: sudo docker exec -it linux_systemd_container wget https://install.fastnetmon.com/installer?random-argument-to-disable-caching-$CIRCLE_WORKFLOW_JOB_ID -Oinstaller
+      - run: sudo docker exec -it linux_systemd_container chmod +x installer
+      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_community_edition
+      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -do_not_check_license << parameters.installer_arguments >>
+      - run: sudo docker exec --env -it linux_systemd_container cat /var/log/fastnetmon/fastnetmon.log
+      - run: sudo docker exec --env -it linux_systemd_container systemctl status fastnetmon
+      - run: sudo docker exec --env -it linux_systemd_container mongod --version
+      - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fastnetmon
+      - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/traffic_db
+      - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fill_dictionaries
+      - run: sudo docker exec --env -it linux_systemd_container /opt/fastnetmon/app/bin/fastnetmon --configuration_check
+      - run: sudo docker exec --env -it linux_systemd_container fcli show fastnetmon_version
+      - run: sudo docker exec --env -it linux_systemd_container fcli show main
+      - run: sudo docker exec --env -it linux_systemd_container fcli show hostgroup
+      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack
   ubuntu2004vm:
     machine:
       image: ubuntu-2004:current
@@ -153,6 +186,12 @@ workflows:
           name: "CentOS 7"
           docker_image: "centos:centos7"
       - build_redhat:
+          name: "AlmaLinux 8"
+          docker_image: "almalinux:8"
+      - build_redhat_upgrade_from_community:
+          name: "CentOS 7"
+          docker_image: "centos:centos7"
+      - build_redhat_upgrade_from_community:
           name: "AlmaLinux 8"
           docker_image: "almalinux:8"
       - build_debian:
@@ -232,6 +271,12 @@ workflows:
           name: "CentOS 7"
           docker_image: "centos:centos7"
       - build_redhat:
+          name: "AlmaLinux 8"
+          docker_image: "almalinux:8"
+      - build_redhat_upgrade_from_community:
+          name: "CentOS 7"
+          docker_image: "centos:centos7"
+      - build_redhat_upgrade_from_community:
           name: "AlmaLinux 8"
           docker_image: "almalinux:8"
       - build_debian:
