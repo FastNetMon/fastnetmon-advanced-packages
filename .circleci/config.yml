@@ -31,7 +31,7 @@ jobs:
       - run: sudo docker exec --env -it linux_systemd_container fcli show fastnetmon_version
       - run: sudo docker exec --env -it linux_systemd_container fcli show main
       - run: sudo docker exec --env -it linux_systemd_container fcli show hostgroup
-      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack
+      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack -do_not_check_license
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -import_community_edition_configuration
   build_debian:
     machine:
@@ -66,7 +66,7 @@ jobs:
       - run: sudo docker exec --env -it linux_systemd_container fcli show fastnetmon_version
       - run: sudo docker exec --env -it linux_systemd_container fcli show main
       - run: sudo docker exec --env -it linux_systemd_container fcli show hostgroup
-      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack
+      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack -do_not_check_license
   build_redhat:
     parameters:
       docker_image:
@@ -96,7 +96,7 @@ jobs:
       - run: sudo docker exec --env -it linux_systemd_container fcli show fastnetmon_version
       - run: sudo docker exec --env -it linux_systemd_container fcli show main
       - run: sudo docker exec --env -it linux_systemd_container fcli show hostgroup
-      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack
+      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack -do_not_check_license
   build_redhat_upgrade_from_community:
     parameters:
       docker_image:
@@ -127,7 +127,7 @@ jobs:
       - run: sudo docker exec --env -it linux_systemd_container fcli show fastnetmon_version
       - run: sudo docker exec --env -it linux_systemd_container fcli show main
       - run: sudo docker exec --env -it linux_systemd_container fcli show hostgroup
-      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack
+      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack -do_not_check_license 
   ubuntu2004vm:
     machine:
       image: ubuntu-2004:current
@@ -149,7 +149,7 @@ jobs:
       - run: sudo fcli show fastnetmon_version
       - run: sudo fcli show main
       - run: sudo fcli show hostgroup
-      - run: sudo CI=true ./installer -install_graphic_stack
+      - run: sudo CI=true ./installer -install_graphic_stack -do_not_check_license
   ubuntu2004vm_docker:
     machine:
       image: ubuntu-2004:current
