@@ -75,7 +75,7 @@ jobs:
         type: string
         default: ""
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2204:current
     steps:
       - run: sudo docker run -d -v /sys/fs/cgroup/:/sys/fs/cgroup:ro --privileged --cap-add SYS_ADMIN  --name linux_systemd_container << parameters.docker_image >> /sbin/init
       - run: sudo docker ps
