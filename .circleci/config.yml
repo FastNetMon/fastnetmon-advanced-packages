@@ -434,4 +434,3 @@ workflows:
       - build_debian_upgrade_from_community:
           name: "ubuntu 22.04 upgrade from community"
           docker_image: "ubuntu:22.04"
-
