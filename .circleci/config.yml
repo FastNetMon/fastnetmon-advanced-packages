@@ -189,6 +189,18 @@ workflows:
       - build_redhat:
           name: "AlmaLinux 9"
           docker_image: "almalinux:9"
+      - build_redhat:
+          name: "CentOS 7 developer"
+          docker_image: "centos:centos7"
+          installer_arguments: "-developer_version"
+      - build_redhat:
+          name: "AlmaLinux 8 developer"
+          docker_image: "almalinux:8"
+          installer_arguments: "-developer_version"
+      - build_redhat:
+          name: "AlmaLinux 9 developer"
+          docker_image: "almalinux:9"
+          installer_arguments: "-developer_version"
       - build_redhat_upgrade_from_community:
           name: "CentOS 7 upgrade from community"
           docker_image: "centos:centos7"
@@ -309,6 +321,18 @@ workflows:
       - build_redhat:
           name: "AlmaLinux 9"
           docker_image: "almalinux:9"
+      - build_redhat:
+          name: "CentOS 7 developer"
+          docker_image: "centos:centos7"
+          installer_arguments: "-developer_version"
+      - build_redhat:
+          name: "AlmaLinux 8 developer"
+          docker_image: "almalinux:8"
+          installer_arguments: "-developer_version"
+      - build_redhat:
+          name: "AlmaLinux 9 developer"
+          docker_image: "almalinux:9"
+          installer_arguments: "-developer_version"
       - build_redhat_upgrade_from_community:
           name: "CentOS 7 upgrade from community"
           docker_image: "centos:centos7"
