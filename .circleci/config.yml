@@ -281,14 +281,10 @@ workflows:
           name: "AlmaLinux 8 upgrade from community"
           docker_image: "almalinux:8"
       - build_debian:
-          name: "Debian 9"
-          docker_image: "debian:9"
-      - build_debian:
-          name: "Debian 10"
-          docker_image: "debian:10"
-      - build_debian:
-          name: "Debian 11"
-          docker_image: "debian:11"
+          matrix:
+            parameters:
+              name:         [ "Debian 9", "Debian 10", "Debian 11" ]
+              docker_image: [ "debian:9", "debian:10", "debian:11" ]
       - build_debian:
           name: "ubuntu 16.04"
           docker_image: "ubuntu:16.04"
@@ -298,6 +294,9 @@ workflows:
       - build_debian:
           name: "ubuntu 20.04"
           docker_image: "ubuntu:20.04"
+      - build_debian:
+          name: "ubuntu 22.04"
+          docker_image: "ubuntu:22.04"
       - build_redhat:
           name: "CentOS 7 old cpus"
           docker_image: "centos:centos7"
@@ -341,9 +340,6 @@ workflows:
       - build_debian_upgrade_from_community:
           name: "ubuntu 20.04 upgrade from community"
           docker_image: "ubuntu:20.04"
-      - build_debian:
-          name: "ubuntu 22.04"
-          docker_image: "ubuntu:22.04"
       - build_debian_upgrade_from_community:
           name: "ubuntu 22.04 upgrade from community"
           docker_image: "ubuntu:22.04"
