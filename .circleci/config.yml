@@ -210,15 +210,43 @@ workflows:
       - build_debian:
           name: "ubuntu 20.04"
           docker_image: "ubuntu:20.04"
-      - build_debian_upgrade_from_community:
-          name: "ubuntu 20.04 upgrade from community" 
-          docker_image: "ubuntu:20.04"
       - build_debian:
           name: "ubuntu 22.04"
           docker_image: "ubuntu:22.04"
       - build_debian_upgrade_from_community:
+          name: "ubuntu 20.04 upgrade from community" 
+          docker_image: "ubuntu:20.04"
+      - build_debian_upgrade_from_community:
           name: "ubuntu 22.04 upgrade from community"
           docker_image: "ubuntu:22.04"
+      - build_debian:
+          name: "Debian 9 developer"
+          docker_image: "debian:9"
+          installer_arguments: "-developer_version"
+      - build_debian:
+          name: "Debian 10 developer"
+          docker_image: "debian:10"
+          installer_arguments: "-developer_version"
+      - build_debian:
+          name: "Debian 11 developer"
+          docker_image: "debian:11"
+          installer_arguments: "-developer_version"
+      - build_debian:
+          name: "ubuntu 16.04 developer"
+          docker_image: "ubuntu:16.04"
+          installer_arguments: "-developer_version"
+      - build_debian:
+          name: "ubuntu 18.04 developer"
+          docker_image: "ubuntu:18.04"
+          installer_arguments: "-developer_version"
+      - build_debian:
+          name: "ubuntu 20.04 developer"
+          docker_image: "ubuntu:20.04"
+          installer_arguments: "-developer_version"
+      - build_debian:
+          name: "ubuntu 22.04 developer"
+          docker_image: "ubuntu:22.04"
+          installer_arguments: "-developer_version"
       - build_redhat:
           name: "CentOS 7 old cpus"
           docker_image: "centos:centos7"
@@ -298,6 +326,37 @@ workflows:
       - build_debian:
           name: "ubuntu 20.04"
           docker_image: "ubuntu:20.04"
+      - build_debian:
+          name: "ubuntu 22.04"
+          docker_image: "ubuntu:22.04"
+      - build_debian:
+          name: "Debian 9 developer"
+          docker_image: "debian:9"
+          installer_arguments: "-developer_version"
+      - build_debian:
+          name: "Debian 10 developer"
+          docker_image: "debian:10"
+          installer_arguments: "-developer_version"
+      - build_debian:
+          name: "Debian 11 developer"
+          docker_image: "debian:11"
+          installer_arguments: "-developer_version"
+      - build_debian:
+          name: "ubuntu 16.04 developer"
+          docker_image: "ubuntu:16.04"
+          installer_arguments: "-developer_version"
+      - build_debian:
+          name: "ubuntu 18.04 developer"
+          docker_image: "ubuntu:18.04"
+          installer_arguments: "-developer_version"
+      - build_debian:
+          name: "ubuntu 20.04 developer"
+          docker_image: "ubuntu:20.04"
+          installer_arguments: "-developer_version"
+      - build_debian:
+          name: "ubuntu 22.04 developer"
+          docker_image: "ubuntu:22.04"
+          installer_arguments: "-developer_version"
       - build_redhat:
           name: "CentOS 7 old cpus"
           docker_image: "centos:centos7"
@@ -341,9 +400,6 @@ workflows:
       - build_debian_upgrade_from_community:
           name: "ubuntu 20.04 upgrade from community"
           docker_image: "ubuntu:20.04"
-      - build_debian:
-          name: "ubuntu 22.04"
-          docker_image: "ubuntu:22.04"
       - build_debian_upgrade_from_community:
           name: "ubuntu 22.04 upgrade from community"
           docker_image: "ubuntu:22.04"
