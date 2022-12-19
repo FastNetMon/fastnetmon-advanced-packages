@@ -167,270 +167,157 @@ jobs:
       - run: sudo fcli show fastnetmon_version
       - run: sudo fcli show main
       - run: sudo fcli show hostgroup
+
+# Declare jobs we will run for each commit and nightly
+common_jobs: &common_jobs
+  - ubuntu2004vm
+  - ubuntu2004vm_docker
+  - build_redhat:
+      name: "CentOS 7"
+      docker_image: "centos:centos7"
+  - build_redhat:
+      name: "AlmaLinux 8"
+      docker_image: "almalinux:8"
+  - build_redhat:
+      name: "AlmaLinux 9"
+      docker_image: "almalinux:9"
+  - build_redhat:
+      name: "CentOS 7 developer"
+      docker_image: "centos:centos7"
+      installer_arguments: "-developer_version"
+  - build_redhat:
+      name: "AlmaLinux 8 developer"
+      docker_image: "almalinux:8"
+      installer_arguments: "-developer_version"
+  - build_redhat:
+      name: "AlmaLinux 9 developer"
+      docker_image: "almalinux:9"
+      installer_arguments: "-developer_version"
+  - build_redhat_upgrade_from_community:
+      name: "CentOS 7 upgrade from community"
+      docker_image: "centos:centos7"
+  - build_redhat_upgrade_from_community:
+      name: "AlmaLinux 8 upgrade from community"
+      docker_image: "almalinux:8"
+  - build_redhat_upgrade_from_community:
+      name: "AlmaLinux 9 upgrade from community"
+      docker_image: "almalinux:9"
+  - build_debian:
+      name: "Debian 9"
+      docker_image: "debian:9"
+  - build_debian:
+      name: "Debian 10"
+      docker_image: "debian:10"
+  - build_debian:
+      name: "Debian 11"
+      docker_image: "debian:11"
+  - build_debian:
+      name: "ubuntu 16.04"
+      docker_image: "ubuntu:16.04"
+  - build_debian:
+      name: "ubuntu 18.04"
+      docker_image: "ubuntu:18.04"
+  - build_debian:
+      name: "ubuntu 20.04"
+      docker_image: "ubuntu:20.04"
+  - build_debian:
+      name: "ubuntu 22.04"
+      docker_image: "ubuntu:22.04"
+  - build_debian_upgrade_from_community:
+      name: "ubuntu 20.04 upgrade from community" 
+      docker_image: "ubuntu:20.04"
+  - build_debian_upgrade_from_community:
+      name: "ubuntu 22.04 upgrade from community"
+      docker_image: "ubuntu:22.04"
+  - build_debian:
+      name: "Debian 9 developer"
+      docker_image: "debian:9"
+      installer_arguments: "-developer_version"
+  - build_debian:
+      name: "Debian 10 developer"
+      docker_image: "debian:10"
+      installer_arguments: "-developer_version"
+  - build_debian:
+      name: "Debian 11 developer"
+      docker_image: "debian:11"
+      installer_arguments: "-developer_version"
+  - build_debian:
+      name: "ubuntu 16.04 developer"
+      docker_image: "ubuntu:16.04"
+      installer_arguments: "-developer_version"
+  - build_debian:
+      name: "ubuntu 18.04 developer"
+      docker_image: "ubuntu:18.04"
+      installer_arguments: "-developer_version"
+  - build_debian:
+      name: "ubuntu 20.04 developer"
+      docker_image: "ubuntu:20.04"
+      installer_arguments: "-developer_version"
+  - build_debian:
+      name: "ubuntu 22.04 developer"
+      docker_image: "ubuntu:22.04"
+      installer_arguments: "-developer_version"
+  - build_redhat:
+      name: "CentOS 7 old cpus"
+      docker_image: "centos:centos7"
+      installer_arguments: "-force_old_cpu"
+  - build_redhat:
+      name: "AlmaLinux 8 old cpus"
+      docker_image: "almalinux:8"
+      installer_arguments: "-force_old_cpu"
+  - build_redhat:
+      name: "AlmaLinux 9 old cpus"
+      docker_image: "almalinux:9"
+      installer_arguments: "-force_old_cpu"
+  - build_debian:
+      name: "Debian 9 old cpus"
+      docker_image: "debian:9"
+      installer_arguments: "-force_old_cpu"
+  - build_debian:
+      name: "Debian 10 old cpus"
+      docker_image: "debian:10"
+      installer_arguments: "-force_old_cpu"
+  - build_debian:
+      name: "Debian 11 old cpus"
+      docker_image: "debian:11"
+      installer_arguments: "-force_old_cpu"
+  - build_debian:
+      name: "ubuntu 16.04 old cpus"
+      docker_image: "ubuntu:16.04"
+      installer_arguments: "-force_old_cpu"
+  - build_debian:
+      name: "ubuntu 18.04 old cpus"
+      docker_image: "ubuntu:18.04"
+      installer_arguments: "-force_old_cpu"
+  - build_debian:
+      name: "ubuntu 20.04 old cpus"
+      docker_image: "ubuntu:20.04"
+      installer_arguments: "-force_old_cpu"
+  - build_debian:
+      name: "ubuntu 22.04 old cpus"
+      docker_image: "ubuntu:22.04"
+      installer_arguments: "-force_old_cpu"
+  - build_debian_upgrade_from_community:
+      name: "ubuntu 20.04 upgrade from community"
+      docker_image: "ubuntu:20.04"
+  - build_debian:
+      name: "ubuntu 22.04"
+      docker_image: "ubuntu:22.04"
+
+# We have two different workflows to trigger same tasks on commit and nightly
 workflows:
   version: 2
   all_distros_nightly:
+    jobs:
+      *common_jobs
     triggers:
       - schedule:
+          # Run it 4 times per day to catch issues faster
           cron: "0 0,6,12,18 * * *"
           filters:
             branches:
               only:
                 - main
-    jobs:
-      - ubuntu2004vm
-      - ubuntu2004vm_docker
-      - build_redhat:
-          name: "CentOS 7"
-          docker_image: "centos:centos7"
-      - build_redhat:
-          name: "AlmaLinux 8"
-          docker_image: "almalinux:8"
-      - build_redhat:
-          name: "AlmaLinux 9"
-          docker_image: "almalinux:9"
-      - build_redhat:
-          name: "CentOS 7 developer"
-          docker_image: "centos:centos7"
-          installer_arguments: "-developer_version"
-      - build_redhat:
-          name: "AlmaLinux 8 developer"
-          docker_image: "almalinux:8"
-          installer_arguments: "-developer_version"
-      - build_redhat:
-          name: "AlmaLinux 9 developer"
-          docker_image: "almalinux:9"
-          installer_arguments: "-developer_version"
-      - build_redhat_upgrade_from_community:
-          name: "CentOS 7 upgrade from community"
-          docker_image: "centos:centos7"
-      - build_redhat_upgrade_from_community:
-          name: "AlmaLinux 8 upgrade from community"
-          docker_image: "almalinux:8"
-      - build_debian:
-          name: "Debian 9"
-          docker_image: "debian:9"
-      - build_debian:
-          name: "Debian 10"
-          docker_image: "debian:10"
-      - build_debian:
-          name: "Debian 11"
-          docker_image: "debian:11"
-      - build_debian:
-          name: "ubuntu 16.04"
-          docker_image: "ubuntu:16.04"
-      - build_debian:
-          name: "ubuntu 18.04"
-          docker_image: "ubuntu:18.04"
-      - build_debian:
-          name: "ubuntu 20.04"
-          docker_image: "ubuntu:20.04"
-      - build_debian:
-          name: "ubuntu 22.04"
-          docker_image: "ubuntu:22.04"
-      - build_debian_upgrade_from_community:
-          name: "ubuntu 20.04 upgrade from community" 
-          docker_image: "ubuntu:20.04"
-      - build_debian_upgrade_from_community:
-          name: "ubuntu 22.04 upgrade from community"
-          docker_image: "ubuntu:22.04"
-      - build_debian:
-          name: "Debian 9 developer"
-          docker_image: "debian:9"
-          installer_arguments: "-developer_version"
-      - build_debian:
-          name: "Debian 10 developer"
-          docker_image: "debian:10"
-          installer_arguments: "-developer_version"
-      - build_debian:
-          name: "Debian 11 developer"
-          docker_image: "debian:11"
-          installer_arguments: "-developer_version"
-      - build_debian:
-          name: "ubuntu 16.04 developer"
-          docker_image: "ubuntu:16.04"
-          installer_arguments: "-developer_version"
-      - build_debian:
-          name: "ubuntu 18.04 developer"
-          docker_image: "ubuntu:18.04"
-          installer_arguments: "-developer_version"
-      - build_debian:
-          name: "ubuntu 20.04 developer"
-          docker_image: "ubuntu:20.04"
-          installer_arguments: "-developer_version"
-      - build_debian:
-          name: "ubuntu 22.04 developer"
-          docker_image: "ubuntu:22.04"
-          installer_arguments: "-developer_version"
-      - build_redhat:
-          name: "CentOS 7 old cpus"
-          docker_image: "centos:centos7"
-          installer_arguments: "-force_old_cpu"
-      - build_redhat:
-          name: "AlmaLinux 8 old cpus"
-          docker_image: "almalinux:8"
-          installer_arguments: "-force_old_cpu"
-      - build_redhat:
-          name: "AlmaLinux 9 old cpus"
-          docker_image: "almalinux:9"
-          installer_arguments: "-force_old_cpu"
-      - build_debian:
-          name: "Debian 9 old cpus"
-          docker_image: "debian:9"
-          installer_arguments: "-force_old_cpu"
-      - build_debian:
-          name: "Debian 10 old cpus"
-          docker_image: "debian:10"
-          installer_arguments: "-force_old_cpu"
-      - build_debian:
-          name: "Debian 11 old cpus"
-          docker_image: "debian:11"
-          installer_arguments: "-force_old_cpu"
-      - build_debian:
-          name: "ubuntu 16.04 old cpus"
-          docker_image: "ubuntu:16.04"
-          installer_arguments: "-force_old_cpu"
-      - build_debian:
-          name: "ubuntu 18.04 old cpus"
-          docker_image: "ubuntu:18.04"
-          installer_arguments: "-force_old_cpu"
-      - build_debian:
-          name: "ubuntu 20.04 old cpus"
-          docker_image: "ubuntu:20.04"
-          installer_arguments: "-force_old_cpu"
-      - build_debian:
-          name: "ubuntu 22.04 old cpus"
-          docker_image: "ubuntu:22.04"
-          installer_arguments: "-force_old_cpu"
-      - build_debian_upgrade_from_community:
-          name: "ubuntu 20.04 upgrade from community"
-          docker_image: "ubuntu:20.04"
-      - build_debian:
-          name: "ubuntu 22.04"
-          docker_image: "ubuntu:22.04"
   all_distros:
     jobs:
-      - ubuntu2004vm
-      - ubuntu2004vm_docker
-      - build_redhat:
-          name: "CentOS 7"
-          docker_image: "centos:centos7"
-      - build_redhat:
-          name: "AlmaLinux 8"
-          docker_image: "almalinux:8"
-      - build_redhat:
-          name: "AlmaLinux 9"
-          docker_image: "almalinux:9"
-      - build_redhat:
-          name: "CentOS 7 developer"
-          docker_image: "centos:centos7"
-          installer_arguments: "-developer_version"
-      - build_redhat:
-          name: "AlmaLinux 8 developer"
-          docker_image: "almalinux:8"
-          installer_arguments: "-developer_version"
-      - build_redhat:
-          name: "AlmaLinux 9 developer"
-          docker_image: "almalinux:9"
-          installer_arguments: "-developer_version"
-      - build_redhat_upgrade_from_community:
-          name: "CentOS 7 upgrade from community"
-          docker_image: "centos:centos7"
-      - build_redhat_upgrade_from_community:
-          name: "AlmaLinux 8 upgrade from community"
-          docker_image: "almalinux:8"
-      - build_debian:
-          name: "Debian 9"
-          docker_image: "debian:9"
-      - build_debian:
-          name: "Debian 10"
-          docker_image: "debian:10"
-      - build_debian:
-          name: "Debian 11"
-          docker_image: "debian:11"
-      - build_debian:
-          name: "ubuntu 16.04"
-          docker_image: "ubuntu:16.04"
-      - build_debian:
-          name: "ubuntu 18.04"
-          docker_image: "ubuntu:18.04"
-      - build_debian:
-          name: "ubuntu 20.04"
-          docker_image: "ubuntu:20.04"
-      - build_debian:
-          name: "ubuntu 22.04"
-          docker_image: "ubuntu:22.04"
-      - build_debian:
-          name: "Debian 9 developer"
-          docker_image: "debian:9"
-          installer_arguments: "-developer_version"
-      - build_debian:
-          name: "Debian 10 developer"
-          docker_image: "debian:10"
-          installer_arguments: "-developer_version"
-      - build_debian:
-          name: "Debian 11 developer"
-          docker_image: "debian:11"
-          installer_arguments: "-developer_version"
-      - build_debian:
-          name: "ubuntu 16.04 developer"
-          docker_image: "ubuntu:16.04"
-          installer_arguments: "-developer_version"
-      - build_debian:
-          name: "ubuntu 18.04 developer"
-          docker_image: "ubuntu:18.04"
-          installer_arguments: "-developer_version"
-      - build_debian:
-          name: "ubuntu 20.04 developer"
-          docker_image: "ubuntu:20.04"
-          installer_arguments: "-developer_version"
-      - build_debian:
-          name: "ubuntu 22.04 developer"
-          docker_image: "ubuntu:22.04"
-          installer_arguments: "-developer_version"
-      - build_redhat:
-          name: "CentOS 7 old cpus"
-          docker_image: "centos:centos7"
-          installer_arguments: "-force_old_cpu"
-      - build_redhat:
-          name: "AlmaLinux 8 old cpus"
-          docker_image: "almalinux:8"
-          installer_arguments: "-force_old_cpu"
-      - build_redhat:
-          name: "AlmaLinux 9 old cpus"
-          docker_image: "almalinux:9"
-          installer_arguments: "-force_old_cpu"
-      - build_debian:
-          name: "Debian 9 old cpus"
-          docker_image: "debian:9"
-          installer_arguments: "-force_old_cpu"
-      - build_debian:
-          name: "Debian 10 old cpus"
-          docker_image: "debian:10"
-          installer_arguments: "-force_old_cpu"
-      - build_debian:
-          name: "Debian 11 old cpus"
-          docker_image: "debian:11"
-          installer_arguments: "-force_old_cpu"
-      - build_debian:
-          name: "ubuntu 16.04 old cpus"
-          docker_image: "ubuntu:16.04"
-          installer_arguments: "-force_old_cpu"
-      - build_debian:
-          name: "ubuntu 18.04 old cpus"
-          docker_image: "ubuntu:18.04"
-          installer_arguments: "-force_old_cpu"
-      - build_debian:
-          name: "ubuntu 20.04 old cpus"
-          docker_image: "ubuntu:20.04"
-          installer_arguments: "-force_old_cpu"
-      - build_debian:
-          name: "ubuntu 22.04 old cpus"
-          docker_image: "ubuntu:22.04"
-          installer_arguments: "-force_old_cpu"
-      - build_debian_upgrade_from_community:
-          name: "ubuntu 20.04 upgrade from community"
-          docker_image: "ubuntu:20.04"
-      - build_debian_upgrade_from_community:
-          name: "ubuntu 22.04 upgrade from community"
-          docker_image: "ubuntu:22.04"
+      *common_jobs
