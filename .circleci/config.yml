@@ -211,6 +211,15 @@ common_jobs: &common_jobs
   - build_debian:
       name: "Debian 11"
       docker_image: "debian:11"
+  - build_debian_upgrade_from_community:
+      name: "Debian 9 upgrade from community"
+      docker_image: "debian:9"
+  - build_debian_upgrade_from_community:
+      name: "Debian 10 upgrade from community"
+      docker_image: "debian:10"
+  - build_debian_upgrade_from_community:
+      name: "Debian 11 upgrade from community"
+      docker_image: "debian:11"
   - build_debian:
       name: "ubuntu 16.04"
       docker_image: "ubuntu:16.04"
