@@ -327,8 +327,7 @@ workflows:
       *common_jobs
     triggers:
       - schedule:
-          # Run it 4 times per day to catch issues faster
-          cron: "0 0,6,12,18 * * *"
+          cron: "0 2 * * *"
           filters:
             branches:
               only:
