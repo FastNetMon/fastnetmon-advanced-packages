@@ -42,6 +42,10 @@ jobs:
       installer_arguments:
         type: string
         default: ""
+      # We run it before running any commands during preparation phase for systemd enabled Docker container
+      systemd_prepare_command:
+        type: string
+        default: "true"
     steps:
       - checkout
         # Prepare image with systemd enabled
@@ -209,6 +213,8 @@ common_jobs: &common_jobs
   - build_debian:
       name: "Debian 9"
       docker_image: "debian:9"
+      # Packages for stretch were removed from normal Ubuntu repositories and we need to change paths to archive
+      systemd_prepare_command: echo 'deb http://archive.debian.org/debian/ stretch contrib main non-free' | tee /etc/apt/sources.list; echo 'deb http://archive.debian.org/debian-security/ stretch/updates main contrib non-free' | tee  /etc/apt/sources.list.d/updates.list
   - build_debian:
       name: "Debian 10"
       docker_image: "debian:10"
@@ -218,6 +224,8 @@ common_jobs: &common_jobs
   - build_debian_upgrade_from_community:
       name: "Debian 9 upgrade from community"
       docker_image: "debian:9"
+      # Packages for stretch were removed from normal Ubuntu repositories and we need to change paths to archive
+      systemd_prepare_command: echo 'deb http://archive.debian.org/debian/ stretch contrib main non-free' | tee /etc/apt/sources.list; echo 'deb http://archive.debian.org/debian-security/ stretch/updates main contrib non-free' | tee  /etc/apt/sources.list.d/updates.list
   - build_debian_upgrade_from_community:
       name: "Debian 10 upgrade from community"
       docker_image: "debian:10"
@@ -252,6 +260,8 @@ common_jobs: &common_jobs
       name: "Debian 9 developer"
       docker_image: "debian:9"
       installer_arguments: "-developer_version"
+      # Packages for stretch were removed from normal Ubuntu repositories and we need to change paths to archive
+      systemd_prepare_command: echo 'deb http://archive.debian.org/debian/ stretch contrib main non-free' | tee /etc/apt/sources.list; echo 'deb http://archive.debian.org/debian-security/ stretch/updates main contrib non-free' | tee  /etc/apt/sources.list.d/updates.list
   - build_debian:
       name: "Debian 10 developer"
       docker_image: "debian:10"
@@ -292,6 +302,8 @@ common_jobs: &common_jobs
       name: "Debian 9 old cpus"
       docker_image: "debian:9"
       installer_arguments: "-force_old_cpu"
+      # Packages for stretch were removed from normal Ubuntu repositories and we need to change paths to archive
+      systemd_prepare_command: echo 'deb http://archive.debian.org/debian/ stretch contrib main non-free' | tee /etc/apt/sources.list; echo 'deb http://archive.debian.org/debian-security/ stretch/updates main contrib non-free' | tee  /etc/apt/sources.list.d/updates.list
   - build_debian:
       name: "Debian 10 old cpus"
       docker_image: "debian:10"
