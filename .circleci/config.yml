@@ -54,6 +54,9 @@ jobs:
       systemd_prepare_command:
         type: string
         default: "true"
+      mongodb_check_command:
+        type: string
+        default: "mongod --version"
     steps:
       - checkout
         # Prepare image with systemd enabled
@@ -74,7 +77,7 @@ jobs:
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -do_not_check_license << parameters.installer_arguments >>
       - run: sudo docker exec --env -it linux_systemd_container cat /var/log/fastnetmon/fastnetmon.log
       - run: sudo docker exec --env -it linux_systemd_container systemctl status fastnetmon
-      - run: sudo docker exec --env -it linux_systemd_container mongod --version
+      - run: sudo docker exec --env -it linux_systemd_container << parameters.mongodb_check_command >>
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fastnetmon
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/traffic_db
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fill_dictionaries
@@ -256,6 +259,7 @@ common_jobs: &common_jobs
       name: "ubuntu 22.04 FerretDB"
       docker_image: "ubuntu:22.04"
       installer_arguments: "-ferretdb"
+      mongodb_check_command: "true"
   - build_debian_upgrade_from_community:
       name: "ubuntu 16.04 upgrade from community"
       docker_image: "ubuntu:16.04"
