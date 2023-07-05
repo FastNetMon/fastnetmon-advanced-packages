@@ -252,6 +252,10 @@ common_jobs: &common_jobs
   - build_debian:
       name: "ubuntu 22.04"
       docker_image: "ubuntu:22.04"
+  - build_debian:
+      name: "ubuntu 22.04 FerretDB"
+      docker_image: "ubuntu:22.04"
+      installer_arguments: "-ferretdb"
   - build_debian_upgrade_from_community:
       name: "ubuntu 16.04 upgrade from community"
       docker_image: "ubuntu:16.04"
