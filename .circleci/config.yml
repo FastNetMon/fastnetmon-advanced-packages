@@ -60,6 +60,9 @@ jobs:
       resource_class:
         type: string
         default: large
+      installer_file_name:
+        type: string
+        default: installer
     resource_class: << parameters.resource_class >>
     steps:
       - checkout
@@ -76,7 +79,7 @@ jobs:
       - run: sudo docker ps -a
       - run: sudo docker exec -it linux_systemd_container systemctl status --no-pager
       - run: sudo docker exec -it linux_systemd_container apt install -y wget
-      - run: sudo docker exec -it linux_systemd_container wget https://install.fastnetmon.com/installer?random-argument-to-disable-caching-$CIRCLE_WORKFLOW_JOB_ID -Oinstaller
+      - run: sudo docker exec -it linux_systemd_container wget https://install.fastnetmon.com/<< parameters.installer_file_name >>?random-argument-to-disable-caching-$CIRCLE_WORKFLOW_JOB_ID -Oinstaller
       - run: sudo docker exec -it linux_systemd_container chmod +x installer
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -do_not_check_license << parameters.installer_arguments >>
       - run: sudo docker exec --env -it linux_systemd_container cat /var/log/fastnetmon/fastnetmon.log
@@ -318,6 +321,7 @@ common_jobs: &common_jobs
       docker_image: "ubuntu:22.04"
       installer_arguments: "-developer_version"
       resource_class: "arm.large"
+      installer_file_name: "installer_arm64"
   - build_debian:
       name: "ubuntu 22.04 FerretDB developer"
       docker_image: "ubuntu:22.04"
