@@ -57,6 +57,10 @@ jobs:
       database_check_command:
         type: string
         default: "mongod --version"
+      resource_class:
+        type: string
+        default: large
+    resource_class: << parameters.resource_class >>
     steps:
       - checkout
         # Prepare image with systemd enabled
@@ -309,6 +313,11 @@ common_jobs: &common_jobs
       name: "ubuntu 22.04 developer"
       docker_image: "ubuntu:22.04"
       installer_arguments: "-developer_version"
+  - build_debian:
+      name: "ubuntu 22.04 ARM developer"
+      docker_image: "ubuntu:22.04"
+      installer_arguments: "-developer_version"
+      resource_class: "arm.large"
   - build_debian:
       name: "ubuntu 22.04 FerretDB developer"
       docker_image: "ubuntu:22.04"
