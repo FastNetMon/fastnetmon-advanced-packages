@@ -73,8 +73,8 @@ jobs:
       - run: echo -e "RUN apt-get update; apt-get install -y systemd systemd-sysv\n" >> Dockerfile
       - run: echo -e "CMD [\"/lib/systemd/systemd\"]"                                >> Dockerfile
       - run: cat Dockerfile | sudo docker build --tag debian_systemd -
-      - run: apt-get update
-      - run: apt-get install -y net-tools
+      - run: sudo apt-get update
+      - run: sudo apt-get install -y net-tools
       - run: ifconfig
       - run:
           name: "Deploy new systemd enabled image"
