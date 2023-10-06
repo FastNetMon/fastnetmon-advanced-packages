@@ -337,6 +337,7 @@ common_jobs: &common_jobs
       installer_arguments: "-developer_version -ferretdb"
       resource_class: "arm.large"
       installer_file_name: "installer_arm64"
+      database_check_command: "/usr/bin/ferretdb --version"
   - build_redhat:
       name: "CentOS 7 old cpus"
       docker_image: "centos:centos7"
