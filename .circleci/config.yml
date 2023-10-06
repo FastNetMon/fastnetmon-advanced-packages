@@ -59,7 +59,7 @@ jobs:
               "fixed-cidr-v6": "2001:db8:1::/64"
             }
             EOF
-      - run: sudo service docker restart
+            sudo service docker restart
       - run:
           name: "Deploy new Debian image"
           command: sudo docker run -d -v /sys/fs/cgroup/:/sys/fs/cgroup:ro --privileged --cap-add SYS_ADMIN  --name linux_systemd_container debian /lib/systemd/systemd
