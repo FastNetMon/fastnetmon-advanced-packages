@@ -331,6 +331,12 @@ common_jobs: &common_jobs
       docker_image: "ubuntu:22.04"
       installer_arguments: "-developer_version -ferretdb"
       database_check_command: "/usr/bin/ferretdb --version"
+  - build_debian:
+      name: "ubuntu 22.04 ARM FerretDB developer"
+      docker_image: "ubuntu:22.04"
+      installer_arguments: "-developer_version -ferretdb"
+      resource_class: "arm.large"
+      installer_file_name: "installer_arm64"
   - build_redhat:
       name: "CentOS 7 old cpus"
       docker_image: "centos:centos7"
