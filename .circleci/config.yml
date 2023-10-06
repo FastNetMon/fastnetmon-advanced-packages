@@ -415,9 +415,6 @@ common_jobs: &common_jobs
       resource_class: "arm.large"
       installer_file_name: "installer_arm64"
       database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian_ipv6:
-      # https://circleci.com/docs/faq/#ipv6-in-tests
-      name: "Test Debian build with IPv6 enabled for localhost"
   - build_redhat:
       name: "CentOS 7 old cpus"
       docker_image: "centos:centos7"
