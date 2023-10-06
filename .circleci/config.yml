@@ -42,7 +42,7 @@ jobs:
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack -do_not_check_license
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -import_community_edition_configuration
   build_debian_ipv6:
-   machine:
+    machine:
       image: ubuntu-2004:current
     steps:
       - checkout
