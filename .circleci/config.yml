@@ -81,7 +81,8 @@ jobs:
           command: sudo docker run -d -v /sys/fs/cgroup/:/sys/fs/cgroup:ro --privileged --cap-add SYS_ADMIN  --name linux_systemd_container debian_systemd /lib/systemd/systemd
       - run: sudo docker ps -a
       - run: sudo docker exec -it linux_systemd_container systemctl status --no-pager
-      - run: sudo docker exec -it linux_systemd_container apt install -y wget
+      - run: sudo docker exec -it linux_systemd_container apt install -y wget net-tools
+      - run: sudo docker exec -it linux_systemd_container ifconfig
       - run: sudo docker exec -it linux_systemd_container wget https://install.fastnetmon.com/<< parameters.installer_file_name >>?random-argument-to-disable-caching-$CIRCLE_WORKFLOW_JOB_ID -Oinstaller
       - run: sudo docker exec -it linux_systemd_container chmod +x installer
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -do_not_check_license << parameters.installer_arguments >>
