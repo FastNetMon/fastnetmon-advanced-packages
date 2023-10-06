@@ -50,6 +50,15 @@ jobs:
       - run: sudo apt-get install -y net-tools
       - run: ifconfig
       # Enable IPv6 for Docker: https://circleci.com/docs/faq/#ipv6-in-tests
+      - run:
+          name: enable ipv6
+          command: |
+            cat <<'EOF' | sudo tee /etc/docker/daemon.json
+            {
+              "ipv6": true,
+              "fixed-cidr-v6": "2001:db8:1::/64"
+            }
+            EOF
       - run: sudo service docker restart
       - run:
           name: "Deploy new Debian image"
@@ -353,7 +362,7 @@ common_jobs: &common_jobs
       resource_class: "arm.large"
       installer_file_name: "installer_arm64"
       database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian_ipv6
+  - build_debian_ipv6:
       # https://circleci.com/docs/faq/#ipv6-in-tests
       name: "Test Debian build with IPv6 enabled for localhost"
   - build_redhat:
