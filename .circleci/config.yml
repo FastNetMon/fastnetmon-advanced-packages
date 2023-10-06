@@ -49,16 +49,9 @@ jobs:
       - run: sudo apt-get update
       - run: sudo apt-get install -y net-tools
       - run: ifconfig
-      - run:
-          name: Enable IPv6 for Docker
-          command: |
-            cat <<'EOF' | sudo tee /etc/docker/daemon.json
-            {
-              "ipv6": true,
-              "fixed-cidr-v6": "2001:db8:1::/64"
-            }
-            EOF
-            sudo service docker restart
+      # Enable IPv6 for Docker: https://circleci.com/docs/faq/#ipv6-in-tests
+      - run: echo -e '{ "ipv6": true, "fixed-cidr-v6": "2001:db8:1::/64" }' | sudo tee /etc/docker/daemon.json
+      - run: sudo service docker restart
       - run:
           name: "Deploy new Debian image"
           command: sudo docker run -d -v /sys/fs/cgroup/:/sys/fs/cgroup:ro --privileged --cap-add SYS_ADMIN  --name linux_systemd_container debian /lib/systemd/systemd
