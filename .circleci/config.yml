@@ -110,12 +110,18 @@ jobs:
       - run: sudo docker exec --env -it linux_systemd_container fcli show fastnetmon_version
       - run: sudo docker exec --env -it linux_systemd_container fcli show main
       - run: sudo docker exec --env -it linux_systemd_container fcli show hostgroup
-      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack -do_not_check_license
       - run:
-          name: Check TCP listens
+          name: Check TCP listens for FastNetMon and database
           command: sudo docker exec --env -it linux_systemd_container netstat -lnpt
       - run:
-          name: Check UDP listens 
+          name: Check UDP listens for FastNetMon and database
+          command: sudo docker exec --env -it linux_systemd_container netstat -lnpu
+      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack -do_not_check_license
+      - run:
+          name: Check TCP listens for all daemons
+          command: sudo docker exec --env -it linux_systemd_container netstat -lnpt
+      - run:
+          name: Check UDP listens for all daemons
           command: sudo docker exec --env -it linux_systemd_container netstat -lnpu
   build_debian:
     machine:
@@ -172,7 +178,19 @@ jobs:
       - run: sudo docker exec --env -it linux_systemd_container fcli show fastnetmon_version
       - run: sudo docker exec --env -it linux_systemd_container fcli show main
       - run: sudo docker exec --env -it linux_systemd_container fcli show hostgroup
+      - run:
+          name: Check TCP listens for FastNetMon and database
+          command: sudo docker exec --env -it linux_systemd_container netstat -lnpt
+      - run:
+          name: Check UDP listens for FastNetMon and database
+          command: sudo docker exec --env -it linux_systemd_container netstat -lnpu
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack -do_not_check_license
+      - run:
+          name: Check TCP listens for all daemons
+          command: sudo docker exec --env -it linux_systemd_container netstat -lnpt
+      - run:
+          name: Check UDP listens for all daemons
+          command: sudo docker exec --env -it linux_systemd_container netstat -lnpu
   build_redhat:
     parameters:
       docker_image:
