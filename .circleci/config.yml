@@ -50,6 +50,9 @@ jobs:
       installer_arguments:
         type: string
         default: ""
+      visual_installer_arguments:
+        type: string
+        default: ""
       # We run it before running any commands during preparation phase for systemd enabled Docker container
       systemd_prepare_command:
         type: string
@@ -116,7 +119,7 @@ jobs:
       - run:
           name: Check UDP listens for FastNetMon and database
           command: sudo docker exec --env -it linux_systemd_container netstat -lnpu
-      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack -do_not_check_license
+      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack -do_not_check_license << parameters.visual_installer_arguments >>
       - run:
           name: Check TCP listens for all daemons
           command: sudo docker exec --env -it linux_systemd_container netstat -lnpt
@@ -443,6 +446,7 @@ common_jobs: &common_jobs
       name: "ubuntu 22.04 ARM FerretDB IPv6 only developer"
       docker_image: "ubuntu:22.04"
       installer_arguments: "-developer_version -ferretdb -ipv6_only_setup"
+      visual_installer_arguments: "-ipv6_only_setup"
       resource_class: "arm.large"
       installer_file_name: "installer_arm64"
       database_check_command: "/usr/bin/ferretdb --version"
