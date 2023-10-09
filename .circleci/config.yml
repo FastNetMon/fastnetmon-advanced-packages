@@ -111,6 +111,12 @@ jobs:
       - run: sudo docker exec --env -it linux_systemd_container fcli show main
       - run: sudo docker exec --env -it linux_systemd_container fcli show hostgroup
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack -do_not_check_license
+      - run:
+          name: Check TCP listens
+          command: sudo docker exec --env -it linux_systemd_container netstat -lnpt
+      - run:
+          name: Check UDP listens 
+          command: sudo docker exec --env -it linux_systemd_container netstat -lnpu
   build_debian:
     machine:
       image: ubuntu-2004:current
@@ -412,6 +418,13 @@ common_jobs: &common_jobs
       name: "ubuntu 22.04 ARM FerretDB IPv6 developer"
       docker_image: "ubuntu:22.04"
       installer_arguments: "-developer_version -ferretdb"
+      resource_class: "arm.large"
+      installer_file_name: "installer_arm64"
+      database_check_command: "/usr/bin/ferretdb --version"
+  - build_debian_ipv6:
+      name: "ubuntu 22.04 ARM FerretDB IPv6 only developer"
+      docker_image: "ubuntu:22.04"
+      installer_arguments: "-developer_version -ferretdb -ipv6_only_setup"
       resource_class: "arm.large"
       installer_file_name: "installer_arm64"
       database_check_command: "/usr/bin/ferretdb --version"
