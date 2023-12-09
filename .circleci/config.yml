@@ -171,6 +171,9 @@ jobs:
       - run: sudo docker exec -it linux_systemd_container wget https://install.fastnetmon.com/<< parameters.installer_file_name >>?random-argument-to-disable-caching-$CIRCLE_WORKFLOW_JOB_ID -Oinstaller
       - run: sudo docker exec -it linux_systemd_container chmod +x installer
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -do_not_check_license << parameters.installer_arguments >>
+      - run: 
+          name: Sleep to give enough time for FastNetMon to start
+          command: sleep 25
       - run: sudo docker exec --env -it linux_systemd_container cat /var/log/fastnetmon/fastnetmon.log
       - run: sudo docker exec --env -it linux_systemd_container systemctl status fastnetmon
       - run: sudo docker exec --env -it linux_systemd_container << parameters.database_check_command >>
