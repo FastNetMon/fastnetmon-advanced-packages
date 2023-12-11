@@ -315,6 +315,21 @@ common_jobs: &common_jobs
       name: "AlmaLinux 9"
       docker_image: "almalinux:9"
   - build_redhat:
+      name: "CentOS 7 FerretDB"
+      docker_image: "centos:centos7"
+      installer_arguments: "-ferretdb"
+      database_check_command: "/usr/bin/ferretdb --version
+  - build_redhat:
+      name: "AlmaLinux 8 FerretDB"
+      docker_image: "almalinux:8"
+      installer_arguments: "-ferretdb"
+      database_check_command: "/usr/bin/ferretdb --version
+  - build_redhat:
+      name: "AlmaLinux 9 FerretDB"
+      docker_image: "almalinux:9"
+      installer_arguments: "-ferretdb"
+      database_check_command: "/usr/bin/ferretdb --version
+  - build_redhat:
       name: "CentOS 7 developer"
       docker_image: "centos:centos7"
       installer_arguments: "-developer_version"
