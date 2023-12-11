@@ -204,6 +204,9 @@ jobs:
       installer_arguments:
         type: string
         default: ""
+      database_check_command:
+        type: string
+        default: "mongod --version"
     machine:
       image: ubuntu-2004:current
     steps:
@@ -219,7 +222,7 @@ jobs:
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fastnetmon
       - run: sudo docker exec --env -it linux_systemd_container cat /var/log/fastnetmon/fastnetmon.log
       - run: sudo docker exec --env -it linux_systemd_container systemctl status fastnetmon
-      - run: sudo docker exec --env -it linux_systemd_container mongod --version
+      - run: sudo docker exec --env -it linux_systemd_container << parameters.database_check_command >>
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/traffic_db
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fill_dictionaries
       - run: sudo docker exec --env -it linux_systemd_container /opt/fastnetmon/app/bin/fastnetmon --configuration_check
