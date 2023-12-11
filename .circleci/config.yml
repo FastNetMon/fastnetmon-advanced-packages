@@ -361,11 +361,26 @@ common_jobs: &common_jobs
       name: "ubuntu 16.04"
       docker_image: "ubuntu:16.04"
   - build_debian:
+      name: "ubuntu 16.04 FerretDB"
+      docker_image: "ubuntu:16.04"
+      installer_arguments: "-ferretdb"
+      database_check_command: "/usr/bin/ferretdb --version"
+  - build_debian:
       name: "ubuntu 18.04"
       docker_image: "ubuntu:18.04"
   - build_debian:
+      name: "ubuntu 18.04 FerretDB"
+      docker_image: "ubuntu:18.04"
+      installer_arguments: "-ferretdb"
+      database_check_command: "/usr/bin/ferretdb --version"
+  - build_debian:
       name: "ubuntu 20.04"
       docker_image: "ubuntu:20.04"
+  - build_debian:
+      name: "ubuntu 20.04 FerretDB"
+      docker_image: "ubuntu:20.04"
+      installer_arguments: "-ferretdb"
+      database_check_command: "/usr/bin/ferretdb --version"
   - build_debian:
       name: "ubuntu 22.04"
       docker_image: "ubuntu:22.04"
