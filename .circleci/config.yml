@@ -341,11 +341,26 @@ common_jobs: &common_jobs
       name: "Debian 10"
       docker_image: "debian:10"
   - build_debian:
+      name: "Debian 10 FerretDB"
+      docker_image: "debian:10"
+      installer_arguments: "-ferretdb"
+      database_check_command: "/usr/bin/ferretdb --version"
+  - build_debian:
       name: "Debian 11"
       docker_image: "debian:11"
   - build_debian:
+      name: "Debian 11 FerretDB"
+      docker_image: "debian:11"
+      installer_arguments: "-ferretdb"
+      database_check_command: "/usr/bin/ferretdb --version"
+  - build_debian:
       name: "Debian 12"
       docker_image: "debian:12"
+  - build_debian:
+      name: "Debian 12 FerretDB"
+      docker_image: "debian:12"
+      installer_arguments: "-ferretdb"
+      database_check_command: "/usr/bin/ferretdb --version"
   - build_debian_upgrade_from_community:
       name: "Debian 9 upgrade from community"
       docker_image: "debian:9"
