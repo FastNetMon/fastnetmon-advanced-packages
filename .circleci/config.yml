@@ -435,6 +435,21 @@ common_jobs: &common_jobs
       docker_image: "debian:12"
       installer_arguments: "-developer_version"
   - build_debian:
+      name: "Debian 10 FerretDB developer"
+      docker_image: "debian:10"
+      installer_arguments: "-developer_version -ferretdb"
+      database_check_command: "/usr/bin/ferretdb --version"
+  - build_debian:
+      name: "Debian 11 FerretDB developer"
+      docker_image: "debian:11"
+      installer_arguments: "-developer_version -ferretdb"
+      database_check_command: "/usr/bin/ferretdb --version"
+  - build_debian:
+      name: "Debian 12 FerretDB developer"
+      docker_image: "debian:12"
+      installer_arguments: "-developer_version -ferretdb" 
+      database_check_command: "/usr/bin/ferretdb --version"
+  - build_debian:
       name: "ubuntu 16.04 developer"
       docker_image: "ubuntu:16.04"
       installer_arguments: "-developer_version"
