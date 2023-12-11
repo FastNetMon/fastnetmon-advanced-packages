@@ -588,6 +588,8 @@ common_jobs: &common_jobs
       name: "ubuntu 22.04 old cpus"
       docker_image: "ubuntu:22.04"
       installer_arguments: "-force_old_cpu"
+      # In this case installer installs FerretDB instead of MongoDB and we need to check it
+      database_check_command: "/usr/bin/ferretdb --version"
   - build_debian_upgrade_from_community:
       name: "ubuntu 20.04 upgrade from community"
       docker_image: "ubuntu:20.04"
