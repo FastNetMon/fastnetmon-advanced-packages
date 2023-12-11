@@ -584,7 +584,7 @@ common_jobs: &common_jobs
       name: "ubuntu 20.04 old cpus"
       docker_image: "ubuntu:20.04"
       installer_arguments: "-force_old_cpu"
- - build_debian:
+  - build_debian:
       name: "ubuntu 22.04 old cpus"
       docker_image: "ubuntu:22.04"
       installer_arguments: "-force_old_cpu"
