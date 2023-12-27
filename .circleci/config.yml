@@ -390,6 +390,10 @@ common_jobs: &common_jobs
       name: "Debian 12"
       docker_image: "debian:12"
   - build_debian:
+      name: "Debian 12 old cpus"
+      docker_image: "debian:12"
+      installer_arguments: "-force_old_cpu"
+  - build_debian:
       name: "Debian 12 FerretDB"
       docker_image: "debian:12"
       installer_arguments: "-ferretdb"
