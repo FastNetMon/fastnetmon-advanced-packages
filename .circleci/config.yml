@@ -393,6 +393,8 @@ common_jobs: &common_jobs
       name: "Debian 12 old cpus"
       docker_image: "debian:12"
       installer_arguments: "-force_old_cpu"
+      # In this case installer installs FerretDB instead of MongoDB and we need to check it
+      database_check_command: "/usr/bin/ferretdb --version"
   - build_debian:
       name: "Debian 12 FerretDB"
       docker_image: "debian:12"
@@ -576,6 +578,8 @@ common_jobs: &common_jobs
       name: "Debian 11 old cpus"
       docker_image: "debian:11"
       installer_arguments: "-force_old_cpu"
+      # In this case installer installs FerretDB instead of MongoDB and we need to check it
+      database_check_command: "/usr/bin/ferretdb --version"
   - build_debian:
       name: "ubuntu 16.04 old cpus"
       docker_image: "ubuntu:16.04"
