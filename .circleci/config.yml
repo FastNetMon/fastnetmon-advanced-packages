@@ -633,6 +633,8 @@ common_jobs: &common_jobs
   - build_debian:
       name: "ubuntu 24.04"
       docker_image: "ubuntu:24.04"
+      # In this case installer installs FerretDB instead of MongoDB and we need to check it
+      database_check_command: "/usr/bin/ferretdb --version"
 
 # We have two different workflows to trigger same tasks on commit and nightly
 workflows:
