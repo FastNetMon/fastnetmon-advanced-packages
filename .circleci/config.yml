@@ -438,9 +438,17 @@ common_jobs: &common_jobs
   - build_debian:
       name: "ubuntu 22.04"
       docker_image: "ubuntu:22.04"
+  - build_debian: 
+      name: "ubuntu 24.04"
+      docker_image: "ubuntu:24.04"
   - build_debian:
       name: "ubuntu 22.04 FerretDB"
       docker_image: "ubuntu:22.04"
+      installer_arguments: "-ferretdb"
+      database_check_command: "/usr/bin/ferretdb --version"
+  - build_debian:
+      name: "ubuntu 24.04 FerretDB"
+      docker_image: "ubuntu:24.04"
       installer_arguments: "-ferretdb"
       database_check_command: "/usr/bin/ferretdb --version"
   - build_debian_upgrade_from_community:
@@ -455,6 +463,9 @@ common_jobs: &common_jobs
   - build_debian_upgrade_from_community:
       name: "ubuntu 22.04 upgrade from community"
       docker_image: "ubuntu:22.04"
+  - build_debian_upgrade_from_community:
+      name: "ubuntu 24.04 upgrade from community"
+      docker_image: "ubuntu:24.04"
   - build_debian:
       name: "Debian 9 developer"
       docker_image: "debian:9"
@@ -505,6 +516,10 @@ common_jobs: &common_jobs
       docker_image: "ubuntu:22.04"
       installer_arguments: "-developer_version"
   - build_debian:
+      name: "ubuntu 24.04 developer"
+      docker_image: "ubuntu:24.04"
+      installer_arguments: "-developer_version"
+  - build_debian:
       name: "ubuntu 22.04 ARM developer"
       docker_image: "ubuntu:22.04"
       installer_arguments: "-developer_version"
@@ -528,6 +543,11 @@ common_jobs: &common_jobs
   - build_debian:
       name: "ubuntu 22.04 FerretDB developer"
       docker_image: "ubuntu:22.04"
+      installer_arguments: "-developer_version -ferretdb"
+      database_check_command: "/usr/bin/ferretdb --version"
+  - build_debian:
+      name: "ubuntu 24.04 FerretDB developer"
+      docker_image: "ubuntu:24.04"
       installer_arguments: "-developer_version -ferretdb"
       database_check_command: "/usr/bin/ferretdb --version"
   - build_debian:
@@ -598,12 +618,21 @@ common_jobs: &common_jobs
       installer_arguments: "-force_old_cpu"
       # In this case installer installs FerretDB instead of MongoDB and we need to check it
       database_check_command: "/usr/bin/ferretdb --version"
+  - build_debian:
+      name: "ubuntu 24.04 old cpus"
+      docker_image: "ubuntu:24.04"
+      installer_arguments: "-force_old_cpu"
+      # In this case installer installs FerretDB instead of MongoDB and we need to check it
+      database_check_command: "/usr/bin/ferretdb --version"
   - build_debian_upgrade_from_community:
       name: "ubuntu 20.04 upgrade from community"
       docker_image: "ubuntu:20.04"
   - build_debian:
       name: "ubuntu 22.04"
       docker_image: "ubuntu:22.04"
+  - build_debian:
+      name: "ubuntu 24.04"
+      docker_image: "ubuntu:24.04"
 
 # We have two different workflows to trigger same tasks on commit and nightly
 workflows:
