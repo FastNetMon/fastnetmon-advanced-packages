@@ -607,6 +607,7 @@ common_jobs: &common_jobs
       installer_arguments: "-developer_version" 
       resource_class: "arm.large"
       installer_file_name: "installer_arm64"
+      database_check_command: "/usr/bin/ferretdb --version"
   - build_debian:
       name: "ubuntu 16.04 FerretDB developer"
       docker_image: "ubuntu:16.04"
