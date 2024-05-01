@@ -601,6 +601,12 @@ common_jobs: &common_jobs
       installer_arguments: "-developer_version"
       resource_class: "arm.large"
       installer_file_name: "installer_arm64"
+  - build_debian: 
+      name: "ubuntu 24.04 ARM developer"
+      docker_image: "ubuntu:24.04"
+      installer_arguments: "-developer_version" 
+      resource_class: "arm.large"
+      installer_file_name: "installer_arm64"
   - build_debian:
       name: "ubuntu 16.04 FerretDB developer"
       docker_image: "ubuntu:16.04"
@@ -629,6 +635,13 @@ common_jobs: &common_jobs
   - build_debian:
       name: "ubuntu 22.04 ARM FerretDB developer"
       docker_image: "ubuntu:22.04"
+      installer_arguments: "-developer_version -ferretdb"
+      resource_class: "arm.large"
+      installer_file_name: "installer_arm64"
+      database_check_command: "/usr/bin/ferretdb --version"
+  - build_debian:
+      name: "ubuntu 24.04 ARM FerretDB developer"
+      docker_image: "ubuntu:24.04"
       installer_arguments: "-developer_version -ferretdb"
       resource_class: "arm.large"
       installer_file_name: "installer_arm64"
