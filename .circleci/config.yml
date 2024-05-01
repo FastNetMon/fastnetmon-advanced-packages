@@ -197,6 +197,80 @@ jobs:
       - run:
           name: Check UDP listens for all daemons
           command: sudo docker exec --env -it linux_systemd_container netstat -lnpu
+  build_debian_panel:
+    machine:
+      image: ubuntu-2004:current
+    parameters:
+      docker_image:
+        type: string
+      installer_arguments:
+        type: string
+        default: ""
+      # We run it before running any commands during preparation phase for systemd enabled Docker container
+      systemd_prepare_command:
+        type: string
+        default: "true"
+      database_check_command:
+        type: string
+        default: "mongod --version"
+      resource_class:
+        type: string
+        default: large
+      installer_file_name:
+        type: string
+        default: installer
+    resource_class: << parameters.resource_class >>
+    steps:
+      - checkout
+        # Prepare image with systemd enabled
+      - run: echo -e "FROM << parameters.docker_image >>\n"                          >  Dockerfile
+      - run: echo -e "ENV DEBIAN_FRONTEND noninteractive\n"                          >> Dockerfile
+      - run: echo -e "RUN << parameters.systemd_prepare_command >>\n"                >> Dockerfile
+      - run: echo -e "RUN apt-get update; apt-get install -y systemd systemd-sysv\n" >> Dockerfile
+      - run: echo -e "CMD [\"/lib/systemd/systemd\"]"                                >> Dockerfile
+      - run: cat Dockerfile | sudo docker build --tag debian_systemd -
+      - run: sudo apt-get update
+      - run: sudo apt-get install -y net-tools
+      - run: ifconfig
+      - run:
+          name: "Deploy new systemd enabled image"
+          command: sudo docker run -d -v /sys/fs/cgroup/:/sys/fs/cgroup:ro --privileged --cap-add SYS_ADMIN  --name linux_systemd_container debian_systemd /lib/systemd/systemd
+      - run: sudo docker ps -a
+      - run: sudo docker exec -it linux_systemd_container systemctl status --no-pager
+      - run: sudo docker exec -it linux_systemd_container apt install -y wget net-tools
+      - run: sudo docker exec -it linux_systemd_container ifconfig
+      - run: sudo docker exec -it linux_systemd_container wget https://install.fastnetmon.com/<< parameters.installer_file_name >>?random-argument-to-disable-caching-$CIRCLE_WORKFLOW_JOB_ID -Oinstaller
+      - run: sudo docker exec -it linux_systemd_container chmod +x installer
+      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -do_not_check_license << parameters.installer_arguments >>
+      - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fastnetmon 
+      - run: 
+          name: Sleep to give enough time for FastNetMon to start
+          command: sleep 25
+      - run: sudo docker exec --env -it linux_systemd_container cat /var/log/fastnetmon/fastnetmon.log
+      - run: sudo docker exec --env -it linux_systemd_container systemctl status fastnetmon
+      - run: sudo docker exec --env -it linux_systemd_container << parameters.database_check_command >>
+      - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/traffic_db
+      - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fill_dictionaries
+      - run: sudo docker exec --env -it linux_systemd_container /opt/fastnetmon/app/bin/fastnetmon --configuration_check
+      - run: sudo docker exec --env -it linux_systemd_container fcli show fastnetmon_version
+      - run: sudo docker exec --env -it linux_systemd_container fcli show main
+      - run: sudo docker exec --env -it linux_systemd_container fcli show hostgroup
+      - run:
+          name: Check TCP listens for FastNetMon and database
+          command: sudo docker exec --env -it linux_systemd_container netstat -lnpt
+      - run:
+          name: Check UDP listens for FastNetMon and database
+          command: sudo docker exec --env -it linux_systemd_container netstat -lnpu
+      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack -do_not_check_license
+      - run:
+          name: Check TCP listens for all daemons
+          command: sudo docker exec --env -it linux_systemd_container netstat -lnpt
+      - run:
+          name: Check UDP listens for all daemons
+          command: sudo docker exec --env -it linux_systemd_container netstat -lnpu
+      - run:
+          name: FastNetMon Manager Panel
+          command: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_fastnetmon_manager
   build_redhat:
     parameters:
       docker_image:
@@ -437,6 +511,9 @@ common_jobs: &common_jobs
       database_check_command: "/usr/bin/ferretdb --version"
   - build_debian:
       name: "ubuntu 22.04"
+      docker_image: "ubuntu:22.04"
+  - build_debian_panel:
+      name: "ubuntu 22.04 with Panel"
       docker_image: "ubuntu:22.04"
   - build_debian:
       name: "ubuntu 22.04 FerretDB"
