@@ -515,6 +515,9 @@ common_jobs: &common_jobs
   - build_debian_panel:
       name: "ubuntu 22.04 with Panel"
       docker_image: "ubuntu:22.04"
+  - build_debian_panel:
+      name: "ubuntu 24.04 with Panel"
+      docker_image: "ubuntu:24.04"
   - build_debian:
       name: "ubuntu 22.04 FerretDB"
       docker_image: "ubuntu:22.04"
