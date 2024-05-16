@@ -342,7 +342,7 @@ jobs:
       - run: sudo docker exec --env -it linux_systemd_container fcli show hostgroup
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack -do_not_check_license 
   ubuntu_vm:
-   parameters:
+    parameters:
       machine_image:
         type: string
         default: "ubuntu-2204:current"
