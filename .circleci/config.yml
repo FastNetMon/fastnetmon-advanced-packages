@@ -289,6 +289,7 @@ jobs:
         default: "mongod --version"
       mount_cgroup_command:
         type: string
+        default: ""
     machine:
       image: ubuntu-2204:current
     steps:
