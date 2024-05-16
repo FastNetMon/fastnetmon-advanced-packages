@@ -11,7 +11,7 @@ jobs:
         default: "true"
       machine_image:
         type: string
-        default: "ubuntu-2004:current"
+        default: "ubuntu-2204:current"
     machine:
       image: << parameters.machine_image >>
     steps:
@@ -25,7 +25,7 @@ jobs:
       - run: cat Dockerfile | sudo docker build --tag debian_systemd -
       - run:
           name: "Deploy new systemd enabled image"
-          command: sudo docker run -d -v /sys/fs/cgroup/:/sys/fs/cgroup:ro --privileged --cap-add SYS_ADMIN  --name linux_systemd_container debian_systemd /lib/systemd/systemd
+          command: sudo docker run -d --privileged --cap-add SYS_ADMIN  --name linux_systemd_container debian_systemd /lib/systemd/systemd
       - run: sudo docker ps -a
       - run: sudo docker exec -it linux_systemd_container systemctl status --no-pager
       - run: sudo docker exec -it linux_systemd_container apt install -y wget
@@ -46,7 +46,7 @@ jobs:
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -import_community_edition_configuration
   build_debian_ipv6:
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2204:current
     parameters:
       docker_image:
         type: string
@@ -98,7 +98,7 @@ jobs:
       - run: ifconfig
       - run:
           name: "Deploy new systemd enabled image"
-          command: sudo docker run -d -v /sys/fs/cgroup/:/sys/fs/cgroup:ro --privileged --cap-add SYS_ADMIN  --name linux_systemd_container debian_systemd /lib/systemd/systemd
+          command: sudo docker run -d --privileged --cap-add SYS_ADMIN  --name linux_systemd_container debian_systemd /lib/systemd/systemd
       - run: sudo docker ps -a
       - run: sudo docker exec -it linux_systemd_container systemctl status --no-pager
       - run: sudo docker exec -it linux_systemd_container apt install -y wget net-tools
@@ -131,7 +131,7 @@ jobs:
           command: sudo docker exec --env -it linux_systemd_container netstat -lnpu
   build_debian:
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2204:current
     parameters:
       docker_image:
         type: string
@@ -166,7 +166,7 @@ jobs:
       - run: ifconfig
       - run:
           name: "Deploy new systemd enabled image"
-          command: sudo docker run -d -v /sys/fs/cgroup/:/sys/fs/cgroup:ro --privileged --cap-add SYS_ADMIN  --name linux_systemd_container debian_systemd /lib/systemd/systemd
+          command: sudo docker run -d --privileged --cap-add SYS_ADMIN  --name linux_systemd_container debian_systemd /lib/systemd/systemd
       - run: sudo docker ps -a
       - run: sudo docker exec -it linux_systemd_container systemctl status --no-pager
       - run: sudo docker exec -it linux_systemd_container apt install -y wget net-tools
@@ -222,7 +222,7 @@ jobs:
         default: installer
       machine_image:
         type: string
-        default: "ubuntu-2004:current"
+        default: "ubuntu-2204:current"
     machine:
       image: << parameters.machine_image >>
     resource_class: << parameters.resource_class >>
@@ -288,9 +288,9 @@ jobs:
         type: string
         default: "mongod --version"
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2204:current
     steps:
-      - run: sudo docker run -d -v /sys/fs/cgroup/:/sys/fs/cgroup:ro --privileged --cap-add SYS_ADMIN  --name linux_systemd_container << parameters.docker_image >> /sbin/init
+      - run: sudo docker run -d --privileged --cap-add SYS_ADMIN  --name linux_systemd_container << parameters.docker_image >> /sbin/init
       - run: sudo docker ps -a
       - run: sudo docker exec -it linux_systemd_container systemctl status --no-pager
       - run: sudo docker exec -it linux_systemd_container yum install -y wget
@@ -318,9 +318,9 @@ jobs:
         type: string
         default: ""
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2204:current
     steps:
-      - run: sudo docker run -d -v /sys/fs/cgroup/:/sys/fs/cgroup:ro --privileged --cap-add SYS_ADMIN  --name linux_systemd_container << parameters.docker_image >> /sbin/init
+      - run: sudo docker run -d --privileged --cap-add SYS_ADMIN  --name linux_systemd_container << parameters.docker_image >> /sbin/init
       - run: sudo docker ps -a
       - run: sudo docker exec -it linux_systemd_container systemctl status --no-pager
       - run: sudo docker exec -it linux_systemd_container yum install -y wget
@@ -341,9 +341,13 @@ jobs:
       - run: sudo docker exec --env -it linux_systemd_container fcli show main
       - run: sudo docker exec --env -it linux_systemd_container fcli show hostgroup
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack -do_not_check_license 
-  ubuntu2004vm:
+  ubuntu_vm:
+   parameters:
+      machine_image:
+        type: string
+        default: "ubuntu-2204:current"
     machine:
-      image: ubuntu-2004:current
+      image: << parameters.machine_image >>
     steps:
       - run: sudo apt-get update
       - run: sudo DEBIAN_FRONTEND=noninteractive apt-get install -y wget systemd
@@ -383,7 +387,13 @@ jobs:
 
 # Declare jobs we will run for each commit and nightly
 common_jobs: &common_jobs
-  - ubuntu2004vm
+  # These tasks run on bare VM directly provided by CirclCI
+  - ubuntu_vm:
+      name: "Ubuntu 22.04 on VM"
+      machine_image: "ubuntu-2204:current"
+  - ubuntu_vm:
+      name: "Ubuntu 20.04 on VM"
+      machine_image: "ubuntu-2204:current"
   - ubuntu2004vm_docker
   - build_redhat:
       name: "CentOS 7"
