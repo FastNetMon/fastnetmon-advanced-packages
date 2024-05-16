@@ -2,8 +2,6 @@ version: 2.1
 
 jobs:
   build_debian_upgrade_from_community:
-    machine:
-      image: ubuntu-2004:current
     parameters:
       docker_image:
         type: string
@@ -11,6 +9,11 @@ jobs:
       systemd_prepare_command:
         type: string
         default: "true"
+      machine_image:
+        type: string
+        default: "ubuntu-2004:current"
+    machine:
+      image: << parameters.machine_image >>
     steps:
       - checkout
         # Prepare image with systemd enabled
@@ -198,8 +201,6 @@ jobs:
           name: Check UDP listens for all daemons
           command: sudo docker exec --env -it linux_systemd_container netstat -lnpu
   build_debian_panel:
-    machine:
-      image: ubuntu-2004:current
     parameters:
       docker_image:
         type: string
@@ -219,6 +220,11 @@ jobs:
       installer_file_name:
         type: string
         default: installer
+      machine_image:
+        type: string
+        default: "ubuntu-2004:current"
+    machine:
+      image: << parameters.machine_image >>
     resource_class: << parameters.resource_class >>
     steps:
       - checkout
@@ -515,6 +521,7 @@ common_jobs: &common_jobs
   - build_debian_panel:
       name: "ubuntu 22.04 with Panel"
       docker_image: "ubuntu:22.04"
+      machine_image: "ubuntu-2204:current"
 # We do not have ionCube for 8.3
 #  - build_debian_panel:
 #      name: "ubuntu 24.04 with Panel"
