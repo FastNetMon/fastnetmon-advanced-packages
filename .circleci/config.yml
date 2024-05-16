@@ -287,10 +287,12 @@ jobs:
       database_check_command:
         type: string
         default: "mongod --version"
+      mount_cgroup_command:
+        type: string
     machine:
       image: ubuntu-2204:current
     steps:
-      - run: sudo docker run -d --privileged --cap-add SYS_ADMIN  --name linux_systemd_container << parameters.docker_image >> /sbin/init
+      - run: sudo docker run -d --privileged --cap-add SYS_ADMIN << parameters.mount_cgroup_command >> --name linux_systemd_container << parameters.docker_image >> /sbin/init
       - run: sudo docker ps -a
       - run: sudo docker exec -it linux_systemd_container systemctl status --no-pager
       - run: sudo docker exec -it linux_systemd_container yum install -y wget
@@ -397,6 +399,7 @@ common_jobs: &common_jobs
   - ubuntu2004vm_docker
   - build_redhat:
       name: "CentOS 7"
+      mount_cgroup_command: "-v /sys:/sys:ro"
       docker_image: "centos:centos7"
   - build_redhat:
       name: "AlmaLinux 8"
