@@ -151,6 +151,9 @@ jobs:
       installer_file_name:
         type: string
         default: installer
+      mount_cgroup_command:
+        type: string
+        default: ""
     resource_class: << parameters.resource_class >>
     steps:
       - checkout
@@ -166,7 +169,7 @@ jobs:
       - run: ifconfig
       - run:
           name: "Deploy new systemd enabled image"
-          command: sudo docker run -d --privileged --cap-add SYS_ADMIN  --name linux_systemd_container debian_systemd /lib/systemd/systemd
+          command: sudo docker run -d --privileged --cap-add SYS_ADMIN << parameters.mount_cgroup_command >> --name linux_systemd_container debian_systemd /lib/systemd/systemd
       - run: sudo docker ps -a
       - run: sudo docker exec -it linux_systemd_container systemctl status --no-pager
       - run: sudo docker exec -it linux_systemd_container apt install -y wget net-tools
