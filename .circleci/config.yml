@@ -716,6 +716,8 @@ common_jobs: &common_jobs
       installer_arguments: "-force_old_cpu"
       # Packages for stretch were removed from normal Ubuntu repositories and we need to change paths to archive
       systemd_prepare_command: echo 'deb http://archive.debian.org/debian/ stretch contrib main non-free' | tee /etc/apt/sources.list; echo 'deb http://archive.debian.org/debian-security/ stretch/updates main contrib non-free' | tee  /etc/apt/sources.list.d/updates.list
+      # In this case installer installs FerretDB instead of MongoDB and we need to check it
+      database_check_command: "/usr/bin/ferretdb --version"
   - build_debian:
       name: "Debian 10 old cpus"
       docker_image: "debian:10"
@@ -730,14 +732,20 @@ common_jobs: &common_jobs
       name: "ubuntu 16.04 old cpus"
       docker_image: "ubuntu:16.04"
       installer_arguments: "-force_old_cpu"
+      # In this case installer installs FerretDB instead of MongoDB and we need to check it
+      database_check_command: "/usr/bin/ferretdb --version"
   - build_debian:
       name: "ubuntu 18.04 old cpus"
       docker_image: "ubuntu:18.04"
       installer_arguments: "-force_old_cpu"
+      # In this case installer installs FerretDB instead of MongoDB and we need to check it
+      database_check_command: "/usr/bin/ferretdb --version"
   - build_debian:
       name: "ubuntu 20.04 old cpus"
       docker_image: "ubuntu:20.04"
       installer_arguments: "-force_old_cpu"
+      # In this case installer installs FerretDB instead of MongoDB and we need to check it
+      database_check_command: "/usr/bin/ferretdb --version"
   - build_debian:
       name: "ubuntu 22.04 old cpus"
       docker_image: "ubuntu:22.04"
