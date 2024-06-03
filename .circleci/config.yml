@@ -706,10 +706,14 @@ common_jobs: &common_jobs
       name: "AlmaLinux 8 old cpus"
       docker_image: "almalinux:8"
       installer_arguments: "-force_old_cpu"
+      # In this case installer installs FerretDB instead of MongoDB and we need to check it
+      database_check_command: "/usr/bin/ferretdb --version"
   - build_redhat:
       name: "AlmaLinux 9 old cpus"
       docker_image: "almalinux:9"
       installer_arguments: "-force_old_cpu"
+      # In this case installer installs FerretDB instead of MongoDB and we need to check it
+      database_check_command: "/usr/bin/ferretdb --version"
   - build_debian:
       name: "Debian 9 old cpus"
       docker_image: "debian:9"
@@ -722,6 +726,8 @@ common_jobs: &common_jobs
       name: "Debian 10 old cpus"
       docker_image: "debian:10"
       installer_arguments: "-force_old_cpu"
+      # In this case installer installs FerretDB instead of MongoDB and we need to check it
+      database_check_command: "/usr/bin/ferretdb --version"
   - build_debian:
       name: "Debian 11 old cpus"
       docker_image: "debian:11"
