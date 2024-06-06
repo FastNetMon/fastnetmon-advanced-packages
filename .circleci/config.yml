@@ -565,6 +565,7 @@ common_jobs: &common_jobs
       docker_image: "ubuntu:16.04"
       # We use older verison as it has support for Cgroups v1
       machine_image: "ubuntu-2004:current"
+      database_check_command: "/usr/bin/ferretdb --version"
   - build_debian:
       name: "ubuntu 16.04 FerretDB"
       docker_image: "ubuntu:16.04"
@@ -661,6 +662,7 @@ common_jobs: &common_jobs
       installer_arguments: "-developer_version"
       # We use older verison as it has support for Cgroups v1
       machine_image: "ubuntu-2004:current"
+      database_check_command: "/usr/bin/ferretdb --version"
   - build_debian:
       name: "ubuntu 18.04 developer"
       docker_image: "ubuntu:18.04"
