@@ -318,7 +318,12 @@ jobs:
       - run: sudo docker exec --env -it linux_systemd_container fcli show main
       - run: sudo docker exec --env -it linux_systemd_container fcli show hostgroup
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack -do_not_check_license
+  #
   # It's pure legacy 
+  # https://github.com/docker/for-mac/issues/7190
+  # https://www.jeffgeerling.com/blog/2022/docker-and-systemd-getting-rid-dreaded-failed-connect-bus-error
+  # https://github.com/systemd/systemd/issues/19760#issuecomment-851565075
+  # 
   build_redhat_7_legacy:
     parameters:
       docker_image:
@@ -451,9 +456,6 @@ common_jobs: &common_jobs
   - ubuntu2004vm_docker
   - build_redhat_7_legacy:
       name: "CentOS 7"
-      # Fix from: https://github.com/docker/for-mac/issues/7190 and https://www.jeffgeerling.com/blog/2022/docker-and-systemd-getting-rid-dreaded-failed-connect-bus-error
-      # https://github.com/systemd/systemd/issues/19760#issuecomment-851565075
-      mount_cgroup_command: "-v /sys/fs/cgroup:/sys/fs/cgroup --cgroupns=host"
       docker_image: "centos:centos7"
   - build_redhat:
       name: "AlmaLinux 8"
