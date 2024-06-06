@@ -461,7 +461,7 @@ common_jobs: &common_jobs
   - build_redhat:
       name: "AlmaLinux 9"
       docker_image: "almalinux:9"
-  - build_redhat:
+  - build_redhat_7_legacy:
       name: "CentOS 7 FerretDB"
       docker_image: "centos:centos7"
       installer_arguments: "-ferretdb"
@@ -476,7 +476,7 @@ common_jobs: &common_jobs
       docker_image: "almalinux:9"
       installer_arguments: "-ferretdb"
       database_check_command: "/usr/bin/ferretdb --version"
-  - build_redhat:
+  - build_redhat_7_legacy:
       name: "CentOS 7 developer"
       docker_image: "centos:centos7"
       installer_arguments: "-developer_version"
@@ -488,7 +488,7 @@ common_jobs: &common_jobs
       name: "AlmaLinux 9 developer"
       docker_image: "almalinux:9"
       installer_arguments: "-developer_version"
-  - build_redhat:
+  - build_redhat_7_legacy:
       name: "CentOS 7 FerretDB developer"
       docker_image: "centos:centos7"
       installer_arguments: "-developer_version -ferretdb"
@@ -503,9 +503,6 @@ common_jobs: &common_jobs
       docker_image: "almalinux:9"
       installer_arguments: "-developer_version -ferretdb"
       database_check_command: "/usr/bin/ferretdb --version"
-  - build_redhat_upgrade_from_community:
-      name: "CentOS 7 upgrade from community"
-      docker_image: "centos:centos7"
   - build_redhat_upgrade_from_community:
       name: "AlmaLinux 8 upgrade from community"
       docker_image: "almalinux:8"
@@ -604,9 +601,6 @@ common_jobs: &common_jobs
       docker_image: "ubuntu:24.04"
       installer_arguments: "-ferretdb"
       database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian_upgrade_from_community:
-      name: "ubuntu 16.04 upgrade from community"
-      docker_image: "ubuntu:16.04"
   - build_debian_upgrade_from_community:
       name: "ubuntu 18.04 upgrade from community"
       docker_image: "ubuntu:18.04"
