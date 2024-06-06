@@ -130,8 +130,6 @@ jobs:
           name: Check UDP listens for all daemons
           command: sudo docker exec --env -it linux_systemd_container netstat -lnpu
   build_debian:
-    machine:
-      image: ubuntu-2204:current
     parameters:
       docker_image:
         type: string
@@ -154,6 +152,11 @@ jobs:
       mount_cgroup_command:
         type: string
         default: ""
+      machine_image:
+        type: string
+        default: "ubuntu-2204:current"
+    machine:
+      image: << parameters.machine_image >>
     resource_class: << parameters.resource_class >>
     steps:
       - checkout
@@ -560,11 +563,15 @@ common_jobs: &common_jobs
   - build_debian:
       name: "ubuntu 16.04"
       docker_image: "ubuntu:16.04"
+      # We use older verison as it has support for Cgroups v1
+      machine_image: "ubuntu-2004:current"
   - build_debian:
       name: "ubuntu 16.04 FerretDB"
       docker_image: "ubuntu:16.04"
       installer_arguments: "-ferretdb"
       database_check_command: "/usr/bin/ferretdb --version"
+      # We use older verison as it has support for Cgroups v1
+      machine_image: "ubuntu-2004:current"
   - build_debian:
       name: "ubuntu 18.04"
       docker_image: "ubuntu:18.04"
@@ -652,6 +659,8 @@ common_jobs: &common_jobs
       name: "ubuntu 16.04 developer"
       docker_image: "ubuntu:16.04"
       installer_arguments: "-developer_version"
+      # We use older verison as it has support for Cgroups v1
+      machine_image: "ubuntu-2004:current"
   - build_debian:
       name: "ubuntu 18.04 developer"
       docker_image: "ubuntu:18.04"
@@ -688,6 +697,8 @@ common_jobs: &common_jobs
       docker_image: "ubuntu:16.04"
       installer_arguments: "-developer_version -ferretdb"
       database_check_command: "/usr/bin/ferretdb --version"
+      # We use older verison as it has support for Cgroups v1
+      machine_image: "ubuntu-2004:current"
   - build_debian:
       name: "ubuntu 18.04 FerretDB developer"
       docker_image: "ubuntu:18.04"
@@ -788,6 +799,8 @@ common_jobs: &common_jobs
       installer_arguments: "-force_old_cpu"
       # In this case installer installs FerretDB instead of MongoDB and we need to check it
       database_check_command: "/usr/bin/ferretdb --version"
+      # We use older verison as it has support for Cgroups v1
+      machine_image: "ubuntu-2004:current"
   - build_debian:
       name: "ubuntu 18.04 old cpus"
       docker_image: "ubuntu:18.04"
