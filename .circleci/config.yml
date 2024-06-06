@@ -742,7 +742,7 @@ common_jobs: &common_jobs
       resource_class: "arm.large"
       installer_file_name: "installer_arm64"
       database_check_command: "/usr/bin/ferretdb --version"
-  - build_redhat:
+  - build_redhat_7_legacy:
       name: "CentOS 7 old cpus"
       docker_image: "centos:centos7"
       installer_arguments: "-force_old_cpu"
