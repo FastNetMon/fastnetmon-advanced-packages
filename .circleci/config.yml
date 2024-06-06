@@ -403,7 +403,8 @@ common_jobs: &common_jobs
   - ubuntu2004vm_docker
   - build_redhat:
       name: "CentOS 7"
-      mount_cgroup_command: "-v /sys:/sys:ro"
+      # Fix from: https://github.com/docker/for-mac/issues/7190
+      mount_cgroup_command: "-v /sys/fs/cgroup:/sys/fs/cgroup"
       docker_image: "centos:centos7"
   - build_redhat:
       name: "AlmaLinux 8"
