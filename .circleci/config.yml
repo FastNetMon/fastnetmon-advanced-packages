@@ -405,8 +405,8 @@ common_jobs: &common_jobs
   - ubuntu2004vm_docker
   - build_redhat:
       name: "CentOS 7"
-      # Fix from: https://github.com/docker/for-mac/issues/7190
-      mount_cgroup_command: "-v /sys/fs/cgroup:/sys/fs/cgroup"
+      # Fix from: https://github.com/docker/for-mac/issues/7190 and https://www.jeffgeerling.com/blog/2022/docker-and-systemd-getting-rid-dreaded-failed-connect-bus-error
+      mount_cgroup_command: "-v /sys/fs/cgroup:/sys/fs/cgroup --cgroupns=host"
       docker_image: "centos:centos7"
   - build_redhat:
       name: "AlmaLinux 8"
