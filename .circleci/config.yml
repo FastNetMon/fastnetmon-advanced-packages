@@ -158,6 +158,7 @@ jobs:
     steps:
       - checkout
         # Prepare image with systemd enabled
+      - run: sudo docker version
       - run: echo -e "FROM << parameters.docker_image >>\n"                          >  Dockerfile
       - run: echo -e "ENV DEBIAN_FRONTEND noninteractive\n"                          >> Dockerfile
       - run: echo -e "RUN << parameters.systemd_prepare_command >>\n"                >> Dockerfile
@@ -296,6 +297,7 @@ jobs:
     machine:
       image: ubuntu-2204:current
     steps:
+      - run: sudo docker version
       - run: sudo docker run -d --privileged --cap-add SYS_ADMIN << parameters.mount_cgroup_command >> --name linux_systemd_container << parameters.docker_image >> /sbin/init
       - run: sudo docker ps -a
       - run: sudo docker exec -it linux_systemd_container systemctl status --no-pager
