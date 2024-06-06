@@ -11,7 +11,7 @@ jobs:
         default: "true"
       machine_image:
         type: string
-        default: "ubuntu-2204:current"
+        default: "ubuntu-2404:current"
     machine:
       image: << parameters.machine_image >>
     steps:
@@ -46,7 +46,7 @@ jobs:
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -import_community_edition_configuration
   build_debian_ipv6:
     machine:
-      image: ubuntu-2204:current
+      image: ubuntu-2404:current
     parameters:
       docker_image:
         type: string
@@ -131,7 +131,7 @@ jobs:
           command: sudo docker exec --env -it linux_systemd_container netstat -lnpu
   build_debian:
     machine:
-      image: ubuntu-2204:current
+      image: ubuntu-2404:current
     parameters:
       docker_image:
         type: string
@@ -226,7 +226,7 @@ jobs:
         default: installer
       machine_image:
         type: string
-        default: "ubuntu-2204:current"
+        default: "ubuntu-2404:current"
     machine:
       image: << parameters.machine_image >>
     resource_class: << parameters.resource_class >>
@@ -295,7 +295,7 @@ jobs:
         type: string
         default: ""
     machine:
-      image: ubuntu-2204:current
+      image: ubuntu-2404:current
     steps:
       - run: sudo docker version
       - run: sudo docker run -d --privileged --cap-add SYS_ADMIN << parameters.mount_cgroup_command >> --name linux_systemd_container << parameters.docker_image >> /sbin/init
@@ -338,7 +338,7 @@ jobs:
         type: string
         default: ""
     machine:
-      image: ubuntu-2204:current
+      image: ubuntu-2404:current
     steps:
       - run: sudo docker version
       # As first step please build Docker container with modern systemd which will work with fresh Ubuntu
@@ -377,7 +377,7 @@ jobs:
         type: string
         default: ""
     machine:
-      image: ubuntu-2204:current
+      image: ubuntu-2404:current
     steps:
       - run: sudo docker run -d --privileged --cap-add SYS_ADMIN  --name linux_systemd_container << parameters.docker_image >> /sbin/init
       - run: sudo docker ps -a
@@ -404,7 +404,6 @@ jobs:
     parameters:
       machine_image:
         type: string
-        default: "ubuntu-2204:current"
     machine:
       image: << parameters.machine_image >>
     steps:
@@ -448,11 +447,14 @@ jobs:
 common_jobs: &common_jobs
   # These tasks run on bare VM directly provided by CirclCI
   - ubuntu_vm:
+      name: "Ubuntu 24.04 on VM"
+      machine_image: "ubuntu-2404:current"
+  - ubuntu_vm:
       name: "Ubuntu 22.04 on VM"
       machine_image: "ubuntu-2204:current"
   - ubuntu_vm:
       name: "Ubuntu 20.04 on VM"
-      machine_image: "ubuntu-2204:current"
+      machine_image: "ubuntu-2004:current"
   - ubuntu2004vm_docker
   - build_redhat_7_legacy:
       name: "CentOS 7"
@@ -587,7 +589,7 @@ common_jobs: &common_jobs
   - build_debian_panel:
       name: "ubuntu 22.04 with Panel"
       docker_image: "ubuntu:22.04"
-      machine_image: "ubuntu-2204:current"
+      machine_image: "ubuntu-2404:current"
 # We do not have ionCube for 8.3
 #  - build_debian_panel:
 #      name: "ubuntu 24.04 with Panel"
