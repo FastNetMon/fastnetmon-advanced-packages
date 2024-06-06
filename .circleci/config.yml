@@ -318,6 +318,52 @@ jobs:
       - run: sudo docker exec --env -it linux_systemd_container fcli show main
       - run: sudo docker exec --env -it linux_systemd_container fcli show hostgroup
       - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack -do_not_check_license
+  # It's pure legacy 
+  build_redhat_7_legacy:
+    parameters:
+      docker_image:
+        type: string
+      installer_arguments:
+        type: string
+        default: ""
+      database_check_command:
+        type: string
+        default: "mongod --version"
+      mount_cgroup_command:
+        type: string
+        default: ""
+    machine:
+      image: ubuntu-2204:current
+    steps:
+      - run: sudo docker version
+      # As first step please build Docker container with modern systemd which will work with fresh Ubuntu
+      - run: echo -e "FROM centos:centos7\n"                          >  Dockerfile
+      # It's repo with modern systemd https://maciej.lasyk.info/2016/Dec/16/systemd-231-latest-in-centos-7-thx-to-facebook/
+      - run: echo -e "RUN  curl https://copr.fedorainfracloud.org/coprs/jsynacek/systemd-backports-for-centos-7/repo/epel-7/jsynacek-systemd-backports-for-centos-7-epel-7.repo -o /etc/yum.repos.d/jsynacek-systemd-centos-7.repo\n" >> Dockerfile
+      - run: echo -e "RUN yum update systemd -y\n" >> Dockerfile
+      - run: echo -e "CMD [\"/sbin/init\"]"                                >> Dockerfile
+      - run: cat Dockerfile | sudo docker build --tag centos_systemd -
+      - run: sudo docker run -d --privileged --cap-add SYS_ADMIN << parameters.mount_cgroup_command >> --name linux_systemd_container centos_systemd /sbin/init
+      - run: sudo docker ps -a
+      - run: sudo docker exec -it linux_systemd_container systemctl status --no-pager
+      - run: sudo docker exec -it linux_systemd_container yum install -y wget
+      - run:
+          name: "Download installer, for CentOS 7 we have issue with Let's encrypt and we need to skip certificate validation"
+          command: sudo docker exec -it linux_systemd_container wget --no-check-certificate https://install.fastnetmon.com/installer?random-argument-to-disable-caching-$CIRCLE_WORKFLOW_JOB_ID -Oinstaller
+      - run: sudo docker exec -it linux_systemd_container chmod +x installer
+      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -do_not_check_license << parameters.installer_arguments >>
+      - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fastnetmon
+      - run: sudo docker exec --env -it linux_systemd_container cat /var/log/fastnetmon/fastnetmon.log
+      - run: sudo docker exec --env -it linux_systemd_container systemctl status fastnetmon
+      - run: sudo docker exec --env -it linux_systemd_container << parameters.database_check_command >>
+      - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/traffic_db
+      - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fill_dictionaries
+      - run: sudo docker exec --env -it linux_systemd_container /opt/fastnetmon/app/bin/fastnetmon --configuration_check
+      - run: sudo docker exec --env -it linux_systemd_container fcli show fastnetmon_version
+      - run: sudo docker exec --env -it linux_systemd_container fcli show main
+      - run: sudo docker exec --env -it linux_systemd_container fcli show hostgroup
+      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack -do_not_check_license
+
   build_redhat_upgrade_from_community:
     parameters:
       docker_image:
@@ -403,9 +449,10 @@ common_jobs: &common_jobs
       name: "Ubuntu 20.04 on VM"
       machine_image: "ubuntu-2204:current"
   - ubuntu2004vm_docker
-  - build_redhat:
+  - build_redhat_7_legacy:
       name: "CentOS 7"
       # Fix from: https://github.com/docker/for-mac/issues/7190 and https://www.jeffgeerling.com/blog/2022/docker-and-systemd-getting-rid-dreaded-failed-connect-bus-error
+      # https://github.com/systemd/systemd/issues/19760#issuecomment-851565075
       mount_cgroup_command: "-v /sys/fs/cgroup:/sys/fs/cgroup --cgroupns=host"
       docker_image: "centos:centos7"
   - build_redhat:
