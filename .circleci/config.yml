@@ -155,6 +155,9 @@ jobs:
       machine_image:
         type: string
         default: "ubuntu-2204:current"
+      visual_installer_command:
+        type: string
+        default: "./installer -install_graphic_stack -do_not_check_license"
     machine:
       image: << parameters.machine_image >>
     resource_class: << parameters.resource_class >>
@@ -200,7 +203,7 @@ jobs:
       - run:
           name: Check UDP listens for FastNetMon and database
           command: sudo docker exec --env -it linux_systemd_container netstat -lnpu
-      - run: sudo docker exec --env "CI=true" -it linux_systemd_container ./installer -install_graphic_stack -do_not_check_license
+      - run: sudo docker exec --env "CI=true" -it linux_systemd_container << parameters.visual_installer_command >>
       - run:
           name: Check TCP listens for all daemons
           command: sudo docker exec --env -it linux_systemd_container netstat -lnpt
@@ -566,6 +569,8 @@ common_jobs: &common_jobs
       # We use older verison as it has support for Cgroups v1
       machine_image: "ubuntu-2004:current"
       database_check_command: "/usr/bin/ferretdb --version"
+      # We deprecated visual for 16.04 due to Clikchouse issues
+      visual_installer_command: "true"
   - build_debian:
       name: "ubuntu 16.04 FerretDB"
       docker_image: "ubuntu:16.04"
@@ -573,6 +578,8 @@ common_jobs: &common_jobs
       database_check_command: "/usr/bin/ferretdb --version"
       # We use older verison as it has support for Cgroups v1
       machine_image: "ubuntu-2004:current"
+      # We deprecated visual for 16.04 due to Clikchouse issues
+      visual_installer_command: "true"
   - build_debian:
       name: "ubuntu 18.04"
       docker_image: "ubuntu:18.04"
@@ -663,6 +670,8 @@ common_jobs: &common_jobs
       # We use older verison as it has support for Cgroups v1
       machine_image: "ubuntu-2004:current"
       database_check_command: "/usr/bin/ferretdb --version"
+      # We deprecated visual for 16.04 due to Clikchouse issues
+      visual_installer_command: "true"
   - build_debian:
       name: "ubuntu 18.04 developer"
       docker_image: "ubuntu:18.04"
@@ -701,6 +710,8 @@ common_jobs: &common_jobs
       database_check_command: "/usr/bin/ferretdb --version"
       # We use older verison as it has support for Cgroups v1
       machine_image: "ubuntu-2004:current"
+      # We deprecated visual for 16.04 due to Clikchouse issues
+      visual_installer_command: "true"
   - build_debian:
       name: "ubuntu 18.04 FerretDB developer"
       docker_image: "ubuntu:18.04"
