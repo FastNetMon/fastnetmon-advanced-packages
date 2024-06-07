@@ -569,7 +569,7 @@ common_jobs: &common_jobs
       # We use older verison as it has support for Cgroups v1
       machine_image: "ubuntu-2004:current"
       database_check_command: "/usr/bin/ferretdb --version"
-      # We deprecated visual for 16.04 due to Clikchouse issues
+      # We deprecated visual for 16.04 due to Clickhouse issues
       visual_installer_command: "true"
   - build_debian:
       name: "ubuntu 16.04 FerretDB"
@@ -578,7 +578,7 @@ common_jobs: &common_jobs
       database_check_command: "/usr/bin/ferretdb --version"
       # We use older verison as it has support for Cgroups v1
       machine_image: "ubuntu-2004:current"
-      # We deprecated visual for 16.04 due to Clikchouse issues
+      # We deprecated visual for 16.04 due to Clickhouse issues
       visual_installer_command: "true"
   - build_debian:
       name: "ubuntu 18.04"
@@ -670,7 +670,7 @@ common_jobs: &common_jobs
       # We use older verison as it has support for Cgroups v1
       machine_image: "ubuntu-2004:current"
       database_check_command: "/usr/bin/ferretdb --version"
-      # We deprecated visual for 16.04 due to Clikchouse issues
+      # We deprecated visual for 16.04 due to Clickhouse issues
       visual_installer_command: "true"
   - build_debian:
       name: "ubuntu 18.04 developer"
@@ -710,7 +710,7 @@ common_jobs: &common_jobs
       database_check_command: "/usr/bin/ferretdb --version"
       # We use older verison as it has support for Cgroups v1
       machine_image: "ubuntu-2004:current"
-      # We deprecated visual for 16.04 due to Clikchouse issues
+      # We deprecated visual for 16.04 due to Clickhouse issues
       visual_installer_command: "true"
   - build_debian:
       name: "ubuntu 18.04 FerretDB developer"
@@ -814,6 +814,8 @@ common_jobs: &common_jobs
       database_check_command: "/usr/bin/ferretdb --version"
       # We use older verison as it has support for Cgroups v1
       machine_image: "ubuntu-2004:current"
+      # We deprecated visual for 16.04 due to Clickhouse issues
+      visual_installer_command: "true"
   - build_debian:
       name: "ubuntu 18.04 old cpus"
       docker_image: "ubuntu:18.04"
