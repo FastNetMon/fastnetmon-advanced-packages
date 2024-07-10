@@ -351,6 +351,10 @@ jobs:
       - run: echo -e "FROM centos:centos7\n"                          >  Dockerfile
       # It's repo with modern systemd https://maciej.lasyk.info/2016/Dec/16/systemd-231-latest-in-centos-7-thx-to-facebook/
       - run: echo -e "RUN  curl https://copr.fedorainfracloud.org/coprs/jsynacek/systemd-backports-for-centos-7/repo/epel-7/jsynacek-systemd-backports-for-centos-7-epel-7.repo -o /etc/yum.repos.d/jsynacek-systemd-centos-7.repo\n" >> Dockerfile
+        # CentOS 7 is EOL and we need to fix repos to be able to install anything
+      - run: echo -e "RUN sed -i '/mirrorlist/d' /etc/yum.repos.d/CentOS-Base.repo\n" >> Dockerfile
+      - run: echo -e "RUN sed -i 's/#baseurl/baseurl/' /etc/yum.repos.d/CentOS-Base.repo\n" >> Dockerfile
+      - run: echo -e "RUN sed -i 's/mirror.centos.org/vault.centos.org/' /etc/yum.repos.d/CentOS-Base.repo\n" >> Dockerfile
       - run: echo -e "RUN yum update systemd -y\n" >> Dockerfile
       - run: echo -e "CMD [\"/sbin/init\"]"                                >> Dockerfile
       - run: cat Dockerfile | sudo docker build --tag centos_systemd -
