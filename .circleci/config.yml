@@ -522,11 +522,6 @@ common_jobs: &common_jobs
       name: "AlmaLinux 9 upgrade from community"
       docker_image: "almalinux:9"
   - build_debian:
-      name: "Debian 9"
-      docker_image: "debian:9"
-      # Packages for stretch were removed from normal Ubuntu repositories and we need to change paths to archive
-      systemd_prepare_command: echo 'deb http://archive.debian.org/debian/ stretch contrib main non-free' | tee /etc/apt/sources.list; echo 'deb http://archive.debian.org/debian-security/ stretch/updates main contrib non-free' | tee  /etc/apt/sources.list.d/updates.list
-  - build_debian:
       name: "Debian 10"
       docker_image: "debian:10"
   - build_debian:
@@ -556,11 +551,6 @@ common_jobs: &common_jobs
       docker_image: "debian:12"
       installer_arguments: "-ferretdb"
       database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian_upgrade_from_community:
-      name: "Debian 9 upgrade from community"
-      docker_image: "debian:9"
-      # Packages for stretch were removed from normal Ubuntu repositories and we need to change paths to archive
-      systemd_prepare_command: echo 'deb http://archive.debian.org/debian/ stretch contrib main non-free' | tee /etc/apt/sources.list; echo 'deb http://archive.debian.org/debian-security/ stretch/updates main contrib non-free' | tee  /etc/apt/sources.list.d/updates.list
   - build_debian_upgrade_from_community:
       name: "Debian 10 upgrade from community"
       docker_image: "debian:10"
@@ -617,12 +607,6 @@ common_jobs: &common_jobs
   - build_debian_upgrade_from_community:
       name: "ubuntu 24.04 upgrade from community"
       docker_image: "ubuntu:24.04"
-  - build_debian:
-      name: "Debian 9 developer"
-      docker_image: "debian:9"
-      installer_arguments: "-developer_version"
-      # Packages for stretch were removed from normal Ubuntu repositories and we need to change paths to archive
-      systemd_prepare_command: echo 'deb http://archive.debian.org/debian/ stretch contrib main non-free' | tee /etc/apt/sources.list; echo 'deb http://archive.debian.org/debian-security/ stretch/updates main contrib non-free' | tee  /etc/apt/sources.list.d/updates.list
   - build_debian:
       name: "Debian 10 developer"
       docker_image: "debian:10"
@@ -753,14 +737,6 @@ common_jobs: &common_jobs
       name: "AlmaLinux 9 old cpus"
       docker_image: "almalinux:9"
       installer_arguments: "-force_old_cpu"
-      # In this case installer installs FerretDB instead of MongoDB and we need to check it
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian:
-      name: "Debian 9 old cpus"
-      docker_image: "debian:9"
-      installer_arguments: "-force_old_cpu"
-      # Packages for stretch were removed from normal Ubuntu repositories and we need to change paths to archive
-      systemd_prepare_command: echo 'deb http://archive.debian.org/debian/ stretch contrib main non-free' | tee /etc/apt/sources.list; echo 'deb http://archive.debian.org/debian-security/ stretch/updates main contrib non-free' | tee  /etc/apt/sources.list.d/updates.list
       # In this case installer installs FerretDB instead of MongoDB and we need to check it
       database_check_command: "/usr/bin/ferretdb --version"
   - build_debian:
