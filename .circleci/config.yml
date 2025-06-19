@@ -568,23 +568,6 @@ common_jobs: &common_jobs
       name: "Debian 11 upgrade from community"
       docker_image: "debian:11"
   - build_debian:
-      name: "ubuntu 16.04"
-      docker_image: "ubuntu:16.04"
-      # We use older verison as it has support for Cgroups v1
-      machine_image: "ubuntu-2004:current"
-      database_check_command: "/usr/bin/ferretdb --version"
-      # We deprecated visual for 16.04 due to Clickhouse issues
-      visual_installer_command: "true"
-  - build_debian:
-      name: "ubuntu 16.04 FerretDB"
-      docker_image: "ubuntu:16.04"
-      installer_arguments: "-ferretdb"
-      database_check_command: "/usr/bin/ferretdb --version"
-      # We use older verison as it has support for Cgroups v1
-      machine_image: "ubuntu-2004:current"
-      # We deprecated visual for 16.04 due to Clickhouse issues
-      visual_installer_command: "true"
-  - build_debian:
       name: "ubuntu 18.04"
       docker_image: "ubuntu:18.04"
   - build_debian:
@@ -668,15 +651,6 @@ common_jobs: &common_jobs
       installer_arguments: "-developer_version -ferretdb" 
       database_check_command: "/usr/bin/ferretdb --version"
   - build_debian:
-      name: "ubuntu 16.04 developer"
-      docker_image: "ubuntu:16.04"
-      installer_arguments: "-developer_version"
-      # We use older verison as it has support for Cgroups v1
-      machine_image: "ubuntu-2004:current"
-      database_check_command: "/usr/bin/ferretdb --version"
-      # We deprecated visual for 16.04 due to Clickhouse issues
-      visual_installer_command: "true"
-  - build_debian:
       name: "ubuntu 18.04 developer"
       docker_image: "ubuntu:18.04"
       installer_arguments: "-developer_version"
@@ -707,15 +681,6 @@ common_jobs: &common_jobs
       resource_class: "arm.large"
       installer_file_name: "installer_arm64"
       database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian:
-      name: "ubuntu 16.04 FerretDB developer"
-      docker_image: "ubuntu:16.04"
-      installer_arguments: "-developer_version -ferretdb"
-      database_check_command: "/usr/bin/ferretdb --version"
-      # We use older verison as it has support for Cgroups v1
-      machine_image: "ubuntu-2004:current"
-      # We deprecated visual for 16.04 due to Clickhouse issues
-      visual_installer_command: "true"
   - build_debian:
       name: "ubuntu 18.04 FerretDB developer"
       docker_image: "ubuntu:18.04"
@@ -810,16 +775,6 @@ common_jobs: &common_jobs
       installer_arguments: "-force_old_cpu"
       # In this case installer installs FerretDB instead of MongoDB and we need to check it
       database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian:
-      name: "ubuntu 16.04 old cpus"
-      docker_image: "ubuntu:16.04"
-      installer_arguments: "-force_old_cpu"
-      # In this case installer installs FerretDB instead of MongoDB and we need to check it
-      database_check_command: "/usr/bin/ferretdb --version"
-      # We use older verison as it has support for Cgroups v1
-      machine_image: "ubuntu-2004:current"
-      # We deprecated visual for 16.04 due to Clickhouse issues
-      visual_installer_command: "true"
   - build_debian:
       name: "ubuntu 18.04 old cpus"
       docker_image: "ubuntu:18.04"
