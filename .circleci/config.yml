@@ -606,6 +606,7 @@ common_jobs: &common_jobs
       installer_arguments: "-developer_version -ferretdb"
       resource_class: "arm.large"
       installer_file_name: "installer_arm64"
+      database_check_command: "/usr/bin/ferretdb --version"
   - build_debian_ipv6:
       name: "ubuntu 22.04 ARM FerretDB IPv6 developer"
       docker_image: "ubuntu:22.04"
