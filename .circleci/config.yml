@@ -559,8 +559,6 @@ common_jobs: &common_jobs
       name: "ubuntu 24.04 developer"
       docker_image: "ubuntu:24.04"
       installer_arguments: "-developer_version"
-      # In this case installer installs FerretDB instead of MongoDB and we need to check it
-      database_check_command: "/usr/bin/ferretdb --version"
   - build_debian:
       name: "ubuntu 22.04 ARM developer"
       docker_image: "ubuntu:22.04"
@@ -614,7 +612,6 @@ common_jobs: &common_jobs
       installer_arguments: "-developer_version -ferretdb"
       resource_class: "arm.large"
       installer_file_name: "installer_arm64"
-      database_check_command: "/usr/bin/ferretdb --version"
   - build_debian_ipv6:
       name: "ubuntu 22.04 ARM FerretDB IPv6 developer"
       docker_image: "ubuntu:22.04"
