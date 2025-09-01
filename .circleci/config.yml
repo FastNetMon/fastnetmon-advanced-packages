@@ -498,11 +498,6 @@ common_jobs: &common_jobs
       name: "ubuntu 22.04 with Panel"
       docker_image: "ubuntu:22.04"
       machine_image: "ubuntu-2204:current"
-# We do not have ionCube for 8.3
-#  - build_debian_panel:
-#      name: "ubuntu 24.04 with Panel"
-#      docker_image: "ubuntu:24.04"
-#      database_check_command: "/usr/bin/ferretdb --version"
   - build_debian:
       name: "ubuntu 22.04 FerretDB"
       docker_image: "ubuntu:22.04"
@@ -571,7 +566,6 @@ common_jobs: &common_jobs
       installer_arguments: "-developer_version" 
       resource_class: "arm.large"
       installer_file_name: "installer_arm64"
-      database_check_command: "/usr/bin/ferretdb --version"
   - build_debian:
       name: "ubuntu 18.04 FerretDB developer"
       docker_image: "ubuntu:18.04"
@@ -678,8 +672,6 @@ common_jobs: &common_jobs
   - build_debian:
       name: "ubuntu 24.04"
       docker_image: "ubuntu:24.04"
-      # In this case installer installs FerretDB instead of MongoDB and we need to check it
-      database_check_command: "/usr/bin/ferretdb --version"
 
 # We have two different workflows to trigger same tasks on commit and nightly
 workflows:
