@@ -377,6 +377,12 @@ common_jobs: &common_jobs
       name: "Debian 11"
       docker_image: "debian:11"
   - build_debian:
+      name: "Debian 11 old cpus"
+      docker_image: "debian:11"
+      installer_arguments: "-force_old_cpu"
+      # In this case installer installs FerretDB instead of MongoDB and we need to check it
+      database_check_command: "/usr/bin/ferretdb --version"
+  - build_debian:
       name: "Debian 11 FerretDB"
       docker_image: "debian:11"
       installer_arguments: "-ferretdb"
@@ -393,6 +399,20 @@ common_jobs: &common_jobs
   - build_debian:
       name: "Debian 12 FerretDB"
       docker_image: "debian:12"
+      installer_arguments: "-ferretdb"
+      database_check_command: "/usr/bin/ferretdb --version"
+  - build_debian:
+      name: "Debian 13"
+      docker_image: "debian:13"
+  - build_debian:
+      name: "Debian 13 old cpus"
+      docker_image: "debian:13"
+      installer_arguments: "-force_old_cpu"
+      # In this case installer installs FerretDB instead of MongoDB and we need to check it
+      database_check_command: "/usr/bin/ferretdb --version"
+  - build_debian:
+      name: "Debian 13 FerretDB"
+      docker_image: "debian:13"
       installer_arguments: "-ferretdb"
       database_check_command: "/usr/bin/ferretdb --version"
   - build_debian_upgrade_from_community:
@@ -448,6 +468,10 @@ common_jobs: &common_jobs
       docker_image: "debian:12"
       installer_arguments: "-developer_version"
   - build_debian:
+      name: "Debian 13 developer"
+      docker_image: "debian:13"
+      installer_arguments: "-developer_version"
+  - build_debian:
       name: "Debian 11 FerretDB developer"
       docker_image: "debian:11"
       installer_arguments: "-developer_version -ferretdb"
@@ -455,6 +479,11 @@ common_jobs: &common_jobs
   - build_debian:
       name: "Debian 12 FerretDB developer"
       docker_image: "debian:12"
+      installer_arguments: "-developer_version -ferretdb" 
+      database_check_command: "/usr/bin/ferretdb --version"
+  - build_debian:
+      name: "Debian 13 FerretDB developer"
+      docker_image: "debian:13"
       installer_arguments: "-developer_version -ferretdb" 
       database_check_command: "/usr/bin/ferretdb --version"
   - build_debian:
@@ -547,12 +576,6 @@ common_jobs: &common_jobs
       # In this case installer installs FerretDB instead of MongoDB and we need to check it
       database_check_command: "/usr/bin/ferretdb --version"
   - build_debian:
-      name: "Debian 11 old cpus"
-      docker_image: "debian:11"
-      installer_arguments: "-force_old_cpu"
-      # In this case installer installs FerretDB instead of MongoDB and we need to check it
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian:
       name: "ubuntu 18.04 old cpus"
       docker_image: "ubuntu:18.04"
       installer_arguments: "-force_old_cpu"
@@ -588,7 +611,6 @@ common_jobs: &common_jobs
 
 # We have two different workflows to trigger same tasks on commit and nightly
 workflows:
-  version: 2
   all_distros_nightly:
     jobs:
       *common_jobs
