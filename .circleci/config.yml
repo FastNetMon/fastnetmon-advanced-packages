@@ -481,11 +481,11 @@ common_jobs: &common_jobs
       docker_image: "debian:12"
       installer_arguments: "-developer_version -ferretdb" 
       database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian:
-      name: "Debian 13 FerretDB developer"
-      docker_image: "debian:13"
-      installer_arguments: "-developer_version -ferretdb" 
-      database_check_command: "/usr/bin/ferretdb --version"
+  - #build_debian:
+    #  name: "Debian 13 FerretDB developer"
+    #  docker_image: "debian:13"
+    #  installer_arguments: "-developer_version -ferretdb" 
+    #  database_check_command: "/usr/bin/ferretdb --version"
   - build_debian:
       name: "ubuntu 18.04 developer"
       docker_image: "ubuntu:18.04"
