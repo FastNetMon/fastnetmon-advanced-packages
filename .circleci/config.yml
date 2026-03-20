@@ -467,10 +467,10 @@ common_jobs: &common_jobs
       name: "Debian 12 developer"
       docker_image: "debian:12"
       installer_arguments: "-developer_version"
-  - build_debian:
-      name: "Debian 13 developer"
-      docker_image: "debian:13"
-      installer_arguments: "-developer_version"
+  #- build_debian:
+  #    name: "Debian 13 developer"
+  #    docker_image: "debian:13"
+  #    installer_arguments: "-developer_version"
   - build_debian:
       name: "Debian 11 FerretDB developer"
       docker_image: "debian:11"
