@@ -418,6 +418,9 @@ common_jobs: &common_jobs
   - build_debian_upgrade_from_community:
       name: "Debian 11 upgrade from community"
       docker_image: "debian:11"
+  - build_debian_upgrade_from_community:
+      name: "Debian 13 upgrade from community"
+      docker_image: "debian:13"
   - build_debian:
       name: "ubuntu 18.04"
       docker_image: "ubuntu:18.04"
@@ -467,10 +470,10 @@ common_jobs: &common_jobs
       name: "Debian 12 developer"
       docker_image: "debian:12"
       installer_arguments: "-developer_version"
-  #- build_debian:
-  #    name: "Debian 13 developer"
-  #    docker_image: "debian:13"
-  #    installer_arguments: "-developer_version"
+  - build_debian:
+      name: "Debian 13 developer"
+      docker_image: "debian:13"
+      installer_arguments: "-developer_version"
   - build_debian:
       name: "Debian 11 FerretDB developer"
       docker_image: "debian:11"
@@ -481,11 +484,11 @@ common_jobs: &common_jobs
       docker_image: "debian:12"
       installer_arguments: "-developer_version -ferretdb" 
       database_check_command: "/usr/bin/ferretdb --version"
-  #- build_debian:
-  #    name: "Debian 13 FerretDB developer"
-  #    docker_image: "debian:13"
-  #    installer_arguments: "-developer_version -ferretdb" 
-  #    database_check_command: "/usr/bin/ferretdb --version"
+  - build_debian:
+      name: "Debian 13 FerretDB developer"
+      docker_image: "debian:13"
+      installer_arguments: "-developer_version -ferretdb" 
+      database_check_command: "/usr/bin/ferretdb --version"
   - build_debian:
       name: "ubuntu 18.04 developer"
       docker_image: "ubuntu:18.04"
