@@ -38,7 +38,7 @@ jobs:
       - run: sudo docker exec --env -it linux_systemd_container systemctl status fastnetmon
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/traffic_db
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fill_dictionaries
-      - run: sudo docker exec --env -it linux_systemd_container /opt/fastnetmon/app/bin/fastnetmon --configuration_check
+      - run: sudo docker exec --env -it linux_systemd_container /opt/fastnetmon/app/bin/fastnetmon --configuration_check --log_to_console
       - run: sudo docker exec --env -it linux_systemd_container fcli show fastnetmon_version
       - run: sudo docker exec --env -it linux_systemd_container fcli show main
       - run: sudo docker exec --env -it linux_systemd_container fcli show hostgroup
@@ -112,7 +112,7 @@ jobs:
       - run: sudo docker exec --env -it linux_systemd_container << parameters.database_check_command >>
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/traffic_db
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fill_dictionaries
-      - run: sudo docker exec --env -it linux_systemd_container /opt/fastnetmon/app/bin/fastnetmon --configuration_check
+      - run: sudo docker exec --env -it linux_systemd_container /opt/fastnetmon/app/bin/fastnetmon --configuration_check --log_to_console
       - run: sudo docker exec --env -it linux_systemd_container fcli show fastnetmon_version
       - run: sudo docker exec --env -it linux_systemd_container fcli show main
       - run: sudo docker exec --env -it linux_systemd_container fcli show hostgroup
@@ -193,7 +193,7 @@ jobs:
       - run: sudo docker exec --env -it linux_systemd_container << parameters.database_check_command >>
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/traffic_db
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fill_dictionaries
-      - run: sudo docker exec --env -it linux_systemd_container /opt/fastnetmon/app/bin/fastnetmon --configuration_check
+      - run: sudo docker exec --env -it linux_systemd_container /opt/fastnetmon/app/bin/fastnetmon --configuration_check --log_to_console
       - run: sudo docker exec --env -it linux_systemd_container fcli show fastnetmon_version
       - run: sudo docker exec --env -it linux_systemd_container fcli show main
       - run: sudo docker exec --env -it linux_systemd_container fcli show hostgroup
@@ -242,7 +242,7 @@ jobs:
       - run: sudo docker exec --env -it linux_systemd_container << parameters.database_check_command >>
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/traffic_db
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fill_dictionaries
-      - run: sudo docker exec --env -it linux_systemd_container /opt/fastnetmon/app/bin/fastnetmon --configuration_check
+      - run: sudo docker exec --env -it linux_systemd_container /opt/fastnetmon/app/bin/fastnetmon --configuration_check --log_to_console
       - run: sudo docker exec --env -it linux_systemd_container fcli show fastnetmon_version
       - run: sudo docker exec --env -it linux_systemd_container fcli show main
       - run: sudo docker exec --env -it linux_systemd_container fcli show hostgroup
@@ -274,7 +274,7 @@ jobs:
       - run: sudo docker exec --env -it linux_systemd_container mongod --version
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/traffic_db
       - run: sudo docker exec --env -it linux_systemd_container ldd /opt/fastnetmon/app/bin/fill_dictionaries
-      - run: sudo docker exec --env -it linux_systemd_container /opt/fastnetmon/app/bin/fastnetmon --configuration_check
+      - run: sudo docker exec --env -it linux_systemd_container /opt/fastnetmon/app/bin/fastnetmon --configuration_check --log_to_console
       - run: sudo docker exec --env -it linux_systemd_container fcli show fastnetmon_version
       - run: sudo docker exec --env -it linux_systemd_container fcli show main
       - run: sudo docker exec --env -it linux_systemd_container fcli show hostgroup
@@ -297,7 +297,7 @@ jobs:
       - run: ldd /opt/fastnetmon/app/bin/fastnetmon
       - run: ldd /opt/fastnetmon/app/bin/traffic_db
       - run: ldd /opt/fastnetmon/app/bin/fill_dictionaries
-      - run: sudo /opt/fastnetmon/app/bin/fastnetmon --configuration_check
+      - run: sudo /opt/fastnetmon/app/bin/fastnetmon --configuration_check --log_to_console
       - store_artifacts:
           path: /var/log/fastnetmon/fastnetmon.log
       - run: sudo systemctl status fastnetmon --no-pager
@@ -377,6 +377,12 @@ common_jobs: &common_jobs
       name: "Debian 11"
       docker_image: "debian:11"
   - build_debian:
+      name: "Debian 11 old cpus"
+      docker_image: "debian:11"
+      installer_arguments: "-force_old_cpu"
+      # In this case installer installs FerretDB instead of MongoDB and we need to check it
+      database_check_command: "/usr/bin/ferretdb --version"
+  - build_debian:
       name: "Debian 11 FerretDB"
       docker_image: "debian:11"
       installer_arguments: "-ferretdb"
@@ -395,9 +401,26 @@ common_jobs: &common_jobs
       docker_image: "debian:12"
       installer_arguments: "-ferretdb"
       database_check_command: "/usr/bin/ferretdb --version"
+  - build_debian:
+      name: "Debian 13"
+      docker_image: "debian:13"
+  - build_debian:
+      name: "Debian 13 old cpus"
+      docker_image: "debian:13"
+      installer_arguments: "-force_old_cpu"
+      # In this case installer installs FerretDB instead of MongoDB and we need to check it
+      database_check_command: "/usr/bin/ferretdb --version"
+  - build_debian:
+      name: "Debian 13 FerretDB"
+      docker_image: "debian:13"
+      installer_arguments: "-ferretdb"
+      database_check_command: "/usr/bin/ferretdb --version"
   - build_debian_upgrade_from_community:
       name: "Debian 11 upgrade from community"
       docker_image: "debian:11"
+  - build_debian_upgrade_from_community:
+      name: "Debian 13 upgrade from community"
+      docker_image: "debian:13"
   - build_debian:
       name: "ubuntu 18.04"
       docker_image: "ubuntu:18.04"
@@ -448,6 +471,10 @@ common_jobs: &common_jobs
       docker_image: "debian:12"
       installer_arguments: "-developer_version"
   - build_debian:
+      name: "Debian 13 developer"
+      docker_image: "debian:13"
+      installer_arguments: "-developer_version"
+  - build_debian:
       name: "Debian 11 FerretDB developer"
       docker_image: "debian:11"
       installer_arguments: "-developer_version -ferretdb"
@@ -455,6 +482,11 @@ common_jobs: &common_jobs
   - build_debian:
       name: "Debian 12 FerretDB developer"
       docker_image: "debian:12"
+      installer_arguments: "-developer_version -ferretdb" 
+      database_check_command: "/usr/bin/ferretdb --version"
+  - build_debian:
+      name: "Debian 13 FerretDB developer"
+      docker_image: "debian:13"
       installer_arguments: "-developer_version -ferretdb" 
       database_check_command: "/usr/bin/ferretdb --version"
   - build_debian:
@@ -547,12 +579,6 @@ common_jobs: &common_jobs
       # In this case installer installs FerretDB instead of MongoDB and we need to check it
       database_check_command: "/usr/bin/ferretdb --version"
   - build_debian:
-      name: "Debian 11 old cpus"
-      docker_image: "debian:11"
-      installer_arguments: "-force_old_cpu"
-      # In this case installer installs FerretDB instead of MongoDB and we need to check it
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian:
       name: "ubuntu 18.04 old cpus"
       docker_image: "ubuntu:18.04"
       installer_arguments: "-force_old_cpu"
@@ -588,7 +614,6 @@ common_jobs: &common_jobs
 
 # We have two different workflows to trigger same tasks on commit and nightly
 workflows:
-  version: 2
   all_distros_nightly:
     jobs:
       *common_jobs
