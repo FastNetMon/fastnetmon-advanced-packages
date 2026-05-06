@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  #schedule:
+  #  - cron: "0 2 * * *" # UTC
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build_debian:
+    name: ${{ matrix.name }}
+    uses: ./.github/workflows/build-debian.yml
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Ubuntu 24.04
+            docker_image: ubuntu:24.04
+    with:
+      docker_image: ${{ matrix.docker_image }}
+      installer_arguments:  ${{ matrix.installer_arguments || '' }}
+      systemd_prepare_command: ${{ matrix.systemd_prepare_command || 'true' }}
+      database_check_command: ${{ matrix.database_check_command || 'mongod --version'}}
+      runner: ${{ matrix.runner || 'ubuntu-24.04' }}
+      installer_file_name: ${{ matrix.installer_file_name || 'installer' }}
+      mount_cgroup_command: ${{ matrix.mount_cgroup_command || ''}}
+      visual_installer_command: ${{ matrix.visual_installer_command || './installer -install_graphic_stack -do_not_check_license'}}

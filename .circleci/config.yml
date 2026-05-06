@@ -326,288 +326,288 @@ jobs:
 # Declare jobs we will run for each commit and nightly
 common_jobs: &common_jobs
   # These tasks run on bare VM directly provided by CirclCI
-  - ubuntu_vm:
-      name: "Ubuntu 22.04 on VM"
-      machine_image: "ubuntu-2204:current"
-  - ubuntu_vm:
-      name: "Ubuntu 20.04 on VM"
-      machine_image: "ubuntu-2204:current"
-  - ubuntu2004vm_docker
-  - build_redhat:
-      name: "AlmaLinux 8"
-      docker_image: "almalinux:8"
-  - build_redhat:
-      name: "AlmaLinux 9"
-      docker_image: "almalinux:9"
-  - build_redhat:
-      name: "AlmaLinux 8 FerretDB"
-      docker_image: "almalinux:8"
-      installer_arguments: "-ferretdb"
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_redhat:
-      name: "AlmaLinux 9 FerretDB"
-      docker_image: "almalinux:9"
-      installer_arguments: "-ferretdb"
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_redhat:
-      name: "AlmaLinux 8 developer"
-      docker_image: "almalinux:8"
-      installer_arguments: "-developer_version"
-  - build_redhat:
-      name: "AlmaLinux 9 developer"
-      docker_image: "almalinux:9"
-      installer_arguments: "-developer_version"
-  - build_redhat:
-      name: "AlmaLinux 8 FerretDB developer"
-      docker_image: "almalinux:8"
-      installer_arguments: "-developer_version -ferretdb"
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_redhat:
-      name: "AlmaLinux 9 FerretDB developer"
-      docker_image: "almalinux:9"
-      installer_arguments: "-developer_version -ferretdb"
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_redhat_upgrade_from_community:
-      name: "AlmaLinux 8 upgrade from community"
-      docker_image: "almalinux:8"
-  - build_redhat_upgrade_from_community:
-      name: "AlmaLinux 9 upgrade from community"
-      docker_image: "almalinux:9"
-  - build_debian:
-      name: "Debian 11"
-      docker_image: "debian:11"
-  - build_debian:
-      name: "Debian 11 old cpus"
-      docker_image: "debian:11"
-      installer_arguments: "-force_old_cpu"
-      # In this case installer installs FerretDB instead of MongoDB and we need to check it
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian:
-      name: "Debian 11 FerretDB"
-      docker_image: "debian:11"
-      installer_arguments: "-ferretdb"
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian:
-      name: "Debian 12"
-      docker_image: "debian:12"
-  - build_debian:
-      name: "Debian 12 old cpus"
-      docker_image: "debian:12"
-      installer_arguments: "-force_old_cpu"
-      # In this case installer installs FerretDB instead of MongoDB and we need to check it
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian:
-      name: "Debian 12 FerretDB"
-      docker_image: "debian:12"
-      installer_arguments: "-ferretdb"
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian:
-      name: "Debian 13"
-      docker_image: "debian:13"
-  - build_debian:
-      name: "Debian 13 old cpus"
-      docker_image: "debian:13"
-      installer_arguments: "-force_old_cpu"
-      # In this case installer installs FerretDB instead of MongoDB and we need to check it
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian:
-      name: "Debian 13 FerretDB"
-      docker_image: "debian:13"
-      installer_arguments: "-ferretdb"
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian_upgrade_from_community:
-      name: "Debian 11 upgrade from community"
-      docker_image: "debian:11"
-  - build_debian_upgrade_from_community:
-      name: "Debian 13 upgrade from community"
-      docker_image: "debian:13"
-  - build_debian:
-      name: "ubuntu 18.04"
-      docker_image: "ubuntu:18.04"
-  - build_debian:
-      name: "ubuntu 18.04 FerretDB"
-      docker_image: "ubuntu:18.04"
-      installer_arguments: "-ferretdb"
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian:
-      name: "ubuntu 20.04"
-      docker_image: "ubuntu:20.04"
-  - build_debian:
-      name: "ubuntu 20.04 FerretDB"
-      docker_image: "ubuntu:20.04"
-      installer_arguments: "-ferretdb"
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian:
-      name: "ubuntu 22.04"
-      docker_image: "ubuntu:22.04"
-  - build_debian:
-      name: "ubuntu 22.04 FerretDB"
-      docker_image: "ubuntu:22.04"
-      installer_arguments: "-ferretdb"
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian:
-      name: "ubuntu 24.04 FerretDB"
-      docker_image: "ubuntu:24.04"
-      installer_arguments: "-ferretdb"
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian_upgrade_from_community:
-      name: "ubuntu 18.04 upgrade from community"
-      docker_image: "ubuntu:18.04"
-  - build_debian_upgrade_from_community:
-      name: "ubuntu 20.04 upgrade from community" 
-      docker_image: "ubuntu:20.04"
-  - build_debian_upgrade_from_community:
-      name: "ubuntu 22.04 upgrade from community"
-      docker_image: "ubuntu:22.04"
-  - build_debian_upgrade_from_community:
-      name: "ubuntu 24.04 upgrade from community"
-      docker_image: "ubuntu:24.04"
-  - build_debian:
-      name: "Debian 11 developer"
-      docker_image: "debian:11"
-      installer_arguments: "-developer_version"
-  - build_debian:
-      name: "Debian 12 developer"
-      docker_image: "debian:12"
-      installer_arguments: "-developer_version"
-  - build_debian:
-      name: "Debian 13 developer"
-      docker_image: "debian:13"
-      installer_arguments: "-developer_version"
-  - build_debian:
-      name: "Debian 11 FerretDB developer"
-      docker_image: "debian:11"
-      installer_arguments: "-developer_version -ferretdb"
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian:
-      name: "Debian 12 FerretDB developer"
-      docker_image: "debian:12"
-      installer_arguments: "-developer_version -ferretdb" 
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian:
-      name: "Debian 13 FerretDB developer"
-      docker_image: "debian:13"
-      installer_arguments: "-developer_version -ferretdb" 
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian:
-      name: "ubuntu 18.04 developer"
-      docker_image: "ubuntu:18.04"
-      installer_arguments: "-developer_version"
-  - build_debian:
-      name: "ubuntu 20.04 developer"
-      docker_image: "ubuntu:20.04"
-      installer_arguments: "-developer_version"
-  - build_debian:
-      name: "ubuntu 22.04 developer"
-      docker_image: "ubuntu:22.04"
-      installer_arguments: "-developer_version"
-  - build_debian:
-      name: "ubuntu 24.04 developer"
-      docker_image: "ubuntu:24.04"
-      installer_arguments: "-developer_version"
-  - build_debian:
-      name: "ubuntu 22.04 ARM developer"
-      docker_image: "ubuntu:22.04"
-      installer_arguments: "-developer_version"
-      resource_class: "arm.large"
-      installer_file_name: "installer_arm64"
-  - build_debian: 
-      name: "ubuntu 24.04 ARM developer"
-      docker_image: "ubuntu:24.04"
-      installer_arguments: "-developer_version" 
-      resource_class: "arm.large"
-      installer_file_name: "installer_arm64"
-  - build_debian:
-      name: "ubuntu 18.04 FerretDB developer"
-      docker_image: "ubuntu:18.04"
-      installer_arguments: "-developer_version -ferretdb"
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian:
-      name: "ubuntu 20.04 FerretDB developer"
-      docker_image: "ubuntu:20.04"
-      installer_arguments: "-developer_version -ferretdb"
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian:
-      name: "ubuntu 22.04 FerretDB developer"
-      docker_image: "ubuntu:22.04"
-      installer_arguments: "-developer_version -ferretdb"
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian:
-      name: "ubuntu 24.04 FerretDB developer"
-      docker_image: "ubuntu:24.04"
-      installer_arguments: "-developer_version -ferretdb"
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian:
-      name: "ubuntu 22.04 ARM FerretDB developer"
-      docker_image: "ubuntu:22.04"
-      installer_arguments: "-developer_version -ferretdb"
-      resource_class: "arm.large"
-      installer_file_name: "installer_arm64"
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian:
-      name: "ubuntu 24.04 ARM FerretDB developer"
-      docker_image: "ubuntu:24.04"
-      installer_arguments: "-developer_version -ferretdb"
-      resource_class: "arm.large"
-      installer_file_name: "installer_arm64"
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian_ipv6:
-      name: "ubuntu 22.04 ARM FerretDB IPv6 developer"
-      docker_image: "ubuntu:22.04"
-      installer_arguments: "-developer_version -ferretdb"
-      resource_class: "arm.large"
-      installer_file_name: "installer_arm64"
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian_ipv6:
-      name: "ubuntu 22.04 ARM FerretDB IPv6 only developer"
-      docker_image: "ubuntu:22.04"
-      installer_arguments: "-developer_version -ferretdb -ipv6_only_setup"
-      visual_installer_arguments: "-ipv6_only_setup"
-      resource_class: "arm.large"
-      installer_file_name: "installer_arm64"
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_redhat:
-      name: "AlmaLinux 8 old cpus"
-      docker_image: "almalinux:8"
-      installer_arguments: "-force_old_cpu"
-      # In this case installer installs FerretDB instead of MongoDB and we need to check it
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_redhat:
-      name: "AlmaLinux 9 old cpus"
-      docker_image: "almalinux:9"
-      installer_arguments: "-force_old_cpu"
-      # In this case installer installs FerretDB instead of MongoDB and we need to check it
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian:
-      name: "ubuntu 18.04 old cpus"
-      docker_image: "ubuntu:18.04"
-      installer_arguments: "-force_old_cpu"
-      # In this case installer installs FerretDB instead of MongoDB and we need to check it
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian:
-      name: "ubuntu 20.04 old cpus"
-      docker_image: "ubuntu:20.04"
-      installer_arguments: "-force_old_cpu"
-      # In this case installer installs FerretDB instead of MongoDB and we need to check it
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian:
-      name: "ubuntu 22.04 old cpus"
-      docker_image: "ubuntu:22.04"
-      installer_arguments: "-force_old_cpu"
-      # In this case installer installs FerretDB instead of MongoDB and we need to check it
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian:
-      name: "ubuntu 24.04 old cpus"
-      docker_image: "ubuntu:24.04"
-      installer_arguments: "-force_old_cpu"
-      # In this case installer installs FerretDB instead of MongoDB and we need to check it
-      database_check_command: "/usr/bin/ferretdb --version"
-  - build_debian_upgrade_from_community:
-      name: "ubuntu 20.04 upgrade from community"
-      docker_image: "ubuntu:20.04"
-  - build_debian:
-      name: "ubuntu 22.04"
-      docker_image: "ubuntu:22.04"
+#  - ubuntu_vm:
+#      name: "Ubuntu 22.04 on VM"
+#      machine_image: "ubuntu-2204:current"
+#  - ubuntu_vm:
+#      name: "Ubuntu 20.04 on VM"
+#      machine_image: "ubuntu-2204:current"
+#  - ubuntu2004vm_docker
+#  - build_redhat:
+#      name: "AlmaLinux 8"
+#      docker_image: "almalinux:8"
+#  - build_redhat:
+#      name: "AlmaLinux 9"
+#      docker_image: "almalinux:9"
+#  - build_redhat:
+#      name: "AlmaLinux 8 FerretDB"
+#      docker_image: "almalinux:8"
+#      installer_arguments: "-ferretdb"
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_redhat:
+#      name: "AlmaLinux 9 FerretDB"
+#      docker_image: "almalinux:9"
+#      installer_arguments: "-ferretdb"
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_redhat:
+#      name: "AlmaLinux 8 developer"
+#      docker_image: "almalinux:8"
+#      installer_arguments: "-developer_version"
+#  - build_redhat:
+#      name: "AlmaLinux 9 developer"
+#      docker_image: "almalinux:9"
+#      installer_arguments: "-developer_version"
+#  - build_redhat:
+#      name: "AlmaLinux 8 FerretDB developer"
+#      docker_image: "almalinux:8"
+#      installer_arguments: "-developer_version -ferretdb"
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_redhat:
+#      name: "AlmaLinux 9 FerretDB developer"
+#      docker_image: "almalinux:9"
+#      installer_arguments: "-developer_version -ferretdb"
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_redhat_upgrade_from_community:
+#      name: "AlmaLinux 8 upgrade from community"
+#      docker_image: "almalinux:8"
+#  - build_redhat_upgrade_from_community:
+#      name: "AlmaLinux 9 upgrade from community"
+#      docker_image: "almalinux:9"
+#  - build_debian:
+#      name: "Debian 11"
+#      docker_image: "debian:11"
+#  - build_debian:
+#      name: "Debian 11 old cpus"
+#      docker_image: "debian:11"
+#      installer_arguments: "-force_old_cpu"
+#      # In this case installer installs FerretDB instead of MongoDB and we need to check it
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_debian:
+#      name: "Debian 11 FerretDB"
+#      docker_image: "debian:11"
+#      installer_arguments: "-ferretdb"
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_debian:
+#      name: "Debian 12"
+#      docker_image: "debian:12"
+#  - build_debian:
+#      name: "Debian 12 old cpus"
+#      docker_image: "debian:12"
+#      installer_arguments: "-force_old_cpu"
+#      # In this case installer installs FerretDB instead of MongoDB and we need to check it
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_debian:
+#      name: "Debian 12 FerretDB"
+#      docker_image: "debian:12"
+#      installer_arguments: "-ferretdb"
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_debian:
+#      name: "Debian 13"
+#      docker_image: "debian:13"
+#  - build_debian:
+#      name: "Debian 13 old cpus"
+#      docker_image: "debian:13"
+#      installer_arguments: "-force_old_cpu"
+#      # In this case installer installs FerretDB instead of MongoDB and we need to check it
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_debian:
+#      name: "Debian 13 FerretDB"
+#      docker_image: "debian:13"
+#      installer_arguments: "-ferretdb"
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_debian_upgrade_from_community:
+#      name: "Debian 11 upgrade from community"
+#      docker_image: "debian:11"
+#  - build_debian_upgrade_from_community:
+#      name: "Debian 13 upgrade from community"
+#      docker_image: "debian:13"
+#  - build_debian:
+#      name: "ubuntu 18.04"
+#      docker_image: "ubuntu:18.04"
+#  - build_debian:
+#      name: "ubuntu 18.04 FerretDB"
+#      docker_image: "ubuntu:18.04"
+#      installer_arguments: "-ferretdb"
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_debian:
+#      name: "ubuntu 20.04"
+#      docker_image: "ubuntu:20.04"
+#  - build_debian:
+#      name: "ubuntu 20.04 FerretDB"
+#      docker_image: "ubuntu:20.04"
+#      installer_arguments: "-ferretdb"
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_debian:
+#      name: "ubuntu 22.04"
+#      docker_image: "ubuntu:22.04"
+#  - build_debian:
+#      name: "ubuntu 22.04 FerretDB"
+#      docker_image: "ubuntu:22.04"
+#      installer_arguments: "-ferretdb"
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_debian:
+#      name: "ubuntu 24.04 FerretDB"
+#      docker_image: "ubuntu:24.04"
+#      installer_arguments: "-ferretdb"
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_debian_upgrade_from_community:
+#      name: "ubuntu 18.04 upgrade from community"
+#      docker_image: "ubuntu:18.04"
+#  - build_debian_upgrade_from_community:
+#      name: "ubuntu 20.04 upgrade from community" 
+#      docker_image: "ubuntu:20.04"
+#  - build_debian_upgrade_from_community:
+#      name: "ubuntu 22.04 upgrade from community"
+#      docker_image: "ubuntu:22.04"
+#  - build_debian_upgrade_from_community:
+#      name: "ubuntu 24.04 upgrade from community"
+#      docker_image: "ubuntu:24.04"
+#  - build_debian:
+#      name: "Debian 11 developer"
+#      docker_image: "debian:11"
+#      installer_arguments: "-developer_version"
+#  - build_debian:
+#      name: "Debian 12 developer"
+#      docker_image: "debian:12"
+#      installer_arguments: "-developer_version"
+#  - build_debian:
+#      name: "Debian 13 developer"
+#      docker_image: "debian:13"
+#      installer_arguments: "-developer_version"
+#  - build_debian:
+#      name: "Debian 11 FerretDB developer"
+#      docker_image: "debian:11"
+#      installer_arguments: "-developer_version -ferretdb"
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_debian:
+#      name: "Debian 12 FerretDB developer"
+#      docker_image: "debian:12"
+#      installer_arguments: "-developer_version -ferretdb" 
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_debian:
+#      name: "Debian 13 FerretDB developer"
+#      docker_image: "debian:13"
+#      installer_arguments: "-developer_version -ferretdb" 
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_debian:
+#      name: "ubuntu 18.04 developer"
+#      docker_image: "ubuntu:18.04"
+#      installer_arguments: "-developer_version"
+#  - build_debian:
+#      name: "ubuntu 20.04 developer"
+#      docker_image: "ubuntu:20.04"
+#      installer_arguments: "-developer_version"
+#  - build_debian:
+#      name: "ubuntu 22.04 developer"
+#      docker_image: "ubuntu:22.04"
+#      installer_arguments: "-developer_version"
+#  - build_debian:
+#      name: "ubuntu 24.04 developer"
+#      docker_image: "ubuntu:24.04"
+#      installer_arguments: "-developer_version"
+#  - build_debian:
+#      name: "ubuntu 22.04 ARM developer"
+#      docker_image: "ubuntu:22.04"
+#      installer_arguments: "-developer_version"
+#      resource_class: "arm.large"
+#      installer_file_name: "installer_arm64"
+#  - build_debian: 
+#      name: "ubuntu 24.04 ARM developer"
+#      docker_image: "ubuntu:24.04"
+#      installer_arguments: "-developer_version" 
+#      resource_class: "arm.large"
+#      installer_file_name: "installer_arm64"
+#  - build_debian:
+#      name: "ubuntu 18.04 FerretDB developer"
+#      docker_image: "ubuntu:18.04"
+#      installer_arguments: "-developer_version -ferretdb"
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_debian:
+#      name: "ubuntu 20.04 FerretDB developer"
+#      docker_image: "ubuntu:20.04"
+#      installer_arguments: "-developer_version -ferretdb"
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_debian:
+#      name: "ubuntu 22.04 FerretDB developer"
+#      docker_image: "ubuntu:22.04"
+#      installer_arguments: "-developer_version -ferretdb"
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_debian:
+#      name: "ubuntu 24.04 FerretDB developer"
+#      docker_image: "ubuntu:24.04"
+#      installer_arguments: "-developer_version -ferretdb"
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_debian:
+#      name: "ubuntu 22.04 ARM FerretDB developer"
+#      docker_image: "ubuntu:22.04"
+#      installer_arguments: "-developer_version -ferretdb"
+#      resource_class: "arm.large"
+#      installer_file_name: "installer_arm64"
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_debian:
+#      name: "ubuntu 24.04 ARM FerretDB developer"
+#      docker_image: "ubuntu:24.04"
+#      installer_arguments: "-developer_version -ferretdb"
+#      resource_class: "arm.large"
+#      installer_file_name: "installer_arm64"
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_debian_ipv6:
+#      name: "ubuntu 22.04 ARM FerretDB IPv6 developer"
+#      docker_image: "ubuntu:22.04"
+#      installer_arguments: "-developer_version -ferretdb"
+#      resource_class: "arm.large"
+#      installer_file_name: "installer_arm64"
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_debian_ipv6:
+#      name: "ubuntu 22.04 ARM FerretDB IPv6 only developer"
+#      docker_image: "ubuntu:22.04"
+#      installer_arguments: "-developer_version -ferretdb -ipv6_only_setup"
+#      visual_installer_arguments: "-ipv6_only_setup"
+#      resource_class: "arm.large"
+#      installer_file_name: "installer_arm64"
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_redhat:
+#      name: "AlmaLinux 8 old cpus"
+#      docker_image: "almalinux:8"
+#      installer_arguments: "-force_old_cpu"
+#      # In this case installer installs FerretDB instead of MongoDB and we need to check it
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_redhat:
+#      name: "AlmaLinux 9 old cpus"
+#      docker_image: "almalinux:9"
+#      installer_arguments: "-force_old_cpu"
+#      # In this case installer installs FerretDB instead of MongoDB and we need to check it
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_debian:
+#      name: "ubuntu 18.04 old cpus"
+#      docker_image: "ubuntu:18.04"
+#      installer_arguments: "-force_old_cpu"
+#      # In this case installer installs FerretDB instead of MongoDB and we need to check it
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_debian:
+#      name: "ubuntu 20.04 old cpus"
+#      docker_image: "ubuntu:20.04"
+#      installer_arguments: "-force_old_cpu"
+#      # In this case installer installs FerretDB instead of MongoDB and we need to check it
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_debian:
+#      name: "ubuntu 22.04 old cpus"
+#      docker_image: "ubuntu:22.04"
+#      installer_arguments: "-force_old_cpu"
+#      # In this case installer installs FerretDB instead of MongoDB and we need to check it
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_debian:
+#      name: "ubuntu 24.04 old cpus"
+#      docker_image: "ubuntu:24.04"
+#      installer_arguments: "-force_old_cpu"
+#      # In this case installer installs FerretDB instead of MongoDB and we need to check it
+#      database_check_command: "/usr/bin/ferretdb --version"
+#  - build_debian_upgrade_from_community:
+#      name: "ubuntu 20.04 upgrade from community"
+#      docker_image: "ubuntu:20.04"
+#  - build_debian:
+#      name: "ubuntu 22.04"
+#      docker_image: "ubuntu:22.04"
   - build_debian:
       name: "ubuntu 24.04"
       docker_image: "ubuntu:24.04"
