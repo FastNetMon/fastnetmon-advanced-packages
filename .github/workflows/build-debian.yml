@@ -41,6 +41,7 @@ jobs:
         uname -a
         uname -m
         docker version
+        docker network inspect bridge
     - name: Generate Dockerfile
       run: | 
         cat > Dockerfile <<EOF

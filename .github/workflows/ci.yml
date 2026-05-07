@@ -21,6 +21,13 @@ jobs:
         include:
           - name: Ubuntu 24.04
             docker_image: ubuntu:24.04
+          - name: Ubuntu 22.04 ARM FerretDB IPv6 developer
+            docker_image: ubuntu:22.04
+            installer_arguments: "-developer_version -ferretdb -ipv6_only_setup"
+            visual_installer_command: "./installer -install_graphic_stack -do_not_check_license -ipv6_only_setup"
+            installer_file_name: installer_arm64
+            database_check_command: "/usr/bin/ferretdb --version"
+            runner: ubuntu-24.04-arm
     with:
       docker_image: ${{ matrix.docker_image }}
       installer_arguments:  ${{ matrix.installer_arguments || '' }}
