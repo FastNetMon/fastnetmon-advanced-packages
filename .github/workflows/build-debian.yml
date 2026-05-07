@@ -81,7 +81,7 @@ jobs:
       run: sudo docker exec linux_systemd_container netstat -lnpt
     - name: Check UDP listens for FastNetMon and database
       run: sudo docker exec linux_systemd_container netstat -lnpu
-    - run: sudo docker exec --env "CI=true" -it linux_systemd_container ${{ inputs.visual_installer_command }}
+    - run: sudo docker exec --env "CI=true" linux_systemd_container ${{ inputs.visual_installer_command }}
     - name: Check TCP listens for all daemons
       run: sudo docker exec linux_systemd_container netstat -lnpt
     - name: Check UDP listens for all daemons
