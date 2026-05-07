@@ -28,6 +28,7 @@ jobs:
             installer_file_name: installer_arm64
             database_check_command: "/usr/bin/ferretdb --version"
             runner: ubuntu-24.04-arm
+            enable_ipv6: true
     with:
       docker_image: ${{ matrix.docker_image }}
       installer_arguments:  ${{ matrix.installer_arguments || '' }}
@@ -37,3 +38,4 @@ jobs:
       installer_file_name: ${{ matrix.installer_file_name || 'installer' }}
       mount_cgroup_command: ${{ matrix.mount_cgroup_command || ''}}
       visual_installer_command: ${{ matrix.visual_installer_command || './installer -install_graphic_stack -do_not_check_license'}}
+      enable_ipv6: ${{ matrix.enable_ipv6 || false }}

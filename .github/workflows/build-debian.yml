@@ -31,6 +31,9 @@ on:
       visual_installer_command:
         type: string
         default: "./installer -install_graphic_stack -do_not_check_license"
+      enable_ipv6:
+        type: boolean
+        default: false
 
 jobs:
   build:
@@ -41,6 +44,20 @@ jobs:
         uname -a
         uname -m
         docker version
+        docker network inspect bridge
+    - name: Enable IPv6
+      if: ${{ inputs.enable_ipv6 }}
+      run: |
+        cat <<'EOF' | sudo tee /etc/docker/daemon.json
+        {
+          "ipv6": true,
+          "fixed-cidr-v6": "2001:db8:1::/64",
+          "ip6tables": true
+        }
+        EOF
+
+        sudo systemctl restart docker
+
         docker network inspect bridge
     - name: Generate Dockerfile
       run: | 
