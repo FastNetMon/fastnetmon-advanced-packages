@@ -31,7 +31,7 @@ jobs:
         uname -a
         uname -m
         docker version
-        dockerpnetwork inspect bridge
+        docker network inspect bridge
     
     - run: sudo docker run -d --privileged --cap-add SYS_ADMIN ${{ inputs.mount_cgroup_command }} --name linux_systemd_container ${{ inputs.docker_image }} /sbin/init
     - run: sudo docker ps -a
