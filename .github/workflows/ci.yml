@@ -39,3 +39,17 @@ jobs:
       mount_cgroup_command: ${{ matrix.mount_cgroup_command || ''}}
       visual_installer_command: ${{ matrix.visual_installer_command || './installer -install_graphic_stack -do_not_check_license'}}
       enable_ipv6: ${{ matrix.enable_ipv6 || false }}
+
+  build_debian_from_community:
+    name: ${{ matrix.name }}
+    uses: ./.github/workflows/build-debian-upgrade-from-community.yml
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Ubuntu 20.04 upgrade from community
+            docker_image: ubuntu:20.04
+    with:
+      docker_image: ${{ matrix.docker_image }}
+      systemd_prepare_command: ${{ matrix.systemd_prepare_command || 'true' }}
+      runner: ${{ matrix.runner || 'ubuntu-24.04' }}
