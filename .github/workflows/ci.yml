@@ -53,3 +53,24 @@ jobs:
       docker_image: ${{ matrix.docker_image }}
       systemd_prepare_command: ${{ matrix.systemd_prepare_command || 'true' }}
       runner: ${{ matrix.runner || 'ubuntu-24.04' }}
+
+  build_rhel:
+    name: ${{ matrix.name }}
+    uses: ./.github/workflows/build-redhat.yml
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: AlmaLinux 8
+            docker_image: almalinx:8
+
+          - name: AlmaLinux 8 upgrade from community
+            docker_image: almalinx:8
+            upgrade_from_community: true
+    with:
+      docker_image: ${{ matrix.docker_image }}
+      installer_arguments:  ${{ matrix.installer_arguments || '' }}
+      database_check_command: ${{ matrix.database_check_command || 'mongod --version'}}
+      mount_cgroup_command: ${{ matrix.mount_cgroup_command || ''}}
+      upgrade_from_community: ${{ matrix.upgrade_from_community || false }}
+      runner: ${{ matrix.runner || 'ubuntu-24.04' }}

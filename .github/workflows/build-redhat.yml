@@ -1,0 +1,60 @@
+name: build-redhat
+
+on:
+  workflow_call:
+    inputs:
+      docker_image:
+        type: string
+        required: true
+      installer_arguments:
+        type: string
+        default: ""
+      database_check_command:
+        type: string
+        default: "mongod --version"
+      runner:
+        type: string
+        default: ubuntu-24.04
+      mount_cgroup_command:
+        type: string
+        default: ""
+      upgrade_from_community:
+        type: boolean
+        default: false
+
+jobs:
+  build:
+    runs-on: ${{ inputs.runner }}
+    steps:
+    - name: Show environment
+      run: |
+        uname -a
+        uname -m
+        docker version
+        dockerpnetwork inspect bridge
+    
+    - run: sudo docker run -d --privileged --cap-add SYS_ADMIN ${{ inputs.mount_cgroup_command }} --name linux_systemd_container ${{ inputs.docker_image }} /sbin/init
+    - run: sudo docker ps -a
+    - run: sudo docker exec linux_systemd_container systemctl status --no-pager
+    - run: sudo docker exec linux_systemd_container yum install -y wget
+    - name: "Download installer, for CentOS 7 we have issue with Let's encrypt and we need to skip certificate validation"
+      run: sudo docker exec linux_systemd_container wget --no-check-certificate https://install.fastnetmon.com/installer?random-argument-to-disable-caching-${{github.run_id }} -Oinstaller
+    - run: sudo docker exec linux_systemd_container chmod +x installer
+    - name: Install community 
+      if: ${{ inputs.upgrade_from_community }}
+      run: sudo docker exec --env "CI=true" linux_systemd_container ./installer -install_community_edition
+    - run: sudo docker exec --env "CI=true" linux_systemd_container ./installer -do_not_check_license ${{ inputs.installer_arguments }}
+    - run: sudo docker exec linux_systemd_container ldd /opt/fastnetmon/app/bin/fastnetmon
+    - run: sudo docker exec linux_systemd_container cat /var/log/fastnetmon/fastnetmon.log
+    - run: sudo docker exec linux_systemd_container systemctl status fastnetmon
+    - run: sudo docker exec linux_systemd_container ${{ inputs.database_check_command }}
+    - run: sudo docker exec linux_systemd_container ldd /opt/fastnetmon/app/bin/traffic_db
+    - run: sudo docker exec linux_systemd_container ldd /opt/fastnetmon/app/bin/fill_dictionaries
+    - run: sudo docker exec linux_systemd_container /opt/fastnetmon/app/bin/fastnetmon --configuration_check --log_to_console
+    - run: sudo docker exec linux_systemd_container fcli show fastnetmon_version
+    - run: sudo docker exec linux_systemd_container fcli show main
+    - run: sudo docker exec linux_systemd_container fcli show hostgroup
+    - run: sudo docker exec --env "CI=true" linux_systemd_container ./installer -install_graphic_stack -do_not_check_license
+    - name: Import community configuration
+      if: ${{ inputs.upgrade_from_community }}
+      run: sudo docker exec --env "CI=true" linux_systemd_container ./installer -import_community_edition_configuration
