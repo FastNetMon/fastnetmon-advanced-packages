@@ -14,7 +14,7 @@ jobs:
       - run: sudo CI=true ./installer -fastnetmon_docker
       - run: cat /tmp/fastnetmon_install.log
       - run: sudo chmod -R 755 /var/lib/fastnetmon_docker # make permissions more relaxed to get log file as artifact
-      - run: /var/lib/fastnetmon_docker/fastnetmon/logs/fastnetmon.log
+      - run: cat /var/lib/fastnetmon_docker/fastnetmon/logs/fastnetmon.log
       - run: sudo fcli show fastnetmon_version
       - run: sudo fcli show main
       - run: sudo fcli show hostgroup
