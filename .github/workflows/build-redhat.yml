@@ -43,9 +43,9 @@ jobs:
     - name: Install community 
       if: ${{ inputs.upgrade_from_community }}
       run: sudo docker exec --env "CI=true" linux_systemd_container ./installer -install_community_edition
-    - name: Download example config
+    - name: Install community visual stack
       if: ${{ inputs.upgrade_from_community }}
-      run: sudo docker exec linux_systemd_container wget --no-verbose --no-check-certificate https://raw.githubusercontent.com/pavel-odintsov/fastnetmon/refs/tags/v1.2.8/src/fastnetmon.conf -O /etc/fastnetmon.conf 
+      run: sudo docker exec --env "CI=true" linux_systemd_container ./installer -install_graphic_stack_community
     - run: sudo docker exec --env "CI=true" linux_systemd_container ./installer -do_not_check_license ${{ inputs.installer_arguments }}
     - run: sudo docker exec linux_systemd_container ldd /opt/fastnetmon/app/bin/fastnetmon
     - run: sudo docker exec linux_systemd_container cat /var/log/fastnetmon/fastnetmon.log
