@@ -44,6 +44,7 @@ jobs:
     - run: sudo docker exec linux_systemd_container wget --no-verbose "https://install.fastnetmon.com/installer?random-argument-to-disable-caching-${{ github.run_id }}" -Oinstaller
     - run: sudo docker exec linux_systemd_container chmod +x installer
     - run: sudo docker exec --env "CI=true" linux_systemd_container ./installer -install_community_edition
+    - run: sudo docker exec --env "CI=true" linux_systemd_container ./installer -install_graphic_stack_community
     - run: sudo docker exec --env "CI=true" linux_systemd_container ./installer -do_not_check_license 
     - run: sudo docker exec linux_systemd_container ldd /opt/fastnetmon/app/bin/fastnetmon 
     - name: Sleep to give enough time for FastNetMon to start

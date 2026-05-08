@@ -34,6 +34,9 @@ on:
       enable_ipv6:
         type: boolean
         default: false
+      upgrade_from_community:
+        type: boolean
+        default: false
 
 jobs:
   build:
@@ -82,6 +85,12 @@ jobs:
     - run: sudo docker exec linux_systemd_container ifconfig
     - run: sudo docker exec linux_systemd_container wget --no-verbose "https://install.fastnetmon.com/${{ inputs.installer_file_name }}?random-argument-to-disable-caching-${{ github.run_id }}" -Oinstaller
     - run: sudo docker exec linux_systemd_container chmod +x installer
+    - name: Install community 
+      if: ${{ inputs.upgrade_from_community }}
+      run: sudo docker exec --env "CI=true" linux_systemd_container ./installer -install_community_edition
+    - name: Install community visual stack
+      if: ${{ inputs.upgrade_from_community }}
+      run: sudo docker exec --env "CI=true" linux_systemd_container ./installer -install_graphic_stack_community
     - run: sudo docker exec --env "CI=true" linux_systemd_container ./installer -do_not_check_license ${{ inputs.installer_arguments }}
     - run: sudo docker exec linux_systemd_container ldd /opt/fastnetmon/app/bin/fastnetmon 
     - name: Sleep to give enough time for FastNetMon to start
@@ -100,6 +109,9 @@ jobs:
     - name: Check UDP listens for FastNetMon and database
       run: sudo docker exec linux_systemd_container netstat -lnpu
     - run: sudo docker exec --env "CI=true" linux_systemd_container ${{ inputs.visual_installer_command }}
+    - name: Import community configuration
+      if: ${{ inputs.upgrade_from_community }}
+      run: sudo docker exec --env "CI=true" linux_systemd_container ./installer -import_community_edition_configuration
     - name: Check TCP listens for all daemons
       run: sudo docker exec linux_systemd_container netstat -lnpt
     - name: Check UDP listens for all daemons
