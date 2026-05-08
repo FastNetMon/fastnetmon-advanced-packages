@@ -45,19 +45,6 @@ jobs:
       enable_ipv6: ${{ matrix.enable_ipv6 || false }}
       upgrade_from_community: ${{ matrix.upgrade_from_community || false }}
 
-  #build_debian_from_community:
-  #  name: ${{ matrix.name }}
-  #  uses: ./.github/workflows/build-debian-upgrade-from-community.yml
-  #  strategy:
-  #    fail-fast: false
-  #    matrix:
-  #      include:
-  #        - name: Ubuntu 20.04 upgrade from community
-  #          docker_image: ubuntu:20.04
-  #  with:
-  #    docker_image: ${{ matrix.docker_image }}
-  #    systemd_prepare_command: ${{ matrix.systemd_prepare_command || 'true' }}
-  #    runner: ${{ matrix.runner || 'ubuntu-24.04' }}
 
   build_rhel:
     name: ${{ matrix.name }}
@@ -79,3 +66,8 @@ jobs:
       mount_cgroup_command: ${{ matrix.mount_cgroup_command || ''}}
       upgrade_from_community: ${{ matrix.upgrade_from_community || false }}
       runner: ${{ matrix.runner || 'ubuntu-24.04' }}
+    
+  build_ubuntu_docker:
+    name: Ubuntu 24.04 docker
+    uses: ./.github/workflows/build-ubuntu-docker.yml
+    
