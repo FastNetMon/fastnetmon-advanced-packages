@@ -107,17 +107,20 @@ jobs:
          ### Ubuntu 22.04 ARM
           - name: Ubuntu 22.04 ARM
             docker_image: ubuntu:22.04
+            installer_file_name: installer_arm64
             runner: ubuntu-24.04-arm
 
           - name: Ubuntu 22.04 ARM developer
             docker_image: ubuntu:22.04
             installer_arguments: "-developer_version"
+            installer_file_name: installer_arm64
             runner: ubuntu-24.04-arm
 
           - name: Ubuntu 22.04 ARM FerretDB developer
             docker_image: ubuntu:22.04
             installer_arguments: "-developer_version -ferretdb"
             database_check_command: "/usr/bin/ferretdb --version"
+            installer_file_name: installer_arm64
             runner: ubuntu-24.04-arm
 
           - name: Ubuntu 22.04 ARM FerretDB IPv6 only developer
@@ -126,6 +129,7 @@ jobs:
             visual_installer_command: "./installer -install_graphic_stack -do_not_check_license -ipv6_only_setup"
             database_check_command: "/usr/bin/ferretdb --version"
             enable_ipv6: true
+            installer_file_name: installer_arm64
             runner: ubuntu-24.04-arm
 
           ### Ubuntu 24.04
@@ -159,17 +163,20 @@ jobs:
          ### Ubuntu 24.04 ARM
           - name: Ubuntu 24.04 ARM
             docker_image: ubuntu:24.04
+            installer_file_name: installer_arm64
             runner: ubuntu-24.04-arm
 
           - name: Ubuntu 24.04 ARM developer
             docker_image: ubuntu:24.04
             installer_arguments: "-developer_version"
+            installer_file_name: installer_arm64
             runner: ubuntu-24.04-arm
 
           - name: Ubuntu 24.04 ARM FerretDB developer
             docker_image: ubuntu:24.04
             installer_arguments: "-developer_version -ferretdb"
             database_check_command: "/usr/bin/ferretdb --version"
+            installer_file_name: installer_arm64
             runner: ubuntu-24.04-arm
 
           - name: Ubuntu 24.04 ARM FerretDB IPv6 only developer
@@ -178,6 +185,7 @@ jobs:
             visual_installer_command: "./installer -install_graphic_stack -do_not_check_license -ipv6_only_setup"
             database_check_command: "/usr/bin/ferretdb --version"
             enable_ipv6: true
+            installer_file_name: installer_arm64
             runner: ubuntu-24.04-arm
 
     with:
