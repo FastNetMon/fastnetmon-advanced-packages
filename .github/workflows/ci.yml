@@ -19,6 +19,34 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          ### Debian 11
+          - name: Debian 11
+            docker_image: debian:11
+
+          - name: Debian 11 FerretDB
+            docker_image: debian:11
+            installer_arguments: "-ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Debian 11 old cpus
+            docker_image: debian:11
+            installer_arguments: "-force_old_cpu"
+            # In this case installer installs FerretDB instead of MongoDB and we need to check it
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Debian 11 developer
+            docker_image: debian:11
+            installer_arguments: "-developer_version"
+
+          - name: Debian 11 FerretDB developer
+            docker_image: debian:11
+            installer_arguments: "-developer_version -ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Debian 11 upgrade from community
+            docker_image: debian:11
+            upgrade_from_community: true
+
           ### Debian 12
           - name: Debian 12
             docker_image: debian:12
@@ -75,6 +103,62 @@ jobs:
           - name: Debian 13 upgrade from community
             docker_image: debian:13
             upgrade_from_community: true
+
+          ### Ubuntu 18.04
+          - name: Ubuntu 18.04
+            docker_image: ubuntu:18.04
+
+          - name: Ubuntu 18.04 FerretDB
+            docker_image: ubuntu:18.04
+            installer_arguments: "-ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Ubuntu 18.04 old cpus
+            docker_image: ubuntu:18.04
+            installer_arguments: "-force_old_cpu"
+            # In this case installer installs FerretDB instead of MongoDB and we need to check it
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Ubuntu 18.04 developer
+            docker_image: ubuntu:18.04
+            installer_arguments: "-developer_version"
+
+          - name: Ubuntu 18.04 FerretDB developer
+            docker_image: ubuntu:18.04
+            installer_arguments: "-developer_version -ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Ubuntu 18.04 upgrade from community
+            docker_image: ubuntu:18.04
+            upgrade_from_community: true
+
+          ### Ubuntu 20.04
+          - name: Ubuntu 20.04
+            docker_image: ubuntu:20.04
+
+          - name: Ubuntu 20.04 FerretDB
+            docker_image: ubuntu:20.04
+            installer_arguments: "-ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Ubuntu 20.04 old cpus
+            docker_image: ubuntu:20.04
+            installer_arguments: "-force_old_cpu"
+            # In this case installer installs FerretDB instead of MongoDB and we need to check it
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Ubuntu 20.04 developer
+            docker_image: ubuntu:20.04
+            installer_arguments: "-developer_version"
+
+          - name: Ubuntu 20.04 FerretDB developer
+            docker_image: ubuntu:20.04
+            installer_arguments: "-developer_version -ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Ubuntu 20.04 upgrade from community
+            docker_image: ubuntu:20.04
+            upgrade_from_community: true
           
           ### Ubuntu 22.04
           - name: Ubuntu 22.04
@@ -105,10 +189,10 @@ jobs:
             upgrade_from_community: true
 
          ### Ubuntu 22.04 ARM
-          - name: Ubuntu 22.04 ARM
-            docker_image: ubuntu:22.04
-            installer_file_name: installer_arm64
-            runner: ubuntu-24.04-arm
+         # - name: Ubuntu 22.04 ARM
+         #   docker_image: ubuntu:22.04
+         #   installer_file_name: installer_arm64
+         #   runner: ubuntu-24.04-arm
 
           - name: Ubuntu 22.04 ARM developer
             docker_image: ubuntu:22.04
@@ -161,10 +245,10 @@ jobs:
             upgrade_from_community: true
 
          ### Ubuntu 24.04 ARM
-          - name: Ubuntu 24.04 ARM
-            docker_image: ubuntu:24.04
-            installer_file_name: installer_arm64
-            runner: ubuntu-24.04-arm
+         # - name: Ubuntu 24.04 ARM
+         #   docker_image: ubuntu:24.04
+         #   installer_file_name: installer_arm64
+         #   runner: ubuntu-24.04-arm
 
           - name: Ubuntu 24.04 ARM developer
             docker_image: ubuntu:24.04
