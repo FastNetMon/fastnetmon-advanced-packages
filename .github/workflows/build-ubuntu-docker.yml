@@ -1,0 +1,21 @@
+name: ubuntu_docker
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: sudo apt-get update
+      - run: sudo DEBIAN_FRONTEND=noninteractive apt-get install -y wget
+      - run: wget https://install.fastnetmon.com/installer?random-argument-to-disable-caching-$CIRCLE_WORKFLOW_JOB_ID -Oinstaller
+      - run: chmod +x installer
+      - run: sudo CI=true ./installer -fastnetmon_docker
+      - run: cat /tmp/fastnetmon_install.log
+      - run: sudo chmod -R 755 /var/lib/fastnetmon_docker # make permissions more relaxed to get log file as artifact
+      - run: cat /var/lib/fastnetmon_docker/fastnetmon/logs/fastnetmon.log
+      - run: sudo fcli show fastnetmon_version
+      - run: sudo fcli show main
+      - run: sudo fcli show hostgroup
+

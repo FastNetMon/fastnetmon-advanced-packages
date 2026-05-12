@@ -1,0 +1,361 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 2 * * *" # UTC
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build_debian:
+    name: ${{ matrix.name }}
+    uses: ./.github/workflows/build-debian.yml
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          ### Debian 11
+          - name: Debian 11
+            docker_image: debian:11
+
+          - name: Debian 11 FerretDB
+            docker_image: debian:11
+            installer_arguments: "-ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Debian 11 old cpus
+            docker_image: debian:11
+            installer_arguments: "-force_old_cpu"
+            # In this case installer installs FerretDB instead of MongoDB and we need to check it
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Debian 11 developer
+            docker_image: debian:11
+            installer_arguments: "-developer_version"
+
+          - name: Debian 11 FerretDB developer
+            docker_image: debian:11
+            installer_arguments: "-developer_version -ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Debian 11 upgrade from community
+            docker_image: debian:11
+            upgrade_from_community: true
+
+          ### Debian 12
+          - name: Debian 12
+            docker_image: debian:12
+
+          - name: Debian 12 FerretDB
+            docker_image: debian:12
+            installer_arguments: "-ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Debian 12 old cpus
+            docker_image: debian:12
+            installer_arguments: "-force_old_cpu"
+            # In this case installer installs FerretDB instead of MongoDB and we need to check it
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Debian 12 developer
+            docker_image: debian:12
+            installer_arguments: "-developer_version"
+
+          - name: Debian 12 FerretDB developer
+            docker_image: debian:12
+            installer_arguments: "-developer_version -ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Debian 12 upgrade from community
+            docker_image: debian:12
+            upgrade_from_community: true
+          
+
+          ### Debian 13
+          - name: Debian 13
+            docker_image: debian:13
+
+          - name: Debian 13 FerretDB
+            docker_image: debian:13
+            installer_arguments: "-ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Debian 13 old cpus
+            docker_image: debian:13
+            installer_arguments: "-force_old_cpu"
+            # In this case installer installs FerretDB instead of MongoDB and we need to check it
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Debian 13 developer
+            docker_image: debian:13
+            installer_arguments: "-developer_version"
+
+          - name: Debian 13 FerretDB developer
+            docker_image: debian:13
+            installer_arguments: "-developer_version -ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Debian 13 upgrade from community
+            docker_image: debian:13
+            upgrade_from_community: true
+
+          ### Ubuntu 18.04
+          - name: Ubuntu 18.04
+            docker_image: ubuntu:18.04
+
+          - name: Ubuntu 18.04 FerretDB
+            docker_image: ubuntu:18.04
+            installer_arguments: "-ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Ubuntu 18.04 old cpus
+            docker_image: ubuntu:18.04
+            installer_arguments: "-force_old_cpu"
+            # In this case installer installs FerretDB instead of MongoDB and we need to check it
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Ubuntu 18.04 developer
+            docker_image: ubuntu:18.04
+            installer_arguments: "-developer_version"
+
+          - name: Ubuntu 18.04 FerretDB developer
+            docker_image: ubuntu:18.04
+            installer_arguments: "-developer_version -ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Ubuntu 18.04 upgrade from community
+            docker_image: ubuntu:18.04
+            upgrade_from_community: true
+
+          ### Ubuntu 20.04
+          - name: Ubuntu 20.04
+            docker_image: ubuntu:20.04
+
+          - name: Ubuntu 20.04 FerretDB
+            docker_image: ubuntu:20.04
+            installer_arguments: "-ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Ubuntu 20.04 old cpus
+            docker_image: ubuntu:20.04
+            installer_arguments: "-force_old_cpu"
+            # In this case installer installs FerretDB instead of MongoDB and we need to check it
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Ubuntu 20.04 developer
+            docker_image: ubuntu:20.04
+            installer_arguments: "-developer_version"
+
+          - name: Ubuntu 20.04 FerretDB developer
+            docker_image: ubuntu:20.04
+            installer_arguments: "-developer_version -ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Ubuntu 20.04 upgrade from community
+            docker_image: ubuntu:20.04
+            upgrade_from_community: true
+          
+          ### Ubuntu 22.04
+          - name: Ubuntu 22.04
+            docker_image: ubuntu:22.04
+
+          - name: Ubuntu 22.04 FerretDB
+            docker_image: ubuntu:22.04
+            installer_arguments: "-ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Ubuntu 22.04 old cpus
+            docker_image: ubuntu:22.04
+            installer_arguments: "-force_old_cpu"
+            # In this case installer installs FerretDB instead of MongoDB and we need to check it
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Ubuntu 22.04 developer
+            docker_image: ubuntu:22.04
+            installer_arguments: "-developer_version"
+
+          - name: Ubuntu 22.04 FerretDB developer
+            docker_image: ubuntu:22.04
+            installer_arguments: "-developer_version -ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Ubuntu 22.04 upgrade from community
+            docker_image: ubuntu:22.04
+            upgrade_from_community: true
+
+         ### Ubuntu 22.04 ARM
+         # - name: Ubuntu 22.04 ARM
+         #   docker_image: ubuntu:22.04
+         #   installer_file_name: installer_arm64
+         #   runner: ubuntu-24.04-arm
+
+          - name: Ubuntu 22.04 ARM developer
+            docker_image: ubuntu:22.04
+            installer_arguments: "-developer_version"
+            installer_file_name: installer_arm64
+            runner: ubuntu-24.04-arm
+
+          - name: Ubuntu 22.04 ARM FerretDB developer
+            docker_image: ubuntu:22.04
+            installer_arguments: "-developer_version -ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+            installer_file_name: installer_arm64
+            runner: ubuntu-24.04-arm
+
+          - name: Ubuntu 22.04 ARM FerretDB IPv6 only developer
+            docker_image: ubuntu:22.04
+            installer_arguments: "-developer_version -ferretdb -ipv6_only_setup"
+            visual_installer_command: "./installer -install_graphic_stack -do_not_check_license -ipv6_only_setup"
+            database_check_command: "/usr/bin/ferretdb --version"
+            enable_ipv6: true
+            installer_file_name: installer_arm64
+            runner: ubuntu-24.04-arm
+
+          ### Ubuntu 24.04
+          - name: Ubuntu 24.04
+            docker_image: ubuntu:24.04
+
+          - name: Ubuntu 24.04 FerretDB
+            docker_image: ubuntu:24.04
+            installer_arguments: "-ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Ubuntu 24.04 old cpus
+            docker_image: ubuntu:24.04
+            installer_arguments: "-force_old_cpu"
+            # In this case installer installs FerretDB instead of MongoDB and we need to check it
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Ubuntu 24.04 developer
+            docker_image: ubuntu:24.04
+            installer_arguments: "-developer_version"
+
+          - name: Ubuntu 24.04 FerretDB developer
+            docker_image: ubuntu:24.04
+            installer_arguments: "-developer_version -ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: Ubuntu 24.04 upgrade from community
+            docker_image: ubuntu:24.04
+            upgrade_from_community: true
+
+         ### Ubuntu 24.04 ARM
+         # - name: Ubuntu 24.04 ARM
+         #   docker_image: ubuntu:24.04
+         #   installer_file_name: installer_arm64
+         #   runner: ubuntu-24.04-arm
+
+          - name: Ubuntu 24.04 ARM developer
+            docker_image: ubuntu:24.04
+            installer_arguments: "-developer_version"
+            installer_file_name: installer_arm64
+            runner: ubuntu-24.04-arm
+
+          - name: Ubuntu 24.04 ARM FerretDB developer
+            docker_image: ubuntu:24.04
+            installer_arguments: "-developer_version -ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+            installer_file_name: installer_arm64
+            runner: ubuntu-24.04-arm
+
+          - name: Ubuntu 24.04 ARM FerretDB IPv6 only developer
+            docker_image: ubuntu:24.04
+            installer_arguments: "-developer_version -ferretdb -ipv6_only_setup"
+            visual_installer_command: "./installer -install_graphic_stack -do_not_check_license -ipv6_only_setup"
+            database_check_command: "/usr/bin/ferretdb --version"
+            enable_ipv6: true
+            installer_file_name: installer_arm64
+            runner: ubuntu-24.04-arm
+
+    with:
+      docker_image: ${{ matrix.docker_image }}
+      installer_arguments:  ${{ matrix.installer_arguments || '' }}
+      systemd_prepare_command: ${{ matrix.systemd_prepare_command || 'true' }}
+      database_check_command: ${{ matrix.database_check_command || 'mongod --version'}}
+      runner: ${{ matrix.runner || 'ubuntu-24.04' }}
+      installer_file_name: ${{ matrix.installer_file_name || 'installer' }}
+      mount_cgroup_command: ${{ matrix.mount_cgroup_command || ''}}
+      visual_installer_command: ${{ matrix.visual_installer_command || './installer -install_graphic_stack -do_not_check_license'}}
+      enable_ipv6: ${{ matrix.enable_ipv6 || false }}
+      upgrade_from_community: ${{ matrix.upgrade_from_community || false }}
+
+
+  build_rhel:
+    name: ${{ matrix.name }}
+    uses: ./.github/workflows/build-redhat.yml
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          ### AlmaLinux 8
+          - name: AlmaLinux 8
+            docker_image: almalinux:8
+
+          - name: AlmaLinux 8 FerretDB
+            docker_image: almalinux:8
+            installer_arguments: "-ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: AlmaLinux 8 developer
+            docker_image: almalinux:8
+            installer_arguments: "-developer_version"
+
+          - name: AlmaLinux 8 FerretDB developer
+            docker_image: almalinux:8
+            installer_arguments: "-developer_version -ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: AlmaLinux 8 upgrade from community
+            docker_image: almalinux:8
+            upgrade_from_community: true
+
+          - name: AlmaLinux 8 old cpus
+            docker_image: almalinux:8
+            installer_arguments: "-force_old_cpu"
+             # In this case installer installs FerretDB instead of MongoDB and we need to check it
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          ### AlmaLinux 9
+          - name: AlmaLinux 9
+            docker_image: almalinux:9
+
+          - name: AlmaLinux 9 FerretDB
+            docker_image: almalinux:9
+            installer_arguments: "-ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: AlmaLinux 9 developer
+            docker_image: almalinux:9
+            installer_arguments: "-developer_version"
+
+          - name: AlmaLinux 9 FerretDB developer
+            docker_image: almalinux:9
+            installer_arguments: "-developer_version -ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: AlmaLinux 9 upgrade from community
+            docker_image: almalinux:9
+            upgrade_from_community: true
+
+          - name: AlmaLinux 9 old cpus
+            docker_image: almalinux:9
+            installer_arguments: "-force_old_cpu"
+             # In this case installer installs FerretDB instead of MongoDB and we need to check it
+            database_check_command: "/usr/bin/ferretdb --version"
+    with:
+      docker_image: ${{ matrix.docker_image }}
+      installer_arguments:  ${{ matrix.installer_arguments || '' }}
+      database_check_command: ${{ matrix.database_check_command || 'mongod --version'}}
+      mount_cgroup_command: ${{ matrix.mount_cgroup_command || ''}}
+      upgrade_from_community: ${{ matrix.upgrade_from_community || false }}
+      runner: ${{ matrix.runner || 'ubuntu-24.04' }}
+    
+  build_ubuntu_docker:
+    name: Ubuntu 24.04 docker
+    uses: ./.github/workflows/build-ubuntu-docker.yml
+    
