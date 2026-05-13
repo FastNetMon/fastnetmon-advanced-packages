@@ -44,6 +44,10 @@ jobs:
           running|degraded)
             exit 0
             ;;
+          # For older systemd (ubuntu 18/rhel 8)
+          initializing|starting)
+            sleep 3
+            ;;
           *)
             exit 1
             ;;
