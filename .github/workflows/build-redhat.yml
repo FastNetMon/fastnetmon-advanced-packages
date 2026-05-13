@@ -35,6 +35,24 @@ jobs:
     
     - run: sudo docker run -d --privileged --cap-add SYS_ADMIN ${{ inputs.mount_cgroup_command }} --name linux_systemd_container ${{ inputs.docker_image }} /sbin/init
     - run: sudo docker ps -a
+    - name: Wait for container to start
+      run: |
+        sudo docker exec linux_systemd_container bash -lc '
+        state="$(systemctl is-system-running --wait || true)"
+        echo "Systemd state: $state"
+        case "$state" in
+          running|degraded)
+            exit 0
+            ;;
+          # For older systemd (ubuntu 18/rhel 8)
+          initializing|starting)
+            sleep 3
+            ;;
+          *)
+            exit 1
+            ;;
+        esac
+        '
     - run: sudo docker exec linux_systemd_container systemctl status --no-pager
     - run: sudo docker exec linux_systemd_container yum install -y wget
     - name: "Download installer, for CentOS 7 we have issue with Let's encrypt and we need to skip certificate validation"
