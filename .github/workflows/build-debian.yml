@@ -80,6 +80,7 @@ jobs:
     - name: "Deploy new systemd enabled image"
       run: sudo docker run -d --privileged --cap-add SYS_ADMIN ${{ inputs.mount_cgroup_command }} --name linux_systemd_container debian_systemd /lib/systemd/systemd
     - run: sudo docker ps -a
+    - run: sleep 10
     - name: Wait for container to start
       run: |
         sudo docker exec linux_systemd_container bash -lc '
