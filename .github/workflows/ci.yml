@@ -4,6 +4,16 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+    inputs:
+      target:
+        description: "Which job group to run"
+        type: choice
+        required: true
+        default: all
+        options:
+          - all
+          - build_debian
+          - build_rhel
   schedule:
     - cron: "0 2 * * *" # UTC
 
@@ -11,10 +21,14 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   build_debian:
     name: ${{ matrix.name }}
-    uses: ./.github/workflows/build-debian.yml
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.target == 'all' || inputs.target == 'build_debian' }}
+    uses: ./.github/workflows/reusable-build-debian.yml
     strategy:
       fail-fast: false
       matrix:
@@ -287,7 +301,8 @@ jobs:
 
   build_rhel:
     name: ${{ matrix.name }}
-    uses: ./.github/workflows/build-redhat.yml
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.target == 'all' || inputs.target == 'build_rhel' }}
+    uses: ./.github/workflows/reusable-build-redhat.yml
     strategy:
       fail-fast: false
       matrix:
@@ -357,5 +372,6 @@ jobs:
     
   build_ubuntu_docker:
     name: Ubuntu 24.04 docker
-    uses: ./.github/workflows/build-ubuntu-docker.yml
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.target == 'all' || inputs.target == 'build_debian' }}
+    uses: ./.github/workflows/reusable-build-ubuntu-docker.yml
     
