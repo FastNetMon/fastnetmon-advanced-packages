@@ -39,7 +39,7 @@ jobs:
 
           - name: Debian 11 FerretDB
             docker_image: debian:11
-            installer_arguments: "-ferretdb"
+            installer_arguments: "-ferretdb111"
             database_check_command: "/usr/bin/ferretdb --version"
 
           - name: Debian 11 old cpus
