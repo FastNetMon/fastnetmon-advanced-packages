@@ -114,14 +114,41 @@ jobs:
       if: ${{ inputs.upgrade_from_community }}
       run: sudo docker exec --env "CI=true" linux_systemd_container ./installer -install_graphic_stack_community
     - run: sudo docker exec --env "CI=true" linux_systemd_container ./installer -do_not_check_license ${{ inputs.installer_arguments }}
-    - run: sudo docker exec linux_systemd_container ldd /opt/fastnetmon/app/bin/fastnetmon 
+    - name: Check runtime libraries
+      run: |
+        sudo docker exec linux_systemd_container bash -lc '
+        echo "ldd /opt/fastnetmon/app/bin/fastnetmon"
+        echo
+        ldd /opt/fastnetmon/app/bin/fastnetmon | tee /tmp/ldd-fastnetmon.txt
+        if grep "not found" /tmp/ldd-fastnetmon.txt; then
+          echo "Some runtime libraries for fastnetmon are missing" >&2
+          exit 1
+        fi
+
+        echo
+        echo "ldd /opt/fastnetmon/app/bin/traffic_db"
+        echo
+        ldd /opt/fastnetmon/app/bin/traffic_db | tee /tmp/ldd-traffic.txt
+        if grep "not found" /tmp/ldd-traffic.txt; then
+          echo "Some runtime libraries for traffic_db are missing" >&2
+          exit 1
+        fi
+
+        echo
+        echo "ldd /opt/fastnetmon/app/bin/fill_dictionaries"
+        echo
+        ldd /opt/fastnetmon/app/bin/fill_dictionaries | tee /tmp/ldd-fill.txt
+        if grep "not found" /tmp/ldd-fill.txt; then
+          echo "Some runtime libraries for fill_dictionaries are missing" >&2
+          exit 1
+        fi
+
+        ' 
     - name: Sleep to give enough time for FastNetMon to start
       run: sleep 25
     - run: sudo docker exec linux_systemd_container cat /var/log/fastnetmon/fastnetmon.log
     - run: sudo docker exec linux_systemd_container systemctl status fastnetmon
     - run: sudo docker exec linux_systemd_container ${{ inputs.database_check_command }}
-    - run: sudo docker exec linux_systemd_container ldd /opt/fastnetmon/app/bin/traffic_db
-    - run: sudo docker exec linux_systemd_container ldd /opt/fastnetmon/app/bin/fill_dictionaries
     - run: sudo docker exec linux_systemd_container /opt/fastnetmon/app/bin/fastnetmon --configuration_check --log_to_console
     - run: sudo docker exec linux_systemd_container fcli show fastnetmon_version
     - run: sudo docker exec linux_systemd_container fcli show main
