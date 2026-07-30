@@ -306,6 +306,34 @@ jobs:
             installer_arguments: "-force_old_cpu"
              # In this case installer installs FerretDB instead of MongoDB and we need to check it
             database_check_command: "/usr/bin/ferretdb --version"
+
+          ### AlmaLinux 10
+          - name: AlmaLinux 10
+            docker_image: almalinux:10
+
+          - name: AlmaLinux 10 FerretDB
+            docker_image: almalinux:10
+            installer_arguments: "-ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: AlmaLinux 10 developer
+            docker_image: almalinux:10
+            installer_arguments: "-developer_version"
+
+          - name: AlmaLinux 10 FerretDB developer
+            docker_image: almalinux:10
+            installer_arguments: "-developer_version -ferretdb"
+            database_check_command: "/usr/bin/ferretdb --version"
+
+          - name: AlmaLinux 10 upgrade from community
+            docker_image: almalinux:10
+            upgrade_from_community: true
+
+          - name: AlmaLinux 10 old cpus
+            docker_image: almalinux:10
+            installer_arguments: "-force_old_cpu"
+             # In this case installer installs FerretDB instead of MongoDB and we need to check it
+            database_check_command: "/usr/bin/ferretdb --version"
     with:
       docker_image: ${{ matrix.docker_image }}
       installer_arguments:  ${{ matrix.installer_arguments || '' }}
