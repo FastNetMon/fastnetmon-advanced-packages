@@ -17,8 +17,17 @@ jobs:
       - run: sudo CI=true ./installer -fastnetmon_docker
       - run: cat /tmp/fastnetmon_install.log
       - run: sudo chmod -R 755 /var/lib/fastnetmon_docker # make permissions more relaxed to get log file as artifact
+      # Now we wait, to daemon to finish start
+      # It would take time, since we would download ASN maps
+      - name: Wait for FastNetMon to fully started
+        run: |
+          timeout 120 bash -c '
+          until grep -qF "API server listening on" "$1" 2>/dev/null; do
+            sleep 2
+          done
+          ' _ /var/lib/fastnetmon_docker/fastnetmon/logs/fastnetmon.log
+
       - run: cat /var/lib/fastnetmon_docker/fastnetmon/logs/fastnetmon.log
       - run: sudo fcli show fastnetmon_version
       - run: sudo fcli show main
       - run: sudo fcli show hostgroup
-
